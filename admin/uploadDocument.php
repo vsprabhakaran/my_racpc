@@ -41,7 +41,7 @@
             $('#folio_no').prop('disabled', false);
             $('#rack_no').prop('disabled', false);
             $('#formButton').prop('disabled', false);
-			$("#bcTarget").barcode(acc, "code128",{barWidth:2, barHeight:30});
+			$("#accBarcode").barcode(acc, "code128",{barWidth:2, barHeight:30});
         }
         function invalidAccountNumberEnterred() {
             document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
@@ -64,7 +64,11 @@
             var popup = window.open("../AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
             $(popup).blur(function () { this.close(); });
         }
-        
+		function showRackBarcode(){
+			var rack= $("#rack_no").val();
+			alert(rack);
+			$("#rackBarcode").barcode(rack, "code128",{barWidth:2, barHeight:30});
+		}
     </script>
 </head>
 <body>
@@ -86,6 +90,7 @@
                 return isFormValid;
             });
         });
+		
     </script>
 	<br/><br/>
 <div>
@@ -96,7 +101,8 @@
             <input type="text" id="accNumber" name="accNumber" autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" />
             <!--<span><button name="accButton" onclick="accountNumButtonClick()">Go</button></span> -->
             <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onclick="showAccountDetails()">View Details</a> 
-			<div id="bcTarget" ></div>
+			
+			<div id="accBarcode"></div>
     </div>
     <div class="pure-control-group">
 		<label for="file">Choose file</label>
@@ -108,7 +114,8 @@
 	</div>
 	<div class="pure-control-group">
 		<label for="rack_no">Rack Location</label>
-		<input id="rack_no" type="text" name="rack_no" disabled="disabled" autocomplete="off"/>
+		<input id="rack_no" type="text" name="rack_no" disabled="disabled" autocomplete="off" onkeydown="if (event.keyCode == 13) showRackBarcode()" />
+		<div id="rackBarcode"></div>
 	</div>
 	<div class="pure-controls">
 		<button class="pure-button pure-button-primary" id="formButton" disabled="disabled">Submit</button>

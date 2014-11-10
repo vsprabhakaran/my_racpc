@@ -975,7 +975,8 @@
     // clear jQuery Target
     resize: function($container, w){
       $container
-        .css("padding", "0px")
+        .css("padding", "10px")
+		.css("padding-left","150px")
         .css("overflow", "auto")
         .css("width", w + "px")
         .html("");

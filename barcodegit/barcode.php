@@ -12,7 +12,7 @@
 	// Get pararameters that are passed in through $_GET or set to the default value
 	 $font_path = 'font.ttf';
 	$text = (isset($_GET["text"])?$_GET["text"]:"0");
-	$size = (isset($_GET["size"])?$_GET["size"]:"20");
+	$size = (isset($_GET["size"])?$_GET["size"]:"144");
 	$orientation = (isset($_GET["orientation"])?$_GET["orientation"]:"horizontal");
 	$code_type = (isset($_GET["codetype"])?$_GET["codetype"]:"code128");
 	$code_string = "";
@@ -93,7 +93,7 @@
 		$img_height = $code_length;
 	}
 
-	$image = imagecreate($img_width, $img_height+15);
+	$image = imagecreate($img_width, $img_height+20);
 	$black = imagecolorallocate ($image, 0, 0, 0);
 	$white = imagecolorallocate ($image, 255, 255, 255);
 
@@ -103,16 +103,29 @@
 	for ( $position = 1 ; $position <= strlen($code_string); $position++ ) {
 		$cur_size = $location + ( substr($code_string, ($position-1), 1) );
 		if ( strtolower($orientation) == "horizontal" )
-			imagefilledrectangle( $image, $location, 0, $cur_size, $img_height, ($position % 2 == 0 ? $white : $black) );
+        {
+			imagefilledrectangle( $image, $location, 10, $cur_size, $img_height, ($position % 2 == 0 ? $white : $black) );
+		}
 		else
 			imagefilledrectangle( $image, 0, $location, $img_width, $cur_size, ($position % 2 == 0 ? $white : $black) );
 		$location = $cur_size;
 	}
-	imagettftext($image, 11, 0, $img_width/4, 35, $black, $font_path, $text);
+	
 	// Draw barcode to the screen
-	header ('Content-type: image/png');
-	//$path="D:\\".$text.".png" ;
+	
 	$path="Images\\".$text.".png" ;
-	imagepng($image,$path);
-	imagedestroy($image);
+    $thumb_w = 600;
+    $thumb_h = 400;
+    $original_w=$code_length;
+    $original_h=$img_height+20;
+    $thumb_img = imagecreatetruecolor($thumb_w, $thumb_h);
+    imagecopyresampled($thumb_img, $image,
+                   0, 0,
+                   0, 0,
+                   $thumb_w, $thumb_h,
+                   $original_w, $original_h);
+    imagettftext($thumb_img, 20, 0, $thumb_w/3, 385, $black, $font_path, $text);
+	header ('Content-type: image/png');
+	imagepng($thumb_img);
+	imagedestroy($thumb_img);
 ?>
