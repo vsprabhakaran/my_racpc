@@ -40,15 +40,18 @@
         function validAccountNumberEnterred() {
             document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
             document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
+            $('#viewButton').prop('disabled', false);
         }
         function invalidAccountNumberEnterred() {
             document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
             document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
+            $('#viewButton').prop('disabled', true);
             
         }
         function nullAccountNumberEnterred() {
             document.getElementById('accNumber').style.backgroundColor = "";
             document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
+            $('#viewButton').prop('disabled', true);
             
         }
         function showAccountDetails() {
@@ -78,11 +81,11 @@
 	<form id="formid" class="pure-form pure-form-aligned">
 	<div class="pure-control-group">
             <label for="accNumber" >Account Number</label>
-            <input type="text" id="accNumber" name="accNumber"  autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" />
+            <input type="text" id="accNumber" name="accNumber"  autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" onblur="accountNumButtonClick()" />
 			<a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onclick="showAccountDetails()">View Details</a> 
     </div>
 	</form>
-	<button id="submit" class="pure-button pure-button-primary" onclick="getPDF()" style="margin-left:180px">View</button>
+	<button id="viewButton" class="pure-button pure-button-primary" onclick="getPDF()" style="margin-left:180px" disabled="disabled">View</button>
 			<br><br>
 	
 <iframe  id="pdfFile" height="75%" width="100%" style="visibility: hidden"> </iframe>
