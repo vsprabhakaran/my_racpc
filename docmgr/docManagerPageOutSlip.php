@@ -21,96 +21,33 @@
 <script>
 
     function outUpdateDocStatus() {
-        //alert("inside updstauts");
-
-        if (window.XMLHttpRequest) {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } else { // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                //document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
-            }
-        }
-
-
+        DeActivateGenButton();
         var enteredAccNumber = document.getElementById('accountno').value;
-        xmlhttp.open("GET", "getDocMgrdetails2.php?q=" + enteredAccNumber, true);
-
-
-        // update out slip flag
-        //alert("inside kar");
-        $.post('getDocMgrdetails2.php', { accNo: enteredAccNumber, type: 'OutUpdateDocStatus' }, function (msg) {
-            //  alert(msg);
-            if (msg == "true") {
-                // alert("Out status Updated Successfully");
+        var phpURL = '../db/accountInformations.php';
+        doPOST_Request(phpURL, enteredAccNumber, "OutUpdateDocStatus");
             }
-            else if (msg == "false") {
-                //    document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
-                //    document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
-            }
-        }).fail(function (msg) {
-            alert("fail : " + msg);
-        });
-    }
-
-    function outActivityUpdate() {
-        var pf;
-        $.post('../getPfnoFromSession.php', {}, function (msg) {
-            if (msg != "false") {
-                pf = msg.replace(/["']/g, "");
-            }
-        }).fail(function (msg) {
-            alert("fail : " + msg);
-        });
-        //alert("inside updstauts");
-
-        if (window.XMLHttpRequest) {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } else { // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                //document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
-            }
-        }
-
-
+    function outActivityLogUpdate() {
+        var phpURL = '../getPfnoFromSession.php';
+        var login_pf = doPOST_Request_SessionUser(phpURL)
         var enteredAccNumber = document.getElementById('accountno').value;
         var borrower_pf_index = document.getElementById('pfnorcv').value;
-        var login_pf_index = pf;
         var slip_type = 'OUT';
         var reason = document.getElementById('reason').value;
-        var phno = '';
-        xmlhttp.open("GET", "getDocMgrdetails2.php?q=" + enteredAccNumber, true);
-
-
-        // update out slip flag
-        //alert("inside kar");
-        $.post('getDocMgrdetails2.php', { accNo: enteredAccNumber, type: 'OutUpdateDocStatus' }, function (msg) {
-            //  alert(msg);
-            if (msg == "true") {
-                // alert("Out status Updated Successfully");
+        var phpURL = '../db/UserInformations.php';
+        var phno = doPOST_Request_GetUserPhone(phpURL, borrower_pf_index, "GetUserPhone");
+        var phpURL1 = '../db/activityLog.php';
+        doPOST_Request_OutActivityLogInsert(phpURL1, enteredAccNumber, borrower_pf_index, login_pf, slip_type, reason, phno, "OutActivityLogInsert");
             }
-            else if (msg == "false") {
-                //    document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
-                //    document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
-            }
-        }).fail(function (msg) {
-            alert("fail : " + msg);
-        });
-    }
     function showdetails(str) {
         var enteredAccNumber = $('#accountno').val();
         if (enteredAccNumber == "") {
             nullAccountNumberEnterred();
             return;
         }
-        var phpURL = '../db/accountInformations.php';
+        var phpURL = '../getPfnoFromSession.php';
+        var login_pf = doPOST_Request_SessionUser(phpURL);
+        phpURL = '../db/accountInformations.php';
+/*
         $.post(phpURL, { accNo: enteredAccNumber, type: 'isValidAccount' }, function (msg) {
             if (msg == "true") {
                 validAccountNumberEnterred();
@@ -120,17 +57,25 @@
                 return;
             }
         }).fail(function (msg) {
-            alert("fail : " + msg);
+            alert("showdetails fail : " + msg);
         });
-
-        document.getElementById('accountname').value = doPOST_Request(phpURL, enteredAccNumber, "GetAccountNameOfAccount"); ;
+*/
+        var msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount");
+        if (msg == "true") {
+            validAccountNumberEnterred();
+        }
+        else if (msg == "false") {
+            invalidAccountNumberEnterred();
+            return;
+        }
+        document.getElementById('accountname').value = doPOST_Request(phpURL, enteredAccNumber, "GetAccountNameOfAccount");
         document.getElementById('brcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetBranchCodeOfAccount");
         document.getElementById('foliono').value = doPOST_Request(phpURL, enteredAccNumber, "GetFolioNumberOfAccount").replace(/["'\\]/g, "");
         document.getElementById('brname').value = doPOST_Request(phpURL, enteredAccNumber, "GetBranchNameOfAccount");
+         $('#genOutslipButton').prop('disabled', true);
     }
     function showUdetails() {
         var enteredPFNumber = $('#pfnorcv').val();
-        //alert(enteredPFNumber);
         if (enteredPFNumber == "") {
             nullPfNumberEnterred();
             return;
@@ -145,22 +90,20 @@
                 return;
             }
         }).fail(function (msg) {
-            alert("fail : " + msg);
+            alert("User information fail : " + msg);
         });
 
         document.getElementById('nameofReciver').value = doPOST_RequestUser(phpURL, enteredPFNumber, "GetUserName");
-        //alert(document.getElementById('nameofGiver').value);
+         $('#genOutslipButton').prop('disabled', true);
 
     }
     function showUserDetails() {
         var enteredPFNumber = document.getElementById('pfnorcv').value;
-        //alert(enteredAccNumber);
         var popup = window.open("../UserDetailsWindow.php?pfNo=" + enteredPFNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
         $(popup).blur(function () { this.close(); });
     }
     function showAccountDetails() {
         var enteredAccNumber = document.getElementById('accountno').value;
-        //alert(enteredAccNumber);
         var popup = window.open("../AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
         $(popup).blur(function () { this.close(); });
     }
@@ -178,6 +121,7 @@
         $('#nameofReciver').val("");
 
         document.getElementById('slip_upload_frame').src = "";
+        $('#genOutslipButton').prop('disabled', true);
     }
     function invalidAccountNumberEnterred() {
         document.getElementById('accountno').style.backgroundColor = "#FFC1C1";
@@ -218,12 +162,60 @@
             data: { accNo: pfNumber, type: typeCall },
             success: function (msg) {
                 if (msg != "") returnMsg = msg.replace(/["']/g, "");
-                else alert("not Found");
+                else alert("pf number not Found");
             },
             error: function (msg) { alert("fail : " + msg); },
             async: false
         });
         return returnMsg;
+    }
+    function doPOST_Request_isValidAdmsAccount(phpURL,enteredAccNumber,login_pf,typeCall ) { 
+    var returnMsg = '';
+        $.ajax({
+            type: 'POST',
+            url: phpURL,
+            data: { accNo: enteredAccNumber,login_pf_index:login_pf, type: typeCall },
+            success: function (msg) {
+                if (msg != "") { returnMsg = msg.replace(/["']/g, ""); }
+                else alert("pf number not Found");
+            },
+            error: function (msg) { alert("fail : " + msg); },
+            async: false
+        });
+        return returnMsg;
+
+    }
+    function doPOST_Request_SessionUser(phpURL) {
+        var returnMsg = '';
+        $.ajax({
+            type: 'POST',
+            url: phpURL,
+            success: function (msg) {
+                if (msg != "") { returnMsg = msg.replace(/["']/g, ""); }
+                else alert("session user not Found");
+            },
+            error: function (msg) { alert("fail : " + msg); },
+            async: false
+        });
+        return returnMsg;
+    }
+    function doPOST_Request_OutActivityLogInsert(phpURL1, enteredAccNumber, borrower_pf_index, login_pf, slip_type, reason, phno, typeCall) {
+        var returnMsg = '';
+        $.ajax({
+            type: 'POST',
+            url: phpURL1,
+            data: { accNo: enteredAccNumber, borrower: borrower_pf_index, doc_mgr: login_pf, entered_slip: slip_type, entered_reason: reason,
+                entered_phone: phno, type: typeCall
+            },
+            success: function (msg) {
+                if (msg != "") { returnMsg = msg.replace(/["']/g, ""); }
+                else alert("out slip Activity log insert failed");
+            },
+            error: function (msg) { alert("fail : " + msg); },
+            async: false
+        });
+        return returnMsg;
+
     }
     function doPOST_RequestUser(phpURL, enteredPFNumber, typeCall) {
         var returnMsg = '';
@@ -233,7 +225,22 @@
             data: { pfno: enteredPFNumber, type: typeCall },
             success: function (msg) {
                 if (msg != "") { returnMsg = msg.replace(/["']/g, ""); }
-                else alert("not Found");
+                else alert("user not found");
+            },
+            error: function (msg) { alert("fail : " + msg); },
+            async: false
+        });
+        return returnMsg;
+    }
+    function doPOST_Request_GetUserPhone(phpURL, borrower_pf_index, typeCall) {
+        var returnMsg = '';
+        $.ajax({
+            type: 'POST',
+            url: phpURL,
+            data: { pfno: borrower_pf_index, type: typeCall },
+            success: function (msg) {
+                if (msg != "") { returnMsg = msg.replace(/["']/g, ""); }
+                else alert("phone not found");
             },
             error: function (msg) { alert("fail : " + msg); },
             async: false
@@ -241,6 +248,8 @@
         return returnMsg;
 
     }
+    function ActivateGenButton() { $('#genOutslipButton').prop('disabled', false); }
+    function DeActivateGenButton() { $('#genOutslipButton').prop('disabled', true); }    
 </script>
 
 </head>
@@ -266,12 +275,8 @@
     </script>
 
 <div>
-   
-
-
-
- <br/>
-   <br/>
+<br/>
+<br/>
     <table border="0" style="width: 100%;height: 100%"><tr><td style="width: 50%">
 <form name="genOutSlip" id="genOutSlip" action="genOutSlip.php" class="pure-form pure-form-aligned" method="POST" target="slip_upload_frame">
     <div class="pure-control-group"> 
@@ -310,12 +315,12 @@
     </div>
     <div class="pure-control-group">
         <label for="reason" > Reason :</label>
-        <textarea rows="4" cols="23" name="reason" id="reason" disabled="disabled"> </textarea>  
+        <textarea rows="4" cols="23" name="reason" id="reason" onKeyDown="if (event.keyCode == 13) ActivateGenButton()"  disabled="disabled"> </textarea>  
      </div>      
     
 <div class="pure-controls">
 <input class="pure-button pure-button-primary" type="submit" 
-    value="Generate Out Slip" id="genInslip" onclick="outUpdateDocStatus()" disabled="disabled" />  
+    value="Generate Out Slip" id="genOutslipButton" onclick="$('#genOutSlip').submit();outUpdateDocStatus();outActivityLogUpdate()" disabled="disabled" />  
 <input class="pure-button pure-button-primary" type="button" value="Reset" id="reset" onclick="resetForm()"/>  
             </div>
 

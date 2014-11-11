@@ -95,7 +95,7 @@
 <br/>
 <div class="pure-controls">
 <input class="pure-button pure-button-primary" type="button" 
-    value="PRINT In SLIP" id="printInslip" onclick="this.style.visibility='hidden';printFunction()"  />  
+    value="PRINT IN SLIP" id="printInslip" onclick="this.style.visibility='hidden';printFunction()"  />  
 </center>
 </div> 
 
