@@ -36,4 +36,27 @@ function InsertLoanDocuments($accountNumber,$documentUploaded,$folioNumber,$rack
     else
         return FALSE;
 }
+
+function UpdateRackDetails($accountNumber,$rackNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"update adms_loan_account_mstr set  rack = '$rackNumber' where loan_acc_no = '$accountNumber'");
+    
+    if($query)
+        return TRUE;
+    else
+        return FALSE;
+}
+function UpdateFolioDetails($accountNumber,$folioNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"update adms_loan_account_mstr set folio_no = '$folioNumber' where loan_acc_no = '$accountNumber'");
+    
+    if($query)
+        return TRUE;
+    else
+        return FALSE;
+}
 ?>

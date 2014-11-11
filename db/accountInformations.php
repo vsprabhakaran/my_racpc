@@ -12,6 +12,11 @@ switch($request)
         isValidAccount($_POST['accNo']);
         break;
     }
+    case 'isLoanAccountInADMS':
+    {
+        isLoanAccountInADMS($_POST['accNo']);
+        break;
+    }
     case 'GetAccountNameOfAccount':
     {
         GetAccountNameOfAccount($_POST['accNo']);
@@ -81,6 +86,23 @@ function isValidAccount($accountNumber)
         echo json_encode(FALSE);
     }
 }
+
+function isLoanAccountInADMS($accountNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"select loan_acc_no from adms_loan_account_mstr where loan_acc_no = '$accountNumber'");
+    $row = mysqli_fetch_array($query);
+    if($row['loan_acc_no'] != "")
+    {
+        echo json_encode(TRUE);
+    }
+    else
+    {
+        echo json_encode(FALSE);
+    }
+}
+
 function GetAccountNameOfAccount($accountNumber)
 {
     $con = NULL;
