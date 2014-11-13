@@ -32,15 +32,9 @@
 
         }
         function validAccountNumberEnterred() {
-			document.getElementById("barcodeIFrame").setAttribute('src',"../barcodegit/test.php?text="+ document.getElementById("accNumber").value);
-			document.getElementById("barcodeIFrame").style.display="block";
             document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
             document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
         }
-		function showRackBarcode(){
-			document.getElementById("rackIFrame").setAttribute('src',"../barcodegit/test.php?text="+ document.getElementById("rack").value);
-			document.getElementById("rackIFrame").style.display="block";
-		}
         function invalidAccountNumberEnterred() {
             document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
             document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
@@ -79,19 +73,14 @@
             <input type="text" id="accNumber" name="accNumber" autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" />
             <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onclick="showAccountDetails()">View Details</a> 
 		</div>
-		<div>
-		<iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
-		<br>
-		</div>
 		<div class="pure-control-group">
 			<label for="rack">Rack Location</label>
-			<input type="text" id="rack" name="rack" autocomplete="off" onkeydown="if (event.keyCode == 13) showRackBarcode()" />
+			<input type="text" id="rack" name="rack" autocomplete="off" onkeydown="if (event.keyCode == 13) rackButtonClick()" />
+			<a id="getAccountDetailsFromRackSpan" href="#"  style="visibility: hidden" onclick="showRackDetails()">View Details</a> 
 		</div>
-		<div>
-		<iframe id="rackIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
-		<br>
-		</div>
-		<p style="padding-left:35px; color:#0f71ba">Enter the number and click on the generated image to print.</p>
+		<div class="pure-controls">
+		<button class="pure-button pure-button-primary" id="formButton" disabled="disabled">Print</button>
+	</div>
    </form>
 
 </div>

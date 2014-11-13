@@ -51,7 +51,7 @@ switch($request)
 //$accountNumber = mysqli_real_escape_string($con, $_GET['q']);
 function db_prelude(&$con)
 {
-    $con = new mysqli("localhost", "root", "", "racpc_automation");
+    $con = new mysqli("localhost", "root", "", "racpc_automation_db");
     if ($con->connect_errno) {
         die("Connection failed: " . $conn->connect_error);
     }
@@ -152,7 +152,7 @@ function OutUpdateDocStatus($accountNumber)
     db_prelude($con);  
     //var_dump("karthik");
     
-    $query=mysqli_query($con,"UPDATE loan_account_mstr set document_status='O' where loan_acc_no ='$accountNumber' ");
+    $query=mysqli_query($con,"UPDATE adms_loan_account_mstr set document_status='OUT' where loan_acc_no ='$accountNumber' ");
     $rowcount=mysqli_num_rows($query);
     var_dump($rowcount);
     if ($rowcount > 0)
@@ -173,7 +173,7 @@ function InUpdateDocStatus($accountNumber)
     db_prelude($con);  
     //var_dump("karthik");
     
-    $query=mysqli_query($con,"UPDATE loan_account_mstr set document_status='I' where loan_acc_no ='$accountNumber' ");
+    $query=mysqli_query($con,"UPDATE adms_loan_account_mstr set document_status='IN' where loan_acc_no ='$accountNumber' ");
     $rowcount=mysqli_num_rows($query);
     //var_dump($rowcount);
     if ($rowcount > 0)
