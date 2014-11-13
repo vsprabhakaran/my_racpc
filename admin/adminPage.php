@@ -26,11 +26,6 @@
                     contentIFrame.src = "closeLoan.php";
                     break;
                 }
-                case 'viewDocumentTab':
-                 {
-                    contentIFrame.src = "../viewDoc.php";
-                    break;
-                }
                 case 'manageUserTab':
                  {
                     contentIFrame.src = "manageUsers.php";
@@ -71,10 +66,9 @@
 <ul>
    <li id="uploadLoanTab" class='active' style="width: 15%"><a href='#' onclick="displayPanel('uploadLoanTab')"><span>Documents</span></a></li>
    <li id="closeLoanTab"><a href='#' onclick="displayPanel('closeLoanTab')"><span>Close Loan</span></a></li>
-   <li id="viewDocumentTab" style="width: 14%"><a href='#'  onclick="displayPanel('viewDocumentTab')"><span>View Document</span></a></li>
    <li id="manageUserTab" ><a href='#' onclick="displayPanel('manageUserTab')"><span>Manage User</span></a></li>
    <li id="printStickerTab" ><a href='#' onclick="displayPanel('printStickerTab')"><span>Print Sticker</span></a></li>
-   <li style="width: 15%; text-align:right; visibility: hidden;">&nbsp;</li>
+   <li style="width: 33%; text-align:right; visibility: hidden;">&nbsp;</li>
    <li style="text-align:center;"><a href='../logout.php' ><span>Logout</span></a></li>
 </ul>
 </div>

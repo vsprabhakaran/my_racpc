@@ -24,8 +24,8 @@
             NewDocument: 0,
             OldDocNoChange: 1,
             OldDocRackChange: 2,
-            OldDocFolioChange: 3,
-            OldDocDocumentChange: 4
+            OldDocFolioChange: 4,
+            OldDocDocumentChange: 8
         };
         function accountNumButtonClick() {
 
@@ -157,17 +157,28 @@
             if (whichAction == -1) alert("cannot modify FolioNumber");
             if (whichAction == ACTION_TYPE.OldDocNoChange) {
                 $("#folio_no").prop('disabled', false);
-                $('.editAnchor').css({ "visibility": "hidden" });
-                whichAction = ACTION_TYPE.OldDocFolioChange; $('#actionTypeField').val("OldDocFolioChange");
+                whichAction = ACTION_TYPE.OldDocFolioChange;
+                $('#actionTypeField').val("OldDocFolioChange");
             }
+            else if ((whichAction & ACTION_TYPE.OldDocRackChange) ) {
+                $("#folio_no").prop('disabled', false);
+                whichAction |= ACTION_TYPE.OldDocFolioChange; $('#actionTypeField').val("OldDocRackChange,OldDocFolioChange");
+            }
+            else alert("invalid action!!!");
         }
         function RacKEditClick() {
             if (whichAction == -1) alert("cannot modify RackNumber");
             if (whichAction == ACTION_TYPE.OldDocNoChange) {
                 $("#rack_no").prop('disabled', false);
-                $('.editAnchor').css({ "visibility": "hidden" });
-                whichAction = ACTION_TYPE.OldDocRackChange; $('#actionTypeField').val("OldDocRackChange");
+                whichAction = ACTION_TYPE.OldDocRackChange;
+                $('#actionTypeField').val("OldDocRackChange");
+                //$('.editAnchor').css({ "visibility": "hidden" });
             }
+            else if ((whichAction & ACTION_TYPE.OldDocFolioChange) ) {
+                $("#rack_no").prop('disabled', false);
+                whichAction |= ACTION_TYPE.OldDocRackChange; $('#actionTypeField').val("OldDocRackChange,OldDocFolioChange");
+            }
+            else alert("invalid action!!!");
         }
     </script>
 </head>
@@ -196,6 +207,11 @@
                 {
                     if (!$('#file').val()) isFormValid = false;
                     alertMsg = "Please choose the document to upload."
+                }
+                else if((whichAction & ACTION_TYPE.OldDocFolioChange)&&(whichAction & ACTION_TYPE.OldDocRackChange))
+                {
+                    if ((!$('#folio_no').val()) || (!$('#rack_no').val())) isFormValid = false;
+                    alertMsg = "Please enter new folio and rack number."
                 }
                 else if(whichAction == ACTION_TYPE.OldDocFolioChange)
                 {

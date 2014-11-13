@@ -59,4 +59,15 @@ function UpdateFolioDetails($accountNumber,$folioNumber)
     else
         return FALSE;
 }
+function UpdateDocumentUploadDetails($accountNumber,$folioNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"update adms_loan_account_mstr set document_status='IN' , no_of_files='1' where loan_acc_no = '$accountNumber'");
+    
+    if($query)
+        return TRUE;
+    else
+        return FALSE;
+}
 ?>

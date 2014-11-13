@@ -86,6 +86,33 @@
     <?php
             }
         }
+        else if(strcmp($actionType,"OldDocRackChange,OldDocFolioChange") == 0)
+        {
+            $rackNum = $_POST['rack_no'];
+            $isRackUpdateSuccess = UpdateRackDetails($accountNo,$rackNum);
+            $folioNum = $_POST['folio_no'];
+            $isFolioUpdateSuccess = UpdateFolioDetails($accountNo,$folioNum);
+            if($isRackUpdateSuccess && $isFolioUpdateSuccess)
+            {
+                ?>
+     <div class="pure-controls">
+        <p>Folio & Rack update successful.</p>
+		<button class="button-success pure-button" id="backButton1" name="backButton1" onclick="goBack()">Back</button>
+	</div>
+                <?php
+            }
+            if(!$isRackUpdateSuccess || !$isFolioUpdateSuccess)
+            {
+                ?>
+    <div class="pure-controls">
+        <p>Some problem with Updation!!!.</p>
+		<button class="button-error pure-button" id="backButton2" name="backButton2" onclick="goBack()">Back</button>
+	</div>
+                <?php
+                      
+            }
+            
+        }
         else if(strcmp($actionType,"OldDocRackChange") == 0)
         {
             $rackNum = $_POST['rack_no'];
@@ -134,11 +161,42 @@
     
         }
         }
+        else if(strcmp($actionType,"OldDocDocumentChange") == 0)
+        {
+            $target_dir = "../uploads/";
+            $target_dir = $target_dir . basename( $_FILES['file']['name']);
+            $uploadOk=1;
         
-                
-            
-        
-
+            $isDocUpdateSuccess = TRUE;
+            //Uploading the file
+            if ($isDocUpdateSuccess && !(move_uploaded_file($_FILES['file']['tmp_name'], $target_dir))) {
+                $isDocUpdateSuccess = FALSE;
+            }
+            //Updating the DB
+            if($isDocUpdateSuccess)
+                    $isDocUpdateSuccess = UpdateDocumentUploadDetails($accountNo,TRUE,$folioNum,$rackNum);
+            //DB update failed so deleting the document
+            if(!$isDocUpdateSuccess)
+                unlink($target_dir);
+            if($isDocUpdateSuccess)
+            {
+                ?>
+     <div class="pure-controls">
+        <p>Document upload successful.</p>
+		<button class="button-success pure-button" id="backButton1" name="backButton1" onclick="goBack()">Back</button>
+	</div>
+                <?php
+            }
+            else
+            {
+                ?>
+    <div class="pure-controls">
+        <p>Document Upload failed!!!.</p>
+		<button class="button-error pure-button" id="backButton2" name="backButton2" onclick="goBack()">Back</button>
+	</div>
+                <?php
+            }
+        }
     ?>
 </body>
 </html>
