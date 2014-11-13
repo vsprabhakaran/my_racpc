@@ -81,7 +81,6 @@ function isValidUser($pfNumber)
     {
         echo json_encode(FALSE);
     }
-     mysqli_close($con);
 }
 
 function isValidADMSUser($pfNumber)
@@ -98,7 +97,6 @@ function isValidADMSUser($pfNumber)
     {
         echo json_encode(FALSE);
     }
-    mysqli_close($con);
 }
 function GetUserName($pfNumber)
 {
@@ -115,7 +113,6 @@ function GetUserName($pfNumber)
     {
         echo json_encode(FALSE);
     }
-     mysqli_close($con);
 }
 function GetADMSUserRole($pfNumber)
 {
@@ -133,7 +130,6 @@ function GetADMSUserRole($pfNumber)
         echo json_encode(FALSE);
         //(FALSE);
     }
-     mysqli_close($con);
 }
 
 function GetUserRole($pfNumber)
@@ -152,7 +148,6 @@ function GetUserRole($pfNumber)
         echo json_encode(FALSE);
         //(FALSE);
     }
-     mysqli_close($con);
 }
 
 
@@ -171,7 +166,6 @@ function GetUserBranchCode($pfNumber)
     {
         echo json_encode(FALSE);
     }
-     mysqli_close($con);
 }
 function GetUserBranchName($pfNumber)
 {
@@ -188,7 +182,6 @@ function GetUserBranchName($pfNumber)
     {
         echo json_encode(FALSE);
     }
-     mysqli_close($con);
 }
 
 function GetUserPhone($pfNumber)
@@ -206,7 +199,6 @@ function GetUserPhone($pfNumber)
     {
         echo json_encode(FALSE);
     }
-     mysqli_close($con);
 }
 function GetUserEmail($pfNumber)
 {
@@ -223,7 +215,6 @@ function GetUserEmail($pfNumber)
     {
         echo json_encode(FALSE);
     }
-     mysqli_close($con);
 }
 /*function getAccountDetails($pfNumber)
 {

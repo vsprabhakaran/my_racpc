@@ -26,6 +26,11 @@
                     contentIFrame.src = "closeLoan.php";
                     break;
                 }
+                case 'viewDocumentTab':
+                 {
+                    contentIFrame.src = "../viewDoc.php";
+                    break;
+                }
                 case 'manageUserTab':
                  {
                     contentIFrame.src = "manageUsers.php";
@@ -64,19 +69,20 @@
 </tr>
 <tr><td colspan="3"><div id='cssmenu'>
 <ul>
-   <li id="uploadLoanTab" class='active' style="width: 15%"><a href='#' onclick="displayPanel('uploadLoanTab')"><span>Documents</span></a></li>
+   <li id="uploadLoanTab" class='active' style="width: 15%"><a href='#' onclick="displayPanel('uploadLoanTab')"><span>Upload Document</span></a></li>
    <li id="closeLoanTab"><a href='#' onclick="displayPanel('closeLoanTab')"><span>Close Loan</span></a></li>
+   <li id="viewDocumentTab" style="width: 14%"><a href='#'  onclick="displayPanel('viewDocumentTab')"><span>View Document</span></a></li>
    <li id="manageUserTab" ><a href='#' onclick="displayPanel('manageUserTab')"><span>Manage User</span></a></li>
    <li id="printStickerTab" ><a href='#' onclick="displayPanel('printStickerTab')"><span>Print Sticker</span></a></li>
-   <li style="width: 33%; text-align:right; visibility: hidden;">&nbsp;</li>
+   <li style="width: 15%; text-align:right; visibility: hidden;">&nbsp;</li>
    <li style="text-align:center;"><a href='../logout.php' ><span>Logout</span></a></li>
 </ul>
 </div>
 </td></tr>
 <tr >
 <td style="width: 10%"><br/></td>
-<td> <iframe id="contentFrame" frameBorder="0" scrolling="no" src="uploadDocument.php" style="width: 100%;height: 550px;" marginheight="0" marginwidth="0" frameborder="0"></iframe> </td>
-<td ><br/></td>
+<td> <iframe id="contentFrame" frameBorder="0" scrolling="no" src="uploadDocument.php" style="width: 100%;height: 500px;" marginheight="0" marginwidth="0" frameborder="0"></iframe> </td>
+<td style="width: 10%" ><br/></td>
 </tr>
 <tr><td colspan="3"><br/></td></tr>
 </table>

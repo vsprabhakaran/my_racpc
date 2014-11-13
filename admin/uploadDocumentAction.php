@@ -38,22 +38,25 @@
         </script>
     </head>
 <body>
-    <br/><br/>
 <?php
     if(!isset($_SESSION)) session_start();
     require("../db/loanQueries.php");
     //include("../db/loanQueries.php");
-    $actionType = $_POST['actionTypeField'];
     $accountNo = $_POST['accNumber'];
-    if(strcmp($actionType,"NewDocument") == 0)
-    {
     $folioNum = $_POST['folio_no'];
     $rackNum = $_POST['rack_no'];
+	$branchCode=getBranchCode($accountNo);
     $isDocUpdateSuccess = TRUE;
     if($accountNo == "" || $folioNum == "" || $rackNum =="" || $_FILES['file']['name'] =="")
-        $isDocUpdateSuccess = FALSE;
-    $target_dir = "../uploads/";
-    $target_dir = $target_dir . basename( $_FILES['file']['name']);
+    {
+		$isDocUpdateSuccess = FALSE;
+	}
+    $target_dir = "D:/uploads/";
+	if(! is_dir("D:/uploads/$branchCode"))
+	{
+		mkdir("D:/uploads/$branchCode",0777);
+	}
+    $target_dir = $target_dir.$branchCode.'/'.basename( $_FILES['file']['name']);
     $uploadOk=1;
     
     //Uploading the file
@@ -66,136 +69,29 @@
     //DB update failed so deleting the document
     if(!$isDocUpdateSuccess)
         unlink($target_dir);
-        if($isDocUpdateSuccess)
-            {
-    ?>
-    <div class="pure-controls">
-        <p>New Document update successful.</p>
-		<button class="button-success pure-button" id="backButton1" name="backButton1" onclick="goBack()">Back</button>
-	</div>
         
-    <?php
-            }
-            else
-            {
 ?>
-    <div class="pure-controls">
-        <p>Document Upload failed!!!.</p>
-		<button class="button-error pure-button" id="backButton2" name="backButton2" onclick="goBack()">Back</button>
-	</div>
+    <br/><br/>
     <?php
-            }
-        }
-        else if(strcmp($actionType,"OldDocRackChange,OldDocFolioChange") == 0)
-        {
-            $rackNum = $_POST['rack_no'];
-            $isRackUpdateSuccess = UpdateRackDetails($accountNo,$rackNum);
-            $folioNum = $_POST['folio_no'];
-            $isFolioUpdateSuccess = UpdateFolioDetails($accountNo,$folioNum);
-            if($isRackUpdateSuccess && $isFolioUpdateSuccess)
-            {
-                ?>
-     <div class="pure-controls">
-        <p>Folio & Rack update successful.</p>
-		<button class="button-success pure-button" id="backButton1" name="backButton1" onclick="goBack()">Back</button>
-	</div>
-                <?php
-            }
-            if(!$isRackUpdateSuccess || !$isFolioUpdateSuccess)
-            {
-                ?>
-    <div class="pure-controls">
-        <p>Some problem with Updation!!!.</p>
-		<button class="button-error pure-button" id="backButton2" name="backButton2" onclick="goBack()">Back</button>
-	</div>
-                <?php
-                      
-            }
-            
-        }
-        else if(strcmp($actionType,"OldDocRackChange") == 0)
-        {
-            $rackNum = $_POST['rack_no'];
-            $isRackUpdateSuccess = UpdateRackDetails($accountNo,$rackNum);
-            if($isRackUpdateSuccess)
+        if($isDocUpdateSuccess)
         {
     ?>
     <div class="pure-controls">
-        <p>Rack update successful.</p>
+        <p>Update Document successful.</p>
 		<button class="button-success pure-button" id="backButton1" name="backButton1" onclick="goBack()">Back</button>
 	</div>
-                <?php
-            }
-            else
-            {
-                ?>
-    <div class="pure-controls">
-        <p>Rack Update failed!!!.</p>
-		<button class="button-error pure-button" id="backButton2" name="backButton2" onclick="goBack()">Back</button>
-	</div>
-                <?php
     
-            }
-        }
-        else if(strcmp($actionType,"OldDocFolioChange") == 0)
-        {
-            $folioNum = $_POST['folio_no'];
-            $isFolioUpdateSuccess = UpdateFolioDetails($accountNo,$folioNum);
-            if($isFolioUpdateSuccess)
-            {
-                ?>
-     <div class="pure-controls">
-        <p>Folio update successful.</p>
-		<button class="button-success pure-button" id="backButton1" name="backButton1" onclick="goBack()">Back</button>
-	</div>
     <?php
         }
         else
         {
     ?>
     <div class="pure-controls">
-        <p>Folio Update failed!!!.</p>
-		<button class="button-error pure-button" id="backButton2" name="backButton2" onclick="goBack()">Back</button>
-	</div>
-                <?php
-    
-        }
-        }
-        else if(strcmp($actionType,"OldDocDocumentChange") == 0)
-        {
-            $target_dir = "../uploads/";
-            $target_dir = $target_dir . basename( $_FILES['file']['name']);
-            $uploadOk=1;
-        
-            $isDocUpdateSuccess = TRUE;
-            //Uploading the file
-            if ($isDocUpdateSuccess && !(move_uploaded_file($_FILES['file']['tmp_name'], $target_dir))) {
-                $isDocUpdateSuccess = FALSE;
-            }
-            //Updating the DB
-            if($isDocUpdateSuccess)
-                    $isDocUpdateSuccess = UpdateDocumentUploadDetails($accountNo,TRUE,$folioNum,$rackNum);
-            //DB update failed so deleting the document
-            if(!$isDocUpdateSuccess)
-                unlink($target_dir);
-            if($isDocUpdateSuccess)
-            {
-                ?>
-     <div class="pure-controls">
-        <p>Document upload successful.</p>
-		<button class="button-success pure-button" id="backButton1" name="backButton1" onclick="goBack()">Back</button>
-	</div>
-                <?php
-            }
-            else
-            {
-                ?>
-    <div class="pure-controls">
         <p>Document Upload failed!!!.</p>
 		<button class="button-error pure-button" id="backButton2" name="backButton2" onclick="goBack()">Back</button>
 	</div>
-                <?php
-            }
+    
+    <?php
         }
     ?>
 </body>
