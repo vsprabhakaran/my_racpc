@@ -70,4 +70,13 @@ function UpdateDocumentUploadDetails($accountNumber,$folioNumber)
     else
         return FALSE;
 }
+function getBranchCode($accNo)
+{
+	$con = NULL;
+    db_prelude($con);
+	$colname = "branch_code"; 
+    $query=mysqli_query($con,"SELECT branch_code AS '$colname' FROM loan_account_mstr WHERE loan_acc_no = '$accNo'");
+    $row=mysqli_fetch_array($query);
+	return ($row[0]);
+}
 ?>

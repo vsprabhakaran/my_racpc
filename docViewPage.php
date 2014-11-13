@@ -44,7 +44,7 @@
 <td style="width: 10%"><br/></td>
 <td><br/>
 <div>
-<iframe scrolling="no" frameBorder="0" src="pdf_viewer/index.php" style="width: 100%;height: 500px;"></iframe>
+<iframe scrolling="no" frameBorder="0" src="viewDoc.php" style="width: 100%;height: 500px;"></iframe>
 </div>
 </td>
 <td style="width: 10%"><br/></td>

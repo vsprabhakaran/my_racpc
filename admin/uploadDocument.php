@@ -43,11 +43,13 @@
         }
         function validAccountNumberEnterred(enteredAccNumber) {
             //Resetting some elements before actions
+			document.getElementById("barcodeIFrame").setAttribute('src',"../barcodegit/test.php?text="+ document.getElementById("accNumber").value);
+			document.getElementById("barcodeIFrame").style.display="block";
             resetForm();
             document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
             document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
             $('#formButton').prop('disabled', false);
-
+			//$("#accBarcode").barcode(enteredAccNumber, "code128",{barWidth:2, barHeight:30});
             populateFields(enteredAccNumber);
 
 
@@ -89,11 +91,11 @@
             if (result == "true") return true;
             else false;
         }
-		function showRackBarcode(){
+		/* function showRackBarcode(){
 			var rack= $("#rack_no").val();
 			alert(rack);
 			$("#rackBarcode").barcode(rack, "code128",{barWidth:2, barHeight:30});
-		}
+		} */
         function isLoanInADMS(accountNumber) {
             var result = doPOST_Request(dbURL, accountNumber, 'isLoanAccountInADMS');
             if (result == "true") return true;
@@ -150,8 +152,20 @@
             return returnMsg;
         }
         function showDocument() {
-            document.getElementById("pdfFile").setAttribute('src', "..\\uploads\\" + document.getElementById("accNumber").value + ".pdf");
-            document.getElementById("pdfFile").style.visibility = "visible";
+            //document.getElementById("pdfFile").setAttribute('src', "..\\uploads\\" + document.getElementById("accNumber").value + ".pdf");
+            var enteredAccNumber = document.getElementById('accNumber').value;
+				$.post('../db/accountInformations.php', { accNo: enteredAccNumber, type: 'GetBranchCodeOfAccount' }, function (msg) {
+                if (msg != "") {
+                    var branchCode=msg.replace(/["']/g, "");
+					document.getElementById("pdfFile").setAttribute('src',"../docBuffer.php?accNo="+enteredAccNumber);
+                document.getElementById("pdfFile").style.visibility = "visible";
+                }
+                else if (msg == "false") {
+                    alert("Branch code not found");
+                }
+            }).fail(function (msg) {
+                alert("fail : " + msg);
+            });
         }
         function FolioEditClick() {
             if (whichAction == -1) alert("cannot modify FolioNumber");
@@ -180,108 +194,144 @@
             }
             else alert("invalid action!!!");
         }
+		function showRackBarcode(){
+			document.getElementById("rackIFrame").setAttribute('src',"../barcodegit/test.php?text="+ document.getElementById("rack_no").value);
+			document.getElementById("rackIFrame").style.display="block";
+		}
+		/* function print(){
+			var acc= $("#accNumber").val();
+			alert(acc);
+			$.post('../barcodegit/barcode.php', { accNo: acc }, function (msg) {
+                if (msg == "false") {
+                    alert("Barcode Generation Failed");
+                }
+            }).fail(function (msg) {
+                alert("fail : " + msg);
+            });
+
+		} */
     </script>
 </head>
 <body>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.editAnchor').css({ "visibility":"hidden" });
-
-            $('#formid').bind("keyup keypress", function(e) {
-              var code = e.keyCode || e.which; 
-              if (code  == 13) {               
-                e.preventDefault();
-                return false;
+   <script type="text/javascript">
+      $(document).ready(function () {
+          $('.editAnchor').css({ "visibility":"hidden" });
+      
+          $('#formid').bind("keyup keypress", function(e) {
+            var code = e.keyCode || e.which; 
+            if (code  == 13) {               
+              e.preventDefault();
+              return false;
+            }
+          });
+          $('#formid').bind('submit', function () {
+              var isFormValid = true;
+              var alertMsg = "Please fill all the details to proceed."
+              if (whichAction == ACTION_TYPE.NewDocument) {
+              if (!$('#file').val())  isFormValid = false; 
+              else if (!$('#folio_no').val()) isFormValid = false;
+              else if (!$('#rack_no').val()) isFormValid = false;
+      
               }
-            });
-            $('#formid').bind('submit', function () {
-                var isFormValid = true;
-                var alertMsg = "Please fill all the details to proceed."
-                if (whichAction == ACTION_TYPE.NewDocument) {
-                if (!$('#file').val())  isFormValid = false; 
-                else if (!$('#folio_no').val()) isFormValid = false;
-                else if (!$('#rack_no').val()) isFormValid = false;
-
-                }
-                else if(whichAction == ACTION_TYPE.OldDocDocumentChange)
-                {
-                    if (!$('#file').val()) isFormValid = false;
-                    alertMsg = "Please choose the document to upload."
-                }
-                else if((whichAction & ACTION_TYPE.OldDocFolioChange)&&(whichAction & ACTION_TYPE.OldDocRackChange))
-                {
-                    if ((!$('#folio_no').val()) || (!$('#rack_no').val())) isFormValid = false;
-                    alertMsg = "Please enter new folio and rack number."
-                }
-                else if(whichAction == ACTION_TYPE.OldDocFolioChange)
-                {
-                    if (!$('#folio_no').val()) isFormValid = false;
-                    alertMsg = "Please enter new folio number."
-                }
-                else if(whichAction == ACTION_TYPE.OldDocRackChange)
-                {
-                    if (!$('#rack_no').val()) isFormValid = false;
-                    alertMsg = "Please enter new Rack number."
-                }
-                else if(whichAction == ACTION_TYPE.OldDocNoChange)
-                {
-                    isFormValid = false;
-                    alertMsg = "Nothing to do."
-                }
-                if (!isFormValid) {
-                    alert(alertMsg);
-                return isFormValid;
-                }
-            });
-        });
-    </script>
-	<br/><br/>
-    <table style="width: 100%" border="0">
-        <tr>
-            <td style="height:15em;width:50%;">
-                <div style="height:10em">
-   <form id="formid" class="pure-form pure-form-aligned" action="uploadDocumentAction.php" method="post" enctype="multipart/form-data">
-   <div class="pure-control-group">
-            <label for="accNumber" >Account Number</label>
-            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" />
-            <!--<span><button name="accButton" onclick="accountNumButtonClick()">Go</button></span> -->
-            <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onclick="showAccountDetails()">View Details</a> 
-			
-			<div id="accBarcode"></div>
-    </div>
-                    <div class="pure-control-group" id="newDocDiv" style="display: none">
-		<label for="file">Choose file</label>
-		                <input id="file" type="file" name="file"/>
-	</div>
-                    <div class="pure-control-group" id="viewDocDiv" style="display:none">
-		                <label for="fileURL">Document </label>
-		                <a id="viewDocumentURL" href="#"   onclick="showDocument()">View Document</a> 
-	                </div>
-	<div class="pure-control-group">
-		                <label for="folio_no">Folio No</label>
-		                <input id="folio_no" type="text" name="folio_no" disabled="disabled" autocomplete="off" style="color: #000"/>
-                        <a class="editAnchor" href="#" onclick="FolioEditClick()"><img class="editImg" src="../img/write.png"  alt="edit"/></a>
-	</div>
-	<div class="pure-control-group">
-		<label for="rack_no">Rack Location</label>
-                        <input id="rack_no" type="text" name="rack_no" disabled="disabled" autocomplete="off" onkeydown="if (event.keyCode == 13) showRackBarcode()" style="color: #000"/>
-                        <a class="editAnchor" href="#" onclick="RacKEditClick()"><img class="editImg" src="../img/write.png" title="this will be displayed as a tooltip" alt="edit"/></a>
-		<div id="rackBarcode"></div>
-	</div>
-	<div class="pure-controls">
-		<button class="pure-button pure-button-primary" id="formButton" disabled="disabled">Submit</button>
-	</div>
-                       <input type="hidden" name="actionTypeField" id="actionTypeField" value="null"/>
-	</form>
-                </div>
-            </td>
-            <td style="height:100%;width:50%;" rowspan="2">
-                <iframe  id="pdfFile"  style="visibility: hidden;height:30em;width:100%;"> </iframe>
-            </td>
-        </tr>
-        <tr><td style="height:10em;width:50%;">&nbsp;</td></tr>
-    </table>
-    
-
+              else if(whichAction == ACTION_TYPE.OldDocDocumentChange)
+              {
+                  if (!$('#file').val()) isFormValid = false;
+                  alertMsg = "Please choose the document to upload."
+              }
+              else if((whichAction & ACTION_TYPE.OldDocFolioChange)&&(whichAction & ACTION_TYPE.OldDocRackChange))
+              {
+                  if ((!$('#folio_no').val()) || (!$('#rack_no').val())) isFormValid = false;
+                  alertMsg = "Please enter new folio and rack number."
+              }
+              else if(whichAction == ACTION_TYPE.OldDocFolioChange)
+              {
+                  if (!$('#folio_no').val()) isFormValid = false;
+                  alertMsg = "Please enter new folio number."
+              }
+              else if(whichAction == ACTION_TYPE.OldDocRackChange)
+              {
+                  if (!$('#rack_no').val()) isFormValid = false;
+                  alertMsg = "Please enter new Rack number."
+              }
+              else if(whichAction == ACTION_TYPE.OldDocNoChange)
+              {
+                  isFormValid = false;
+                  alertMsg = "Nothing to do."
+              }
+              if (!isFormValid) {
+                  alert(alertMsg);
+              return isFormValid;
+              }
+          });
+      });
+      function validateFile(){
+      var enteredAccNumber = document.getElementById('accNumber').value;
+      var filePath = document.getElementById('file').value;
+      var fileName = filePath.replace(/^.*[\\\/]/, '');
+      var enteredAccNumber=enteredAccNumber+".pdf";
+      if(enteredAccNumber!=fileName)
+      {
+      alert("File name and Loan Number mismatch. Upload correct document.");
+      document.getElementById('file').value='';
+      }
+      }
+      
+   </script>
+   <br/><br/>
+   <table style="width: 100%" border="0">
+      <tr>
+         <td style="height:15em;width:50%;">
+            <div style="height:10em">
+               <form id="formid" class="pure-form pure-form-aligned" action="uploadDocumentAction.php" method="post" enctype="multipart/form-data">
+                  <div class="pure-control-group">
+                     <label for="accNumber" >Account Number</label>
+                     <input type="text" id="accNumber" name="accNumber" autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" />
+                     <!--<span><button name="accButton" onclick="accountNumButtonClick()">Go</button></span> -->
+                     <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onclick="showAccountDetails()">View Details</a> 
+                  </div>
+                  <!--div  barcode gen JS method>
+                     <a id="printBarcode" href="#" onclick="print()" ><div id="accBarcode"></div></a>
+                     </div-->
+                  <div>
+                     <iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
+                     <br/>
+                  </div>
+                  <div class="pure-control-group" id="newDocDiv" style="display: none">
+                     <label for="file">Choose file</label>
+            <input id="file" type="file" name="file" disabled="disabled" onchange="validateFile()" />
+                  </div>
+                  <div class="pure-control-group" id="viewDocDiv" style="display:none">
+                     <label for="fileURL">Document </label>
+                     <a id="viewDocumentURL" href="#"   onclick="showDocument()">View Document</a> 
+                  </div>
+                  <div class="pure-control-group">
+                     <label for="folio_no">Folio No</label>
+                     <input id="folio_no" type="text" name="folio_no" disabled="disabled" autocomplete="off" style="color: #000"/>
+                     <a class="editAnchor" href="#" onclick="FolioEditClick()"><img class="editImg" src="../img/write.png"  alt="edit"/></a>
+                  </div>
+                  <div class="pure-control-group">
+                     <label for="rack_no">Rack Location</label>
+                     <input id="rack_no" type="text" name="rack_no" disabled="disabled" autocomplete="off" onkeydown="if (event.keyCode == 13) showRackBarcode()" style="color: #000"/>
+                     <a class="editAnchor" href="#" onclick="RacKEditClick()"><img class="editImg" src="../img/write.png" alt="edit"/></a>
+         </div>
+         <div>
+            <iframe id="rackIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
+            <br>
+                  </div>
+                  <div class="pure-controls">
+                     <button class="pure-button pure-button-primary" id="formButton" disabled="disabled">Submit</button>
+                  </div>
+                  <input type="hidden" name="actionTypeField" id="actionTypeField" value="null"/>
+               </form>
+            </div>
+         </td>
+         <td style="height:100%;width:50%;" rowspan="2">
+            <iframe  id="pdfFile"  style="visibility: hidden;height:30em;width:100%;"> </iframe>
+         </td>
+      </tr>
+      <tr>
+         <td style="height:10em;width:50%;">&nbsp;</td>
+      </tr>
+   </table>
 </body>
 </html>

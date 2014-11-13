@@ -13,10 +13,19 @@
 	<script type="text/javascript" src="/my_racpc/jquery-latest.min.js"></script>
     <script type="text/javascript">
             function getPDF() {
-			
-                document.getElementById("pdfFile").setAttribute('src',"uploads\\"+ document.getElementById("accNumber").value + ".pdf");
+				var enteredAccNumber = document.getElementById('accNumber').value;
+				$.post('db/accountInformations.php', { accNo: enteredAccNumber, type: 'GetBranchCodeOfAccount' }, function (msg) {
+                if (msg != "") {
+                    var branchCode=msg.replace(/["']/g, "");
+					document.getElementById("pdfFile").setAttribute('src',"docBuffer.php?accNo="+enteredAccNumber);
                 document.getElementById("pdfFile").style.visibility = "visible";
-				
+                }
+                else if (msg == "false") {
+                    alert("Branch code not found");
+                }
+            }).fail(function (msg) {
+                alert("fail : " + msg);
+            });
             }
 			
 			function accountNumButtonClick() {

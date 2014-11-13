@@ -49,11 +49,18 @@
     {
     $folioNum = $_POST['folio_no'];
     $rackNum = $_POST['rack_no'];
+	$branchCode=getBranchCode($accountNo);
     $isDocUpdateSuccess = TRUE;
     if($accountNo == "" || $folioNum == "" || $rackNum =="" || $_FILES['file']['name'] =="")
+    {
         $isDocUpdateSuccess = FALSE;
-    $target_dir = "../uploads/";
-    $target_dir = $target_dir . basename( $_FILES['file']['name']);
+	}
+    $target_dir = "D:/uploads/";
+	if(! is_dir("D:/uploads/$branchCode"))
+	{
+		mkdir("D:/uploads/$branchCode",0777);
+	}
+    $target_dir = $target_dir.$branchCode.'/'.basename( $_FILES['file']['name']);
     $uploadOk=1;
     
     //Uploading the file
@@ -163,8 +170,12 @@
         }
         else if(strcmp($actionType,"OldDocDocumentChange") == 0)
         {
-            $target_dir = "../uploads/";
-            $target_dir = $target_dir . basename( $_FILES['file']['name']);
+            $target_dir = "D:/uploads/";
+			if(! is_dir("D:/uploads/$branchCode"))
+			{
+				mkdir("D:/uploads/$branchCode",0777);
+			}
+			$target_dir = $target_dir.$branchCode.'/'.basename( $_FILES['file']['name']);
             $uploadOk=1;
         
             $isDocUpdateSuccess = TRUE;
