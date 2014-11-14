@@ -28,7 +28,7 @@ if($password != "" && $row['adms_password']==$passwordHash && $role !="" )
         case "RACPC_UCO":
         {
             $_SESSION["role"] = "RACPC_UCO";
-            ?><meta http-equiv="refresh" content="0;URL=ucoPage.php"><?php
+            ?><meta http-equiv="refresh" content="0;URL=uco/ucoPage.php"><?php
             break;
         }
         case "RACPC_VIEW":
