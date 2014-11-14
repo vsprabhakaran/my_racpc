@@ -70,7 +70,7 @@
     function InActivityLogUpdate() {
         //ActivateGenButton();
         var phpURL = '../getPfnoFromSession.php';
-        var login_pf = doPOST_Request_SessionUser(phpURL);
+        var login_pf = doPOST_Request_SessionUser(phpURL,'getPfno');
         var enteredAccNumber = document.getElementById('accountno').value;
         var borrower_pf_index = document.getElementById('pfnogiver').value;
         var slip_type = 'IN';
@@ -90,7 +90,7 @@
             return;
         }
         var phpURL = '../getPfnoFromSession.php';
-        var login_pf = doPOST_Request_SessionUser(phpURL);
+        var login_pf = doPOST_Request_SessionUser(phpURL,'getPfno');
         phpURL = '../db/accountInformations.php';
         var msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount");
         if (msg == "true") {
@@ -244,11 +244,12 @@
         return returnMsg;
     
     }
-    function doPOST_Request_SessionUser(phpURL) {
+    function doPOST_Request_SessionUser(phpURL, typeCall) {
         var returnMsg = '';
         $.ajax({
             type: 'POST',
             url: phpURL,
+            data: {type: typeCall},
             success: function (msg) {
                 if (msg != "") { returnMsg = msg.replace(/["']/g, ""); }
                 else alert("session user not Found");
@@ -274,9 +275,11 @@
         return returnMsg;
     }
     function ActivateGenButton() { 
-	$('#genInslipButton').prop('disabled', false); }
+        $('#genInslipButton').prop('disabled', false);
+    }
     function DeActivateGenButton() {
-	$('#genInslipButton').prop('disabled', true); }
+        $('#genInslipButton').prop('disabled', true);
+    }
     function doPOST_Request_InActivityLogInsert(phpURL1, enteredAccNumber, borrower_pf_index, login_pf, slip_type, reason, phno, typeCall) {
         var returnMsg = '';
         $.ajax({
@@ -312,8 +315,7 @@
 	function InputCheck(){
 	var accountno = document.getElementById('accountno').value;
 	var pfnogiver = document.getElementById('pfnogiver').value;
-	if(trimfield(accountno) == '')
-	{
+        if (trimfield(accountno) == '') {
 	alert("please provide Account number and PF number of the giver");
 	DeActivateGenButton();
 	document.getElementById('slip_upload_frame').src = "";

@@ -118,7 +118,7 @@ function GetUserName($pfNumber)
     }
     else
     {
-        echo json_encode("NA");
+        echo json_encode(FALSE);
     }
      mysqli_close($con);
 }

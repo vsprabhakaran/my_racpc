@@ -30,7 +30,7 @@
             }
     function outActivityLogUpdate() {
         var phpURL = '../getPfnoFromSession.php';
-        var login_pf = doPOST_Request_SessionUser(phpURL)
+        var login_pf = doPOST_Request_SessionUser(phpURL, 'getPfno');
         var enteredAccNumber = document.getElementById('accountno').value;
         var borrower_pf_index = document.getElementById('pfnorcv').value;
         var slip_type = 'OUT';
@@ -48,7 +48,7 @@
         }
         
         var phpURL = '../getPfnoFromSession.php';
-        var login_pf = doPOST_Request_SessionUser(phpURL);
+        var login_pf = doPOST_Request_SessionUser(phpURL,'getPfno');
         phpURL = '../db/accountInformations.php';
 
         var msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount");
@@ -144,13 +144,13 @@
 		$('#reason').prop('disabled', true);
     }
     function nullPFNumberEnterred() {
-        document.getElementById('pfnogiver').style.backgroundColor = "";
+        document.getElementById('pfnorcv').style.backgroundColor = "";
         document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
 
     }
     function validPFNumberEnterred() {
         document.getElementById('getUserDetailsSpan').style.visibility = "visible";
-        document.getElementById('pfnogiver').style.backgroundColor = "#CCFFCC";
+        document.getElementById('pfnorcv').style.backgroundColor = "#CCFFCC";
     }
     function doPOST_Request(phpURL, pfNumber, typeCall) {
         var returnMsg = '';
@@ -183,11 +183,12 @@
         return returnMsg;
 
     }
-    function doPOST_Request_SessionUser(phpURL) {
+    function doPOST_Request_SessionUser(phpURL,typeCall) {
         var returnMsg = '';
         $.ajax({
             type: 'POST',
             url: phpURL,
+            data: {type: typeCall},
             success: function (msg) {
                 if (msg != "") { returnMsg = msg.replace(/["']/g, ""); }
                 else alert("session user not Found");

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang=''>
 <head>
-   <title>generate outslip</title>
+   <title>Generate Inslip</title>
      <?php
         session_start();
         if( $_SESSION["role"] != "RACPC_DM")
@@ -17,11 +17,12 @@
     function printFunction() {
     window.print();
     }
-    function doPOST_Request_SessionUser(phpURL) {
+    function doPOST_Request_SessionUser(phpURL,typeCall) {
         var returnMsg = '';
         $.ajax({
             type: 'POST',
             url: phpURL,
+            data: {type: typeCall},
             success: function (msg) {
                 if (msg != "") {
                     returnMsg = msg.replace(/["']/g, "");
@@ -91,7 +92,7 @@
     </tr>
       <script>
         var phpURL = '../getPfnoFromSession.php';
-        var pfNumber = doPOST_Request_SessionUser(phpURL);
+        var pfNumber = doPOST_Request_SessionUser(phpURL,'getPfno');
         phpURL = '../db/UserInformations.php';
         var racpc_name = doPOST_Request(phpURL, pfNumber, "GetUserRacpcName");
         $('#myResults').text(racpc_name);

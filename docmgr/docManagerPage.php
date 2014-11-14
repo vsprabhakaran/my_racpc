@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang=''>
 <head>
-   <title>Admin</title>
+   <title>Document Manager</title>
      <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../menustyles.css">
    <script src="../jquery-latest.min.js" type="text/javascript"></script>
