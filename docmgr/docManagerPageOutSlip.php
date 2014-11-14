@@ -40,12 +40,13 @@
         var phpURL1 = '../db/activityLog.php';
         doPOST_Request_OutActivityLogInsert(phpURL1, enteredAccNumber, borrower_pf_index, login_pf, slip_type, reason, phno, "OutActivityLogInsert");
             }
-    function showdetails(str) {
+    function showdetails() {
         var enteredAccNumber = $('#accountno').val();
         if (enteredAccNumber == "") {
             nullAccountNumberEnterred();
             return;
         }
+        
         var phpURL = '../getPfnoFromSession.php';
         var login_pf = doPOST_Request_SessionUser(phpURL);
         phpURL = '../db/accountInformations.php';
@@ -129,6 +130,7 @@
         resetForm();
     }
     function validAccountNumberEnterred() {
+        
         document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
         document.getElementById('accountno').style.backgroundColor = "#CCFFCC";
         $('#pfnorcv').prop('disabled', false);
@@ -256,14 +258,15 @@
             document.getElementById('reason').focus();
             return false;
         }
-        else { ActivateGenButton(); 
-        return true; }
+        else {
+            ActivateGenButton();
+            return true;
     } 
+    }
 	function InputCheck(){
 	var accountno = document.getElementById('accountno').value;
 	var pfnorcv = document.getElementById('pfnorcv').value;
-	if(trimfield(accountno) == '')
-	{
+        if (trimfield(accountno) == '') {
 	alert("please provide Account number and PF number of the giver");
 	DeActivateGenButton();
 	document.getElementById('slip_upload_frame').src = "";

@@ -72,7 +72,7 @@ switch($request)
     InUpdateDocStatus($_POST['accNo']);
 	break;
     }
-    case 'isValidAdmsAccount':
+    case 'isValidAdmsAccount';
     {
     isValidAdmsAccount($_POST['accNo'],$_POST['login_pf_index']);
 	break;        

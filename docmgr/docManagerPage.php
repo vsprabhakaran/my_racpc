@@ -16,11 +16,13 @@
             var contentIFrame = document.getElementById("contentFrame");
             switch(tabName)
             {
+                /*
                 case 'viewLocationTab':
                 {
                     contentIFrame.src = "";
                     break;
                 }
+                */
                 case 'inSlipTab':
                  {
                     contentIFrame.src = "docManagerPageInSlip.php";
@@ -33,12 +35,12 @@
                 }
                 case 'printStickerTab':
                  {
-                    contentIFrame.src = "printSticker.php";
+                    contentIFrame.src = "../admin/printSticker.php";
                     break;
                 }
                 default:
                 {
-                    contentIFrame.src = "viewLocation.php";
+                    contentIFrame.src = "docManagerPageOutSlip.php";
                     break;
                 }
             }
@@ -67,10 +69,11 @@
 <tr><td colspan="3">
     <div id='cssmenu'>
 <ul>
-    <li id="inSlipTab" class='active'><a href='#' onclick="displayPanel('inSlipTab')"><span>In-Slip</span></a></li>
+    <li id="outSlipTab" class='active'><a href='#' onclick="displayPanel('outSlipTab')"><span>Out-Slip</span></a></li>
+    <li id="inSlipTab" ><a href='#' onclick="displayPanel('inSlipTab')"><span>In-Slip</span></a></li>
+    <!--
    <li id="viewLocationTab"  ><a href='#' onclick="displayPanel('viewLocationTab')"><span>View Location</span></a></li>
-   
-   <li id="outSlipTab"><a href='#' onclick="displayPanel('outSlipTab')"><span>Out-Slip</span></a></li>
+    -->
    <li id="printStickerTab"><a href='#' onclick="displayPanel('printStickerTab')"><span>Print Sticker</span></a></li>
    <li style="width: 33%; text-align:right; visibility: hidden;" >&nbsp;</li>
    <li style="text-align:center;"><a href='../logout.php'><span>Logout</span></a></li>
