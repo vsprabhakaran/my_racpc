@@ -29,12 +29,12 @@
             document.getElementById('FolioNumberTag').innerHTML = doPOST_Request(phpURL, enteredAccNumber, "GetFolioNumberOfAccount").replace(/["'\\]/g, "");
             document.getElementById('RackNumberTag').innerHTML = doPOST_Request(phpURL, enteredAccNumber, "GetRackNumberOfAccount");
 
-            function doPOST_Request(phpURL, pfNumber, typeCall) {
+            function doPOST_Request(phpURL, number, typeCall) {
                 var returnMsg = '';
                 $.ajax({
                     type: 'POST',
                     url: phpURL,
-                    data: { accNo: pfNumber, type: typeCall },
+                    data: { accNo: number, type: typeCall },
                     success: function (msg) {
                         if (msg != "") returnMsg = msg.replace(/["']/g, "");
                         else alert("not Found");

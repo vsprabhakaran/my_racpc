@@ -77,6 +77,14 @@ switch($request)
     isValidAdmsAccount($_POST['accNo'],$_POST['login_pf_index']);
 	break;        
     }
+	case 'checkBrachViewAccess':
+	{
+	checkBrachViewAccess($_POST['accNo'],$_POST['pfno']);	
+	}
+	case 'checkRacpcViewAccess':
+	{
+	checkRacpcViewAccess($_POST['accNo'],$_POST['pfno']);	
+	}
     /*
 	case 'OutActivityLogInsert';
 	{
@@ -93,6 +101,47 @@ function db_prelude(&$con)
     if ($con->connect_errno) {
         die("Connection failed: " . $conn->connect_error);
     }
+}
+function checkBranchViewAccess($accountNumber,$pfno)
+{
+	$con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"select l.branch_code from loan_account_mstr as l where (l.branch_code= (select u.branch_code from user_mstr as u where pf_index='$pfno')) and (l.loan_acc_no='$accountNumber')");
+    $row = mysqli_fetch_array($query);
+	if($row['loan_acc_no'] != "")
+    {
+        echo json_encode("BRANCH_VIEW_GRANTED");
+    }
+    else
+    {
+        echo json_encode(FALSE);
+    }
+     mysqli_close($con);
+}
+function checkRacpcViewAccess($accountNumber,$pfno)
+{
+	$con = NULL;
+    db_prelude($con);  
+	$query=mysqli_query($con,"SELECT racpc_code
+										FROM loan_account_mstr AS l, branch_mstr AS b
+										WHERE l.branch_code = b.branch_code AND l.loan_acc_no ='$accountNumber'");
+	$racpcCodeofAcc=mysqli_fetch_array($query);
+    $query=mysqli_query($con,"SELECT branch_code
+								FROM user_mstr
+								WHERE pf_index ='$pfno'");
+    $branchCodeofUser = mysqli_fetch_array($query);
+	//echo json_encode($racpcCodeofAcc['racpc_code']." ".$branchCodeofUser['branch_code']);
+	//if($racpcCodeofAcc['racpc_code'] != "" && $branchCodeofUser['branch_code'] !="" && $racpcCodeofAcc['racpc_code'] == $branchCodeofUser['branch_code'])
+	if(strcmp($racpcCodeofAcc['racpc_code'] , $branchCodeofUser['branch_code'])==0)
+    {
+        echo json_encode("RACPC_VIEW_GRANTED");
+    }
+    else
+    {
+		
+        echo json_encode(FALSE);
+    }
+     mysqli_close($con);
 }
 function isValidAccount($accountNumber)
 {

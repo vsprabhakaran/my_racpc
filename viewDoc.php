@@ -14,18 +14,43 @@
     <script type="text/javascript">
             function getPDF() {
 				var enteredAccNumber = document.getElementById('accNumber').value;
-				$.post('db/accountInformations.php', { accNo: enteredAccNumber, type: 'GetBranchCodeOfAccount' }, function (msg) {
-                if (msg != "") {
-                    var branchCode=msg.replace(/["']/g, "");
+				var pfno= doPOST_Request('getPfnoFromSession.php',"",'','getPfno');
+				var role= doPOST_Request('getPfnoFromSession.php',"",'','getRole');
+				var branchCode= doPOST_Request('db/accountInformations.php',enteredAccNumber,'','GetBranchCodeOfAccount');
+				if (role=="BRANCH_VIEW")
+				{
+					var status= doPOST_Request('db/accountInformations.php',enteredAccNumber,pfno,'checkBrachViewAccess');	
+				}
+				else if (role=="RACPC_VIEW" || role=="RACPC_ADMIN" || role=="RACPC_DM" )
+				{
+					var status= doPOST_Request('db/accountInformations.php',enteredAccNumber,pfno,'checkRacpcViewAccess');	
+				}
+				else
+					alert("You dont have access to view this file");
+				
+				if(status=='RACPC_VIEW_GRANTED' || status=='BRANCH_VIEW_GRANTED')
 					document.getElementById("pdfFile").setAttribute('src',"docBuffer.php?accNo="+enteredAccNumber);
                 document.getElementById("pdfFile").style.visibility = "visible";
                 }
-                else if (msg == "false") {
-                    alert("Branch code not found");
+			function doPOST_Request(phpURL, accNumber,pfnum, typeCall) {
+				var returnMsg = '';
+                $.ajax({
+                    type: 'POST',
+                    url: phpURL,
+                    data: { accNo: accNumber,pfno: pfnum, type: typeCall },
+                    success: function (msg) {
+                        if (msg != "") returnMsg = msg.replace(/["']/g, "");
+                        else alert("not Found");
+                        if (msg == "false") 
+						{
+							alert(msg);
+							returnMsg = "NA";
                 }
-            }).fail(function (msg) {
-                alert("fail : " + msg);
+                    },
+                    error: function (msg) { alert("fail : " + msg); },
+                    async: false
             });
+                return returnMsg;
             }
 			
 			function accountNumButtonClick() {

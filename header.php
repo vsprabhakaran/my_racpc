@@ -12,7 +12,7 @@
     var pf;
     $(document).ready(function () {
         
-        $.post('getPfnoFromSession.php', {}, function (msg) {
+        $.post('getPfnoFromSession.php', {type: 'getPfno'}, function (msg) {
             if (msg != "false") {
                 pf = msg.replace(/["']/g, "");
                 $.post('db/UserInformations.php', { pfno: pf, type: 'GetUserName' }, function (msg) {
