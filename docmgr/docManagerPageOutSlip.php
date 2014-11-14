@@ -22,6 +22,8 @@
 
     function outUpdateDocStatus() {
         DeActivateGenButton();
+        $('#reason').prop('disabled', true);
+		$('#pfnorcv').prop('disabled',true);
         var enteredAccNumber = document.getElementById('accountno').value;
         var phpURL = '../db/accountInformations.php';
         doPOST_Request(phpURL, enteredAccNumber, "OutUpdateDocStatus");
@@ -47,19 +49,7 @@
         var phpURL = '../getPfnoFromSession.php';
         var login_pf = doPOST_Request_SessionUser(phpURL);
         phpURL = '../db/accountInformations.php';
-/*
-        $.post(phpURL, { accNo: enteredAccNumber, type: 'isValidAccount' }, function (msg) {
-            if (msg == "true") {
-                validAccountNumberEnterred();
-            }
-            else if (msg == "false") {
-                invalidAccountNumberEnterred();
-                return;
-            }
-        }).fail(function (msg) {
-            alert("showdetails fail : " + msg);
-        });
-*/
+
         var msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount");
         if (msg == "true") {
             validAccountNumberEnterred();
@@ -72,7 +62,9 @@
         document.getElementById('brcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetBranchCodeOfAccount");
         document.getElementById('foliono').value = doPOST_Request(phpURL, enteredAccNumber, "GetFolioNumberOfAccount").replace(/["'\\]/g, "");
         document.getElementById('brname').value = doPOST_Request(phpURL, enteredAccNumber, "GetBranchNameOfAccount");
+        document.getElementById('productcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetLoanProductOfAccount");
          $('#genOutslipButton').prop('disabled', true);
+        $('#reason').prop('disabled', true);
     }
     function showUdetails() {
         var enteredPFNumber = $('#pfnorcv').val();
@@ -95,6 +87,7 @@
 
         document.getElementById('nameofReciver').value = doPOST_RequestUser(phpURL, enteredPFNumber, "GetUserName");
          $('#genOutslipButton').prop('disabled', true);
+        $('#reason').prop('disabled', false);
 
     }
     function showUserDetails() {
@@ -119,9 +112,11 @@
         $('#pfnorcv').prop('disabled', true);
         $('#accountno').val("");
         $('#nameofReciver').val("");
-
+		$('#productcode').val("");
         document.getElementById('slip_upload_frame').src = "";
         $('#genOutslipButton').prop('disabled', true);
+		document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
+		document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
     }
     function invalidAccountNumberEnterred() {
         document.getElementById('accountno').style.backgroundColor = "#FFC1C1";
@@ -143,7 +138,8 @@
     function invalidPFNumberEnterred() {
         document.getElementById('pfnorcv').style.backgroundColor = "#FFC1C1";
         document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
-
+		$('#pfnorcv').prop('disabled', true); 
+		$('#reason').prop('disabled', true);
     }
     function nullPFNumberEnterred() {
         document.getElementById('pfnogiver').style.backgroundColor = "";
@@ -169,12 +165,12 @@
         });
         return returnMsg;
     }
-    function doPOST_Request_isValidAdmsAccount(phpURL,enteredAccNumber,login_pf,typeCall ) { 
+    function doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, typeCall) {
     var returnMsg = '';
         $.ajax({
             type: 'POST',
             url: phpURL,
-            data: { accNo: enteredAccNumber,login_pf_index:login_pf, type: typeCall },
+            data: { accNo: enteredAccNumber, login_pf_index: login_pf, type: typeCall },
             success: function (msg) {
                 if (msg != "") { returnMsg = msg.replace(/["']/g, ""); }
                 else alert("pf number not Found");
@@ -250,6 +246,30 @@
     }
     function ActivateGenButton() { $('#genOutslipButton').prop('disabled', false); }
     function DeActivateGenButton() { $('#genOutslipButton').prop('disabled', true); }    
+    function trimfield(str){ 
+    return str.replace(/^\s+|\s+$/g,''); 
+}
+    function validate() {
+	        var reason = document.getElementById('reason').value;
+        if (trimfield(reason)== '') {
+            alert("Please Provide Your Comments !");
+            document.getElementById('reason').focus();
+            return false;
+        }
+        else { ActivateGenButton(); 
+        return true; }
+    } 
+	function InputCheck(){
+	var accountno = document.getElementById('accountno').value;
+	var pfnorcv = document.getElementById('pfnorcv').value;
+	if(trimfield(accountno) == '')
+	{
+	alert("please provide Account number and PF number of the giver");
+	DeActivateGenButton();
+	document.getElementById('slip_upload_frame').src = "";
+	}
+	}
+
 </script>
 
 </head>
@@ -291,6 +311,11 @@
     </div>
 
      <div class="pure-control-group">
+        <label for="productcode" >Product Code:</label>
+        <input type="text" id="productcode" name="productcode" readonly="true"/> 
+    </div> 
+
+     <div class="pure-control-group">
         <label for="brcode" >Branch Code :</label>
         <input type="text" id="brcode" name="brcode" readonly="true" /> 
      </div>
@@ -298,7 +323,7 @@
         <label for="brcode" >Branch Name :</label> 
         <input type="text" id="brname" name="brname" readonly="true" /> 
      </div>
-    <div class="pure-control-group">
+<div class="pure-control-group">
         <label for="foliono" > Folio number :</label>
         <input type="text" id="foliono" name="foliono" readonly="true" />
 </div> 
@@ -313,14 +338,15 @@
         <label for="nameofGiver" > Name of the Reciver :</label>
         <input type="text" id="nameofReciver" name="nameofReciver" readonly="true" />
     </div>
-    <div class="pure-control-group">
-        <label for="reason" > Reason :</label>
-        <textarea rows="4" cols="23" name="reason" id="reason" onKeyDown="if (event.keyCode == 13) ActivateGenButton()"  disabled="disabled"> </textarea>  
-     </div>      
+
+<div class="pure-control-group">
+<label for="reason" > Comments :</label>
+<textarea rows="4" cols="23" name="reason" id="reason" onKeyDown="if (event.keyCode == 13) if(validate()=='true'){ActivateGenButton();}"  disabled="disabled"> </textarea>  
+</div>      
     
 <div class="pure-controls">
 <input class="pure-button pure-button-primary" type="submit" 
-    value="Generate Out Slip" id="genOutslipButton" onclick="$('#genOutSlip').submit();outUpdateDocStatus();outActivityLogUpdate()" disabled="disabled" />  
+    value="Generate Out Slip" id="genOutslipButton" onclick="$('#genOutSlip').submit();outUpdateDocStatus();outActivityLogUpdate();InputCheck()" disabled="disabled" />  
 <input class="pure-button pure-button-primary" type="button" value="Reset" id="reset" onclick="resetForm()"/>  
             </div>
 

@@ -57,6 +57,11 @@ switch($request)
         GetADMSUserRole($_POST['pfno']);
         break;
     }
+    case 'GetUserRacpcName':
+    {
+        GetUserRacpcName($_POST['pfno']);    
+        break;
+   }
     
 }
 
@@ -113,7 +118,7 @@ function GetUserName($pfNumber)
     }
     else
     {
-        echo json_encode(FALSE);
+        echo json_encode("NA");
     }
      mysqli_close($con);
 }
@@ -173,6 +178,30 @@ function GetUserBranchCode($pfNumber)
     }
      mysqli_close($con);
 }
+
+function GetUserRacpcName($pfNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $colname = "racpc_name";
+
+    $query=mysqli_query($con,"select racpc_name as '$colname' from racpc_mstr r, branch_mstr b, user_mstr u
+    where r.racpc_code = b.racpc_code 
+    and b.branch_code = u.branch_code
+    and u.pf_index = '$pfNumber'");
+
+    $row = mysqli_fetch_array($query);
+    if($row[$colname] != "")
+    {
+        echo json_encode($row[$colname]);
+    }
+    else
+    {
+        echo json_encode(FALSE);
+    }
+     mysqli_close($con);
+}
+
 function GetUserBranchName($pfNumber)
 {
     $con = NULL;
