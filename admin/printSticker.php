@@ -32,10 +32,32 @@
 
         }
         function validAccountNumberEnterred() {
+			var enteredAccNumber = document.getElementById('accNumber').value;
+			$.ajax({
+                type: 'POST',
+                url: '../db/accountInformations.php',
+                data: { accNo: enteredAccNumber, type: 'GetRackNumberOfAccount' },
+                success: function (msg) {
+                    if (msg != "") {
 			document.getElementById("barcodeIFrame").setAttribute('src',"../barcodegit/test.php?text="+ document.getElementById("accNumber").value);
+					var rackNo = msg.replace(/["']/g, "");
+					$("#rack").val(rackNo);
+					$("#rackIFrame").prop("src","../barcodegit/test.php?text="+rackNo);
 			document.getElementById("barcodeIFrame").style.display="block";
+					document.getElementById("rackIFrame").style.display="block";
             document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
             document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
+        }
+                else if (msg == "false") {
+					document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
+                    alert("Loan is already closed.");
+                }
+                },
+                error: function (msg) { alert("fail : " + msg); },
+                async: false
+            });
+			
+			
         }
 		function showRackBarcode(){
 			document.getElementById("rackIFrame").setAttribute('src',"../barcodegit/test.php?text="+ document.getElementById("rack").value);
@@ -80,19 +102,17 @@
             <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onclick="showAccountDetails()">View Details</a> 
 		</div>
 		<div>
-		<iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
+		<iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:20em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
 		<br>
 		</div>
 		<div class="pure-control-group">
 			<label for="rack">Rack Location</label>
-			<input type="text" id="rack" name="rack" autocomplete="off" onkeydown="if (event.keyCode == 13) showRackBarcode()" />
-			<a id="getAccountDetailsFromRackSpan" href="#"  style="visibility: hidden" onclick="showRackDetails()">View Details</a> 
+			<input type="text" id="rack" name="rack" autocomplete="off" disabled="true" onkeydown="if (event.keyCode == 13) showRackBarcode()" />
 		</div>
 		<div>
-		<iframe id="rackIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
+		<iframe id="rackIFrame" frameBorder="0" scrolling="no" style="height:4em;width:20em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
 		<br>
 	</div>
-		<p style="padding-left:35px; color:#0f71ba">Enter the number and click on the generated image to print.</p>
    </form>
 
 </div>

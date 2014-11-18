@@ -80,10 +80,17 @@ switch($request)
 	case 'checkBrachViewAccess':
 	{
 	checkBrachViewAccess($_POST['accNo'],$_POST['pfno']);	
+	break;
 	}
 	case 'checkRacpcViewAccess':
 	{
 	checkRacpcViewAccess($_POST['accNo'],$_POST['pfno']);	
+	break;
+	}
+	case 'isLoanActive':
+	{
+		isLoanActive($_POST['accNo']);
+		break;
 	}
     /*
 	case 'OutActivityLogInsert';
@@ -139,6 +146,22 @@ function checkRacpcViewAccess($accountNumber,$pfno)
     else
     {
 		
+        echo json_encode(FALSE);
+    }
+     mysqli_close($con);
+}
+function isLoanActive($accountNumber)
+{
+	$con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"select loan_status from adms_loan_account_mstr where loan_acc_no = '$accountNumber'");
+    $row = mysqli_fetch_array($query);
+    if($row['loan_status'] == "A")
+    {
+        echo json_encode(TRUE);
+    }
+    else
+    {
         echo json_encode(FALSE);
     }
      mysqli_close($con);

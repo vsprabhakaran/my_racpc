@@ -5,14 +5,14 @@
 ?>
 <html lang=''>
 <head>
-<script src="jquery-latest.min.js" type="text/javascript"></script>
+<script src="../jquery-latest.min.js" type="text/javascript"></script>
 </head>
 <body style="background-image:url('img\\greyzz.png')">
 <script type="text/javascript">
     var pf;
     $(document).ready(function () {
         
-        $.post('../getPfnoFromSession.php', {}, function (msg) {
+        $.post('../getPfnoFromSession.php', {type: 'getPfno'}, function (msg) {
             if (msg != "false") {
                 pf = msg.replace(/["']/g, "");
                 $.post('../db/UserInformations.php', { pfno: pf, type: 'GetUserName' }, function (msg) {

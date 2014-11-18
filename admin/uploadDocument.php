@@ -144,7 +144,7 @@
                 success: function (msg) {
                     if (msg != "") returnMsg = msg.replace(/["']/g, "");
                     else alert("not Found");
-                    if (msg == "false") returnMsg = "NA"; ;
+                    if (msg == "false") returnMsg = "NA";
                 },
                 error: function (msg) { alert("fail : " + msg); },
                 async: false
