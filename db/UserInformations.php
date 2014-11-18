@@ -62,6 +62,11 @@ switch($request)
         GetUserRacpcName($_POST['pfno']);    
         break;
    }
+   case 'validate_racpc_user':
+   {
+       validate_racpc_user($_POST['pfno'],$_POST['login_pfno']);
+       break;
+   }
     
 }
 
@@ -98,6 +103,33 @@ function isValidADMSUser($pfNumber)
     if($row['pf_index'] != "")
     {
         echo json_encode(TRUE);
+    }
+    else
+    {
+        echo json_encode(FALSE);
+    }
+    mysqli_close($con);
+}
+// validate racpc of two users
+function validate_racpc_user($pfNumber,$login_pf)
+{
+    $con = NULL;
+    db_prelude($con);  
+    //$colname = "racpc_code";
+    $query=mysqli_query($con,"select b.racpc_code as racpc_code
+    from adms_user_mstr au, user_mstr u, branch_mstr b, user_mstr u1, branch_mstr b1
+    where au.pf_index = '$login_pf'
+    and au.pf_index = u.pf_index 
+    and u.branch_code = b.branch_code
+    and u1.pf_index = '$pfNumber'
+    and u1.branch_code = b1.branch_code
+    and b.racpc_code = b1.racpc_code");
+
+    $row = mysqli_fetch_array($query);
+    if($row['racpc_code'] != "")
+    {
+        echo json_encode(TRUE);
+        //echo json_encode($row['racpc_code']);
     }
     else
     {

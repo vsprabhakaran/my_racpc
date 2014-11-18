@@ -27,6 +27,7 @@
         var enteredAccNumber = document.getElementById('accountno').value;
         var phpURL = '../db/accountInformations.php';
         doPOST_Request(phpURL, enteredAccNumber, "OutUpdateDocStatus");
+        
             }
     function outActivityLogUpdate() {
         var phpURL = '../getPfnoFromSession.php';
@@ -70,6 +71,7 @@
     function showUdetails() {
         var enteredPFNumber = $('#pfnorcv').val();
         if (enteredPFNumber == "") {
+            alert("Please Enter PF Number !");
             nullPfNumberEnterred();
             return;
         }
@@ -127,6 +129,7 @@
     function nullAccountNumberEnterred() {
         document.getElementById('accountno').style.backgroundColor = "";
         document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
+        alert("Please Enter Account Number");
         resetForm();
     }
     function validAccountNumberEnterred() {
@@ -252,7 +255,7 @@
     function trimfield(str){ 
     return str.replace(/^\s+|\s+$/g,''); 
 }
-    function validate() {
+    function validate_reason() {
 	        var reason = document.getElementById('reason').value;
         if (trimfield(reason)== '') {
             alert("Please Provide Your Comments !");
@@ -264,13 +267,81 @@
             return true;
     } 
     }
+    function validate_racpc() {
+        var phpURL = '../getPfnoFromSession.php';
+        var login_pf = doPOST_Request_SessionUser(phpURL, 'getPfno');
+        var enteredAccNumber = document.getElementById('accountno').value;
+        var borrower_pf_index = document.getElementById('pfnorcv').value;
+        var msg;
+
+        var phpURL = '../db/UserInformations.php';
+        if (login_pf != '' && borrower_pf_index != '') {
+            msg = doPOST_Request_validate_racpc_user(phpURL, borrower_pf_index, login_pf, "validate_racpc_user");
+            if (msg == true) {
+            }
+            else {
+                alert("Borrower does not belong to document manager RACPC");
+                resetForm();
+                return;
+            }
+        }
+        var phpURL = '../db/accountInformations.php';
+        if (enteredAccNumber != '' && borrower_pf_index != '') {
+            msg = doPOST_Request_validate_racpc_acc_user(phpURL, borrower_pf_index, enteredAccNumber, "validate_racpc_acc_user");
+            if (msg == true) {
+            }
+            else {
+                alert("Account does not belong to borrower RACPC"); resetForm(); return;
+            }
+
+        }
+
+    }
+    function doPOST_Request_validate_racpc_user(phpURL, borrower_pf_index, login_pf, typeCall) {
+        var returnMsg = '';
+        $.ajax({
+            type: 'POST',
+            url: phpURL,
+            data: { pfno: borrower_pf_index, login_pfno: login_pf, type: typeCall },
+            success: function (msg) {
+                if (msg == "true") {
+                    returnMsg = true;
+                }
+                else {
+                    returnMsg = false;
+                }
+            },
+            error: function (msg) { alert("fail : " + msg); },
+            async: false
+        });
+        return returnMsg;
+    }
+    function doPOST_Request_validate_racpc_acc_user(phpURL, borrower_pf_index, enteredAccNumber, typeCall) {
+        var returnMsg = '';
+        $.ajax({
+            type: 'POST',
+            url: phpURL,
+            data: { pfno: borrower_pf_index, accNo: enteredAccNumber, type: typeCall },
+            success: function (msg) {
+                if (msg == "true") {
+                    returnMsg = true;
+                }
+                else {
+                    returnMsg = false;
+                }
+            },
+            error: function (msg) { alert("fail : " + msg); },
+            async: false
+        });
+        return returnMsg;
+    }
 	function InputCheck(){
 	var accountno = document.getElementById('accountno').value;
 	var pfnorcv = document.getElementById('pfnorcv').value;
         if (trimfield(accountno) == '') {
-	alert("please provide Account number and PF number of the giver");
+            alert("please provide Account number");
 	DeActivateGenButton();
-	document.getElementById('slip_upload_frame').src = "";
+            document.getElementById('slip_upload_frame').src = ""; resetForm();
 	}
 	}
 
@@ -323,21 +394,24 @@
         <label for="brcode" >Branch Code :</label>
         <input type="text" id="brcode" name="brcode" readonly="true" /> 
      </div>
+    
      <div class="pure-control-group">
         <label for="brcode" >Branch Name :</label> 
         <input type="text" id="brname" name="brname" readonly="true" /> 
      </div>
+    
 <div class="pure-control-group">
         <label for="foliono" > Folio number :</label>
         <input type="text" id="foliono" name="foliono" readonly="true" />
 </div> 
+    
     <div class="pure-control-group">
         <label for="pfnorcv" >  Receivers's PF Number :</label>
 
         <input type="text" name="pfnorcv" id="pfnorcv" onKeyDown="if (event.keyCode == 13) showUdetails()" />
         <a id="getUserDetailsSpan" href="#"  style="visibility: hidden" onclick="showUserDetails()">View Details</a>
-
     </div>
+
     <div class="pure-control-group">
         <label for="nameofGiver" > Name of the Reciver :</label>
         <input type="text" id="nameofReciver" name="nameofReciver" readonly="true" />
@@ -345,17 +419,19 @@
 
 <div class="pure-control-group">
 <label for="reason" > Comments :</label>
-<textarea rows="4" cols="23" name="reason" id="reason" onKeyDown="if (event.keyCode == 13) if(validate()=='true'){ActivateGenButton();}"  disabled="disabled"> </textarea>  
+    <textarea rows="4" cols="22" name="reason" id="reason" onKeyDown="if (event.keyCode == 13) if(validate_reason()=='true'){ActivateGenButton();}"  disabled="disabled"> </textarea>  
 </div>      
     
 <div class="pure-controls">
 <input class="pure-button pure-button-primary" type="submit" 
-    value="Generate Out Slip" id="genOutslipButton" onclick="$('#genOutSlip').submit();outUpdateDocStatus();outActivityLogUpdate();InputCheck()" disabled="disabled" />  
+    value="Generate Out Slip" id="genOutslipButton" 
+    onclick="$('#genOutSlip').submit();InputCheck();validate_racpc();outUpdateDocStatus();outActivityLogUpdate();" disabled="disabled" />  
 <input class="pure-button pure-button-primary" type="button" value="Reset" id="reset" onclick="resetForm()"/>  
             </div>
 
                 
             </center>
+<p style="color: #33089e"> ** Account Number and Receiver should belong to same RACPC </p>
 </form></td>
 <td style="width: 50%;height: 100%;" >
 <iframe id="slip_upload_frame" name="slip_upload_frame" style="width: 100%;height:400px;" marginheight="0" marginwidth="0" frameborder="0"></iframe>

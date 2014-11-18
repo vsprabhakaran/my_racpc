@@ -82,11 +82,13 @@
 <center>
 <div>
 
-  <table border="1" style="width:100%;height:100%;border-width:0px;border-collapse: collapse;">
+  <table border="1" style="width:100%;height:100%;border-width:0px;border-collapse: collapse; table-layout: fixed">
   <tr>
     <td colspan="3" style="font-family: Arial, Helvetica, Sans-Serif; font-size: large; font-weight: 600">
     <center>
-        <h3>INSLIP FORM </h3><div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif; font-size: large; font-weight: 300"></div>
+        <h3>INSLIP FORM </h3>
+        <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif; font-size: large; font-weight: 300"></div>
+        <p id="date"></p>
     </center>
     </td>
     </tr>
@@ -96,6 +98,8 @@
         phpURL = '../db/UserInformations.php';
         var racpc_name = doPOST_Request(phpURL, pfNumber, "GetUserRacpcName");
         $('#myResults').text(racpc_name);
+        var d = new Date();
+        document.getElementById("date").innerHTML = d.toDateString();
     </script>
    <tr>
     <td><center><h4>ACCOUNT NUMBER</h4></center></td>
@@ -112,11 +116,13 @@
     <td><center><?php echo $_POST["productcode"]; ?><br></center></td> 
     <td></td>
    </tr>
+<!--
    <tr>
     <td><center><h4>BRANCH CODE</h4></center></td>
     <td><center><?php echo $_POST["brcode"]; ?><br></center></td> 
     <td></td>
    </tr>
+-->
    <tr>
     <td><center><h4>BRANCH NAME</h4></center></td>
     <td><center><?php echo $_POST["brname"]; ?><br></center></td> 
@@ -138,7 +144,9 @@
    </tr>
    <tr>
     <td><center><h4>COMMENTS</h4></center></td>
-    <td><center><?php echo $_POST["reason"]; ?><br></center></td> 
+    <td style="word-wrap: break-word; text-justify: distribute">
+       <p style="text-align: justify"><center><?php echo $_POST["reason"]; ?> </center></p>
+    </td> 
     <td></td>
    </tr>
    
