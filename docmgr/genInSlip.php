@@ -1,8 +1,4 @@
-<!doctype html>
-<html lang=''>
-<head>
-   <title>Generate Inslip</title>
-     <?php
+<?php
         session_start();
         if( $_SESSION["role"] != "RACPC_DM")
         {
@@ -11,7 +7,13 @@
         <meta http-equiv="refresh" content="0;URL=../login.php">
     <?php
         }
+		else
+		{
     ?>
+<!doctype html>
+<html lang=''>
+<head>
+   <title>Generate Inslip</title>
     <script type="text/javascript" src="../jquery-latest.min.js"></script>
 <script>
     function printFunction() {
@@ -192,3 +194,6 @@
 
 </body>
 </html>
+<?php
+}
+?>

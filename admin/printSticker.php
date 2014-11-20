@@ -1,9 +1,4 @@
-<!doctype html>
-<html lang=''>
-<head>
-   <link rel="stylesheet" href="css/styles.css">
-   <link rel="stylesheet" href="../css/pure-min.css">
-     <?php
+<?php
         session_start();
         if( $_SESSION["role"] != "RACPC_ADMIN" && $_SESSION["role"] != "RACPC_DM")
         {
@@ -11,7 +6,14 @@
 		   $_SESSION["pfno"] = "";
         ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
         }
+		else
+		{
     ?>
+<!doctype html>
+<html lang=''>
+<head>
+   <link rel="stylesheet" href="css/styles.css">
+   <link rel="stylesheet" href="../css/pure-min.css">
 	<script type="text/javascript" src="../jquery-latest.min.js"></script>
 	<script type="text/javascript">
 			function accountNumButtonClick() {
@@ -121,3 +123,6 @@
 
 </body>
 </html>
+<?php
+}
+?>

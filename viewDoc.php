@@ -1,7 +1,4 @@
-<html>
-    <head>
-	<link rel="stylesheet" href="css/pure-min.css">
-	<?php
+<?php
         session_start();
         if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW" || $_SESSION["role"] == "RACPC_ADMIN" ))
         {
@@ -9,7 +6,12 @@
            $_SESSION["pfno"] = "";
         ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
         }
+		else
+		{
     ?>
+<html>
+    <head>
+	<link rel="stylesheet" href="css/pure-min.css">
 	<script type="text/javascript" src="/my_racpc/jquery-latest.min.js"></script>
     <script type="text/javascript">
             function getPDF() {
@@ -127,3 +129,6 @@
 <iframe  id="pdfFile" height="75%" width="100%" style="visibility: hidden"> </iframe>
 </body>
 </html>
+<?php 
+}
+?>

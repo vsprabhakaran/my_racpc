@@ -1,5 +1,5 @@
 <html>
-    <head>
+<head>
 <?php
 session_start();
 $con = new mysqli("localhost", "root", "", "racpc_automation_db");

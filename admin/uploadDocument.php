@@ -1,17 +1,19 @@
-<!doctype html>
-<html lang=''>
-<head>
-   <link rel="stylesheet" href="../css/inputFormStyles.css" type="text/css">
-   <link rel="stylesheet" href="../css/pure-min.css">
-     <?php
+<?php
         session_start();
         if( $_SESSION["role"] != "RACPC_ADMIN")
         {
            $_SESSION["role"] = "";
 		   $_SESSION["pfno"] = "";
-        ?><!--meta http-equiv="refresh" content="0;URL=../login.php"--><?php
+        ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
         }
+		else
+		{
     ?>
+<!doctype html>
+<html lang=''>
+<head>
+   <link rel="stylesheet" href="../css/inputFormStyles.css" type="text/css">
+   <link rel="stylesheet" href="../css/pure-min.css">
     <script type="text/javascript" src="../jquery-latest.min.js"></script>
 	<script type="text/javascript" src="../jquery-barcode.js"></script>
     <script type="text/javascript">
@@ -49,7 +51,7 @@
                 url: '../db/accountInformations.php',
                 data: { accNo: enteredAccNumber, type: 'isLoanActive' },
                 success: function (msg) {
-                    if (msg == "true") {
+                    if (msg == "true" || (msg == "false" && !isLoanInADMS(enteredAccNumber))) {
 					resetForm();
 			document.getElementById("barcodeIFrame").setAttribute('src',"../barcodegit/test.php?text="+ document.getElementById("accNumber").value);
 			document.getElementById("barcodeIFrame").style.display="block";
@@ -61,7 +63,8 @@
 					var popup = window.open("../AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
 					$(popup).blur(function () { this.close(); });
                 }
-                else if (msg == "false") {
+                else {
+				
 					document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
                     alert("You are trying to upload a closed loan. Access Denied.");
                 }
@@ -373,3 +376,6 @@
    </table>
 </body>
 </html>
+<?php
+}
+?>

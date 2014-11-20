@@ -6,6 +6,8 @@ session_start();
            $_SESSION["pfno"] = "";
         ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
         }
+		else 
+		{
 /*
  *  Author:  David S. Tufts
  *  Company: Rocketwood.LLC
@@ -134,4 +136,5 @@ session_start();
 	header ('Content-type: image/png');
 	imagepng($thumb_img);
 	imagedestroy($thumb_img);
+}
 ?>

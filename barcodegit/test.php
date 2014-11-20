@@ -1,3 +1,14 @@
+<?php
+session_start();
+        if( !( $_SESSION["role"] == "RACPC_DM" || $_SESSION["role"] == "RACPC_ADMIN" ))
+        {
+           $_SESSION["role"] = "";
+           $_SESSION["pfno"] = "";
+        ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
+        }
+		else 
+		{
+?>
 <html>
 <head>
 <script type="text/javascript">
@@ -21,3 +32,6 @@ echo "<td><img alt='print' id=\"printImg\" src='../img/print_icon.jpg' height=50
 </table>
 </body>
 </html>
+<?php
+}
+?>

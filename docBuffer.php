@@ -1,6 +1,16 @@
 <html>
 <body>
 <?php
+	session_start();
+        if( !($_SESSION["role"] == "BRANCH_USER" || $_SESSION["role"] == "RACPC_VIEW" || $_SESSION["role"] == "RACPC_ADMIN" ))
+        {
+           $_SESSION["role"] = "";
+           $_SESSION["pfno"] = "";
+        ?>
+		<meta http-equiv="refresh" content="0;URL=login.php"><?php
+        }
+		else
+		{
 	$accountNumber = $_GET["accNo"];
 	$con = new mysqli("localhost", "root", "", "racpc_automation_db");
     if ($con->connect_errno) {
@@ -32,6 +42,7 @@
         }
 		else
 		echo "file not found";
+	}
 ?>
 
 </body>

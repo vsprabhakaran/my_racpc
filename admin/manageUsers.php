@@ -1,9 +1,4 @@
-<!doctype html>
-<html lang=''>
-<head>
-   <link rel="stylesheet" href="../css/my_styles.css">
-   <link rel="stylesheet" href="../css/pure-min.css">
-	 <?php
+<?php
         session_start();
         if( $_SESSION["role"] != "RACPC_ADMIN")
         {
@@ -11,7 +6,15 @@
 		   $_SESSION["pfno"] = "";
         ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
         }
+		else
+		{
     ?>
+<!doctype html>
+
+<html lang=''>
+<head>
+   <link rel="stylesheet" href="../css/my_styles.css">
+   <link rel="stylesheet" href="../css/pure-min.css">
 	<script src="../tab-content/tabcontent.js" type="text/javascript"></script>
     <link href="../tab-content/template6/tabcontent.css" rel="stylesheet" type="text/css" />
     <script src="../jquery-latest.min.js" type="text/javascript"></script>
@@ -194,3 +197,6 @@
 
 </body>
 </html>
+<?php
+}
+?>

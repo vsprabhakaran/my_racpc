@@ -3,6 +3,14 @@ ini_set('display_errors','On');
 //var_dump("in info page");
 error_reporting(E_ALL | E_STRICT);
 session_start();
+if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW" || $_SESSION["role"] == "RACPC_ADMIN" || $_SESSION["role"] == "RACPC_DM"))
+        {
+           $_SESSION["role"] = "";
+           $_SESSION["pfno"] = "";
+        ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
+        }
+		else
+		{
 $request = $_POST['type'];
 
 switch($request)
@@ -18,7 +26,7 @@ switch($request)
 	break;
 	}
 }
-
+}
 function db_prelude(&$con)
 {
     $con = new mysqli("localhost", "root", "", "racpc_automation_db");

@@ -1,3 +1,15 @@
+<?php
+        session_start();
+        if( $_SESSION["role"] != "RACPC_ADMIN")
+        {
+           $_SESSION["role"] = "";
+		   $_SESSION["pfno"] = "";
+        ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
+        }
+		else
+		{
+    ?>
+
 <html>
 <head>
 <link rel="stylesheet" href="../css/pure-min.css">
@@ -69,3 +81,6 @@ $con = new mysqli("localhost", "root", "", "racpc_automation_db");
 	?>
 </body>
 </html>
+<?php
+}
+?>

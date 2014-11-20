@@ -1,3 +1,14 @@
+<?php
+        session_start();
+        if( $_SESSION["role"] != "RACPC_ADMIN")
+        {
+           $_SESSION["role"] = "";
+		   $_SESSION["pfno"] = "";
+        ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
+        }
+		else
+		{
+    ?>
 <!doctype html>
 <html lang=''>
 <head>
@@ -63,17 +74,6 @@
             
         }
 	</script>
-     <?php
-        session_start();
-        if( $_SESSION["role"] != "RACPC_ADMIN")
-        {
-           $_SESSION["role"] = "";
-		   $_SESSION["pfno"] = "";
-        ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
-        }
-		else
-		{
-    ?>
 </head>
 <body>
 <script type="text/javascript">

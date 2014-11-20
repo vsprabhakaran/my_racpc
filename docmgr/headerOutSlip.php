@@ -1,7 +1,4 @@
-<!doctype html>
-<html lang=''>
-<head>
-     <?php
+<?php
         session_start();
         if( $_SESSION["role"] != "RACPC_DM")
         {
@@ -10,7 +7,12 @@
         <meta http-equiv="refresh" content="0;URL=../login.php">
     <?php
         }
+		else
+		{
     ?>
+<!doctype html>
+<html lang=''>
+<head>
     <script type="text/javascript" src="../jquery-latest.min.js"></script>
     <link rel="stylesheet" href="../css/my_styles.css">
     <link rel="stylesheet" href="../css/pure-min.css">
@@ -61,3 +63,6 @@
 </body>
 </html>
 
+<?php
+}
+?>

@@ -1,12 +1,4 @@
-<!doctype html>
-<html lang=''>
-<head>
-   <title>Document View</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="menustyles.css">
-   <script src="jquery-latest.min.js" type="text/javascript"></script>
-   <script src="script.js"></script>
-    <?php
+<?php
         session_start();
         if( !($_SESSION["role"] == "BRANCH_USER" || $_SESSION["role"] == "RACPC_VIEW" || $_SESSION["role"] == "RACPC_ADMIN" ))
         {
@@ -16,6 +8,15 @@
 <meta http-equiv="refresh" content="0;URL=login.php"><?php
         }
     ?>
+	<!doctype html>
+<html lang=''>
+<head>
+   <title>Document View</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="menustyles.css">
+   <script src="jquery-latest.min.js" type="text/javascript"></script>
+   <script src="script.js"></script>
+    
 </head>
 <body>
 
@@ -55,3 +56,6 @@
 
 </body>
 </html>
+<?php
+}
+?>

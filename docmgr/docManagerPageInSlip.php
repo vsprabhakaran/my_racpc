@@ -12,6 +12,8 @@
         <meta http-equiv="refresh" content="0;URL=../login.php">
     <?php
         }
+		else
+		{
     ?>
     <script type="text/javascript" src="../jquery-latest.min.js"></script>
     <link rel="stylesheet" href="../css/my_styles.css">
@@ -481,3 +483,6 @@
 
 </body>
 </html>
+<?php
+}
+?>

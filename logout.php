@@ -5,6 +5,7 @@
     <?php
             session_start();
             $_SESSION["role"] = "";
+			$_SESSION["pfno"] = "";
 			session_unset();
 			session_destroy();
     ?>

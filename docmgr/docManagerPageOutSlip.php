@@ -1,8 +1,4 @@
-<!doctype html>
-<html lang=''>
-<head>
-   <title>Document Manager</title>
-     <?php
+<?php
         session_start();
         if( $_SESSION["role"] != "RACPC_DM")
         {
@@ -11,7 +7,14 @@
         <meta http-equiv="refresh" content="0;URL=../login.php">
     <?php
         }
+		else
+		{
     ?>
+
+<!doctype html>
+<html lang=''>
+<head>
+   <title>Document Manager</title>
 
     <script type="text/javascript" src="../jquery-latest.min.js"></script>
     <link rel="stylesheet" href="../css/my_styles.css">
@@ -442,3 +445,6 @@
 
 </body>
 </html>
+<?php
+}
+?>
