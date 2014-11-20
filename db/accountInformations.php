@@ -1,6 +1,6 @@
 <?php
 ini_set('display_errors','On');
-//var_dump("in info page");
+
 error_reporting(E_ALL | E_STRICT);
 session_start();
 $request = $_POST['type'];
@@ -92,14 +92,11 @@ switch($request)
 		isLoanActive($_POST['accNo']);
 		break;
 	}
-    /*
-	case 'OutActivityLogInsert';
-	{
-	OutActivityLogInsert($_POST['accNo'],$_POST['borrower'],$_POST['doc_mgr'],$_POST['entered_slip'],$_POST['entered_reason'],$_POST['entered_phone']);
-	break;
-	}
-    */
-
+	case 'validate_racpc_acc_user':
+    {
+    validate_racpc_acc_user($_POST['pfno'],$_POST['accNo']);
+    break;    
+    }
 }
 
 function db_prelude(&$con)
@@ -159,6 +156,30 @@ function isLoanActive($accountNumber)
     if($row['loan_status'] == "A")
     {
         echo json_encode(TRUE);
+    }
+    else
+    {
+        echo json_encode(FALSE);
+    }
+     mysqli_close($con);
+}
+function validate_racpc_acc_user($pfno, $accountNumber){
+    $con = NULL;
+    db_prelude($con);  
+
+    $query=mysqli_query($con,"select b.racpc_code as racpc_code
+    from user_mstr u, branch_mstr b, adms_loan_account_mstr am, loan_account_mstr l, branch_mstr b1
+    where u.pf_index = '$pfno'
+    and am.loan_acc_no = '$accountNumber' 
+    and am.loan_acc_no = l.loan_acc_no 
+    and l.branch_code = b1.branch_code
+    and u.branch_code = b.branch_code
+    and b.racpc_code = b1.racpc_code");
+
+    $row = mysqli_fetch_array($query);
+    if($row['racpc_code'] != "")
+    {
+         echo json_encode(TRUE);
     }
     else
     {
@@ -383,14 +404,14 @@ function GetNoOfFilesForAccount($accountNumber)
 
 function OutUpdateDocStatus($accountNumber)
 {
-    var_dump("updatestat");
+   
     $con = NULL;
     db_prelude($con);  
-    //var_dump("karthik");
+   
     
     $query=mysqli_query($con,"UPDATE adms_loan_account_mstr set document_status='OUT' where loan_acc_no ='$accountNumber' ");
     $rowcount=mysqli_num_rows($query);
-    var_dump($rowcount);
+   
     if ($rowcount > 0)
     {
        echo json_encode(TRUE);
@@ -406,11 +427,11 @@ function InUpdateDocStatus($accountNumber)
 {
    $con = NULL;
     db_prelude($con);  
-    //var_dump("karthik");
+    
     
     $query=mysqli_query($con,"UPDATE adms_loan_account_mstr set document_status='IN' where loan_acc_no ='$accountNumber' ");
     $rowcount=mysqli_num_rows($query);
-    //var_dump($rowcount);
+    
     if ($rowcount > 0)
     {
        echo json_encode(TRUE);

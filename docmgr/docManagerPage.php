@@ -7,7 +7,7 @@
    <script src="../jquery-latest.min.js" type="text/javascript"></script>
    <script src="../script.js"></script>
     <script type="text/javascript">
-        var currentTab = 'inSlipTab';
+        var currentTab = 'outSlipTab';
         function displayPanel(tabName) {
             document.getElementById(currentTab).className = '';
             document.getElementById(tabName).className = 'active';
@@ -38,11 +38,12 @@
                     contentIFrame.src = "../admin/printSticker.php";
                     break;
                 }
-                default:
+        /*        default:
                 {
                     contentIFrame.src = "docManagerPageOutSlip.php";
                     break;
                 }
+        */
             }
         }
     </script>
@@ -83,7 +84,7 @@
 <tr>
 <td style="width: 1%"><br/></td>
 <td style="width: 100%" colspan="2">
-<iframe id="contentFrame" frameBorder="0" scrolling="no" src="docManagerPageInSlip.php" style="width: 100%;height: 800px;" marginheight="0" marginwidth="0" frameborder="0">
+<iframe id="contentFrame" frameBorder="0" scrolling="no" src="docManagerPageOutSlip.php"  style="width: 100%;height: 800px;" marginheight="0" marginwidth="0" frameborder="0">
 </iframe></td>
 
 </tr>

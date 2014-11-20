@@ -22,7 +22,7 @@
         $.ajax({
             type: 'POST',
             url: phpURL,
-            
+            data: {type: typeCall},
             success: function (msg) {
                 if (msg != "") {
                     returnMsg = msg.replace(/["']/g, "");
@@ -63,10 +63,12 @@
 <tr>
 <td>
 <div>
-<!--
-    style="display:inline-block;"
-<iframe scrolling="no" frameBorder="0" src="headerOutSlip.php" style="width: 100%;height: 90px;" marginheight="0" marginwidth="0" frameborder="0">
-</iframe>
+
+<!-- Frame for Barcode 
+<div>
+<iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
+<br/>
+</div>
 -->
 <center>
     <img height=80 width=250 src="../img/header.png"/>
@@ -82,11 +84,14 @@
 <center>
 <div>
 
-  <table border="1" style="width:100%;height:100%;border-width:0px;border-collapse: collapse;">
+  <table border="1" style="width:100%;height:100%;border-width:0px;border-collapse: collapse; table-layout: fixed">
+  
   <tr>
     <td colspan="3" style="font-family: Arial, Helvetica, Sans-Serif; font-size: large; font-weight: 600">
     <center>
-        <h3>OUTSLIP FORM</h3> <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif; font-size: large; font-weight: 300"></div>
+        <h3>OUTSLIP FORM</h3> 
+        <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif; font-size: large; font-weight: 300"></div>
+        <p id="date"></p>
     </center>
 	</td>
     </tr>
@@ -96,11 +101,16 @@
         phpURL = '../db/UserInformations.php';
         var racpc_name = doPOST_Request(phpURL, pfNumber, "GetUserRacpcName");
         $('#myResults').text(racpc_name);
+        var d = new Date();
+        document.getElementById("date").innerHTML = d.toDateString();
+        //var new1 = document.getElementById('nam1').value; alert(new1);
+        //var new1 = $_POST["accountno"]; alert(new1);
+        
     </script>
    <tr>
     <td><center><h4>ACCOUNT NUMBER</h4></center></td>
-    <td><center><?php echo $_POST["accountno"]; ?><br></center></td> 
-    <td style="width: 100px"><br> </td>
+    <td id="nam1"><center><?php echo $_POST["accountno"];?><br></center></td> 
+    <td><br> </td>
    </tr>
    <tr>
     <td><center><h4>ACCOUNT HOLDER NAME</h4></center></td>
@@ -112,11 +122,13 @@
     <td><center><?php echo $_POST["productcode"]; ?><br></center></td> 
     <td></td>
    </tr>
+<!--
    <tr>
     <td><center><h4>BRANCH CODE</h4></center></td>
     <td><center><?php echo $_POST["brcode"]; ?><br></center></td> 
     <td></td>
    </tr>
+-->   
    <tr>
     <td><center><h4>BRANCH NAME</h4></center></td>
     <td><center><?php echo $_POST["brname"]; ?><br></center></td> 
@@ -139,7 +151,7 @@
    </tr>
    <tr>
     <td><center><h4>REASON</h4></center></td>
-    <td><center><?php echo $_POST["reason"]; ?><br></center></td> 
+    <td style="word-wrap: break-word"><p style="text-align: justify"><center><?php echo $_POST["reason"]; ?></center></p></td> 
     <td></td>
    </tr>
 </table>
