@@ -5,6 +5,21 @@ error_reporting(E_ALL | E_STRICT);
 session_start();
 $request = $_POST['type'];
 
+interface userStatusEnum
+{
+    const UserCreated = 0;
+    const UserApproved = 1;
+    const UserDisabled = 2;
+    const UserActive = 4;
+}
+interface userRoleEnum
+{
+    const branchView = 0;
+    const racpcView = 1;
+    const racpcAdmin = 2;
+    const racpcDocMgr = 4;
+    const racpcUCO = 8;
+}
 switch($request)
 {
     case 'isValidUser':
@@ -37,9 +52,49 @@ switch($request)
         GetUserBranchName($_POST['pfno']);
         break;
     }
-    case 'GetUserStatus':
+    case 'isUserRoleBranchView':
     {
-        //GetUserStatus($_POST['pfno']);
+        GetRequiredUserRole($_POST['pfno'],userRoleEnum::branchView);
+        break;
+    }
+    case 'isUserRoleRacpcView':
+    {
+        GetRequiredUserRole($_POST['pfno'],userRoleEnum::racpcView);
+        break;
+    }
+    case 'isUserRoleDocumentManager':
+    {
+        GetRequiredUserRole($_POST['pfno'],userRoleEnum::racpcDocMgr);
+        break;
+    }
+    case 'isUserRoleAdmin':
+    {
+        GetRequiredUserRole($_POST['pfno'],userRoleEnum::racpcAdmin);
+        break;
+    }
+    case 'isUserRoleUCO':
+    {
+        GetRequiredUserRole($_POST['pfno'],userRoleEnum::racpcUCO);
+        break;
+    }
+    case 'isUserActive':
+    {
+        GetRequiredUserStatus($_POST['pfno'],userStatusEnum::UserActive);
+        break;
+    }
+    case 'isUserDisabled':
+    {
+        GetRequiredUserStatus($_POST['pfno'],userStatusEnum::UserDisabled);
+        break;
+    }
+    case 'isUserApproved':
+    {
+        GetRequiredUserStatus($_POST['pfno'],userStatusEnum::UserApproved);
+        break;
+    }
+    case 'isUserCreated':
+    {
+        GetRequiredUserStatus($_POST['pfno'],userStatusEnum::UserCreated);
         break;
     }
     case 'GetUserPhone':
@@ -285,6 +340,62 @@ function GetUserEmail($pfNumber)
         echo json_encode(FALSE);
     }
      mysqli_close($con);
+}
+function GetRequiredUserStatus($pfNumber,$requiredStatus)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"select status_flag from adms_user_mstr where pf_index = '$pfNumber'");
+    $row = mysqli_fetch_array($query);
+    $statusResult = FALSE;
+    if(($requiredStatus == userStatusEnum::UserActive) && (strcmp($row['status_flag'],"A") == 0))
+    {
+        $statusResult = TRUE;
+    }
+    else if(($requiredStatus == userStatusEnum::UserDisabled) && (strcmp($row['status_flag'],"D") == 0))
+    {
+        $statusResult = TRUE;
+    }
+    else if(($requiredStatus == userStatusEnum::UserApproved) && (strcmp($row['status_flag'],"E") == 0))
+    {
+        $statusResult = TRUE;
+    }
+    else if(($requiredStatus == userStatusEnum::UserCreated) && (strcmp($row['status_flag'],"C") == 0))
+    {
+        $statusResult = TRUE;
+    }
+    echo json_encode($statusResult);
+    mysqli_close($con);
+}
+function GetRequiredUserRole($pfNumber,$requiredRole)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"select adms_role from adms_user_mstr where pf_index = '$pfNumber'");
+    $row = mysqli_fetch_array($query);
+    $statusResult = FALSE;
+    if(($requiredRole == userRoleEnum::branchView) && (strcmp($row['adms_role'],"BRANCH_VIEW") == 0))
+    {
+        $statusResult = TRUE;
+    }
+    else if(($requiredRole == userRoleEnum::racpcView) && (strcmp($row['adms_role'],"RACPC_VIEW") == 0))
+    {
+        $statusResult = TRUE;
+    }
+    else if(($requiredRole == userRoleEnum::racpcAdmin) && (strcmp($row['adms_role'],"RACPC_ADMIN") == 0))
+    {
+        $statusResult = TRUE;
+    }
+    else if(($requiredRole == userRoleEnum::racpcDocMgr) && (strcmp($row['adms_role'],"RACPC_DM") == 0))
+    {
+        $statusResult = TRUE;
+    }
+    else if(($requiredRole == userRoleEnum::racpcUCO) && (strcmp($row['adms_role'],"RACPC_UCO") == 0))
+    {
+        $statusResult = TRUE;
+    }
+    echo json_encode($statusResult);
+    mysqli_close($con);
 }
 /*function getAccountDetails($pfNumber)
 {
