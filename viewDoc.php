@@ -19,7 +19,7 @@
 				var branchCode= doPOST_Request('db/accountInformations.php',enteredAccNumber,'','GetBranchCodeOfAccount');
 				if (role=="BRANCH_VIEW")
 				{
-					var status= doPOST_Request('db/accountInformations.php',enteredAccNumber,pfno,'checkBrachViewAccess');	
+					var status= doPOST_Request('db/accountInformations.php',enteredAccNumber,pfno,'checkBranchViewAccess');	
 				}
 				else if (role=="RACPC_VIEW" || role=="RACPC_ADMIN" || role=="RACPC_DM" )
 				{
@@ -27,11 +27,13 @@
 				}
 				else
 					alert("You dont have access to view this file");
-				
 				if(status=='RACPC_VIEW_GRANTED' || status=='BRANCH_VIEW_GRANTED')
+				{
 					document.getElementById("pdfFile").setAttribute('src',"docBuffer.php?accNo="+enteredAccNumber);
                 document.getElementById("pdfFile").style.visibility = "visible";
                 }
+				else alert("You dont have access to view this file");
+            }
 			function doPOST_Request(phpURL, accNumber,pfnum, typeCall) {
 				var returnMsg = '';
                 $.ajax({
@@ -39,11 +41,11 @@
                     url: phpURL,
                     data: { accNo: accNumber,pfno: pfnum, type: typeCall },
                     success: function (msg) {
+						//alert(typeCall+" " +msg);
                         if (msg != "") returnMsg = msg.replace(/["']/g, "");
-                        else alert("not Found");
+                        else alert("msg is empty");
                         if (msg == "false") 
 						{
-							alert(msg);
 							returnMsg = "NA";
                 }
                     },

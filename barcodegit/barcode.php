@@ -1,5 +1,11 @@
 <?php
-
+session_start();
+        if( !( $_SESSION["role"] == "RACPC_DM" || $_SESSION["role"] == "RACPC_ADMIN" ))
+        {
+           $_SESSION["role"] = "";
+           $_SESSION["pfno"] = "";
+        ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
+        }
 /*
  *  Author:  David S. Tufts
  *  Company: Rocketwood.LLC

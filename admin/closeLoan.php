@@ -68,6 +68,7 @@
         if( $_SESSION["role"] != "RACPC_ADMIN")
         {
            $_SESSION["role"] = "";
+		   $_SESSION["pfno"] = "";
         ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
         }
     ?>

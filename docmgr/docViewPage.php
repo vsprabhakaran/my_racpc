@@ -1,3 +1,13 @@
+<?php
+        session_start();
+        if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW"))
+        {
+           $_SESSION["role"] = "";
+        ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
+        }
+		else
+		{
+    ?>
 <!doctype html>
 <html lang=''>
 <head>
@@ -5,18 +15,12 @@
    <link rel="stylesheet" href="../menustyles.css">
    <script src="../jquery-latest.min.js" type="text/javascript"></script>
    <script src="../script.js"></script>
+   
 </head>
 <body>
 
 <div>
-    <?php
-        session_start();
-        if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW"))
-        {
-           $_SESSION["role"] = "";
-        ?><meta http-equiv="refresh" content="0;URL=login.html"><?php
-        }
-    ?>
+    
 <table border="0" style="width:100%;height:100%;border-width:2px;">
 <tr>
 <td colspan="3"> <div>
@@ -46,3 +50,6 @@
 
 </body>
 </html>
+<?php 
+}
+?>

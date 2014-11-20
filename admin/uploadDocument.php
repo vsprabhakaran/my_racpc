@@ -8,7 +8,8 @@
         if( $_SESSION["role"] != "RACPC_ADMIN")
         {
            $_SESSION["role"] = "";
-        ?><!--meta http-equiv="refresh" content="0;URL=../login.html"--><?php
+		   $_SESSION["pfno"] = "";
+        ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
         }
     ?>
     <script type="text/javascript" src="../jquery-latest.min.js"></script>
@@ -43,14 +44,32 @@
         }
         function validAccountNumberEnterred(enteredAccNumber) {
             //Resetting some elements before actions
+			$.ajax({
+                type: 'POST',
+                url: '../db/accountInformations.php',
+                data: { accNo: enteredAccNumber, type: 'isLoanActive' },
+                success: function (msg) {
+                    if (msg == "true") {
+					resetForm();
 			document.getElementById("barcodeIFrame").setAttribute('src',"../barcodegit/test.php?text="+ document.getElementById("accNumber").value);
 			document.getElementById("barcodeIFrame").style.display="block";
-            resetForm();
-            document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
             document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
             $('#formButton').prop('disabled', false);
+					document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
 			//$("#accBarcode").barcode(enteredAccNumber, "code128",{barWidth:2, barHeight:30});
             populateFields(enteredAccNumber);
+					var popup = window.open("../AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
+					$(popup).blur(function () { this.close(); });
+                }
+                else if (msg == "false") {
+					document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
+                    alert("You are trying to upload a closed loan. Access Denied.");
+                }
+                },
+                error: function (msg) { alert("fail : " + msg); },
+                async: false
+            });
+			
 
 
         }
@@ -81,7 +100,7 @@
         }
         function showAccountDetails() {
             var enteredAccNumber = document.getElementById('accNumber').value;
-            var popup = window.open("../AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
+            var popup =window.open("../AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
             $(popup).blur(function () { this.close(); });
         }
 
@@ -104,6 +123,23 @@
         function populateFields(accountNumber) {
 
             docStatus = doPOST_Request(dbURL, accountNumber, 'GetDocumentStatusOfAccount');
+			var enteredAccNumber = document.getElementById('accNumber').value;
+			var loanStatus;
+			$.ajax({
+                type: 'POST',
+                url: '../db/accountInformations.php',
+                data: { accNo: enteredAccNumber, type: 'isLoanActive' },
+                success: function (msg) {
+                    if (msg == "true") {
+                   loanStatus='A';
+                }
+                else if (msg == "false") {
+					loanStatus='C';
+                }
+                },
+                error: function (msg) { alert("fail : " + msg); },
+                async: false
+            });
 
             //Enable the fiels for editing coz the documnet and location details are not present
             if (docStatus == "A" || !(isLoanInADMS(accountNumber))) {
@@ -113,9 +149,9 @@
                 document.getElementById("newDocDiv").style.display = "block";
                 return;
             }
-            else if (docStatus == "C") {    //The loan is closed so no need to get or populate the details regarding this loan
-                alert("This loan is already closed!!");
-                nullAccountNumberEnterred();
+            else if (loanStatus == "C") {    //The loan is closed so no need to get or populate the details regarding this loan
+                
+                invalidAccountNumberEnterred();
                 return;
             }
             else if (docStatus == "IN" || docStatus == "OUT") {
@@ -293,7 +329,7 @@
                      <a id="printBarcode" href="#" onclick="print()" ><div id="accBarcode"></div></a>
                      </div-->
                   <div>
-                     <iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
+            <iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:20em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
                      <br/>
                   </div>
                   <div class="pure-control-group" id="newDocDiv" style="display: none">
@@ -315,7 +351,7 @@
                      <a class="editAnchor" href="#" onclick="RacKEditClick()"><img class="editImg" src="../img/write.png" alt="edit"/></a>
          </div>
          <div>
-            <iframe id="rackIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
+            <iframe id="rackIFrame" frameBorder="0" scrolling="no" style="height:4em;width:20em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
             <br>
                   </div>
                   <div class="pure-controls">

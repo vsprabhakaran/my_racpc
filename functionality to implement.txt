@@ -1,9 +1,14 @@
 Prabhakaran
 1. Appending the second PDF to an already existing PDF for an account.
 2. Moving the documents across the RACPC.
+3. IE menu bar pblm
 
 
 Karthikeyan
+1. Barcode in slips
 
 Jagan
-1. Old doc upload=> change the path in uploaddoc file
+1. Authorize every page
+2. Activity Log
+3. After login redirect login page to respective home page
+4. Session timeout

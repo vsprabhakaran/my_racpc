@@ -8,6 +8,7 @@
         if( $_SESSION["role"] != "RACPC_ADMIN" && $_SESSION["role"] != "RACPC_DM")
         {
            $_SESSION["role"] = "";
+		   $_SESSION["pfno"] = "";
         ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
         }
     ?>
@@ -57,7 +58,8 @@
                 async: false
             });
 			
-			
+			var popup = window.open("../AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
+            $(popup).blur(function () { this.close(); });
         }
 		function showRackBarcode(){
 			document.getElementById("rackIFrame").setAttribute('src',"../barcodegit/test.php?text="+ document.getElementById("rack").value);

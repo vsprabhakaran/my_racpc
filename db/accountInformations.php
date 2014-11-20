@@ -77,9 +77,9 @@ switch($request)
     isValidAdmsAccount($_POST['accNo'],$_POST['login_pf_index']);
 	break;        
     }
-	case 'checkBrachViewAccess':
+	case 'checkBranchViewAccess':
 	{
-	checkBrachViewAccess($_POST['accNo'],$_POST['pfno']);	
+	checkBranchViewAccess($_POST['accNo'],$_POST['pfno']);	
 	break;
 	}
 	case 'checkRacpcViewAccess':
@@ -113,9 +113,9 @@ function checkBranchViewAccess($accountNumber,$pfno)
 {
 	$con = NULL;
     db_prelude($con);  
-    $query=mysqli_query($con,"select l.branch_code from loan_account_mstr as l where (l.branch_code= (select u.branch_code from user_mstr as u where pf_index='$pfno')) and (l.loan_acc_no='$accountNumber')");
+    $query=mysqli_query($con,"select l.branch_code from loan_account_mstr as l where l.loan_acc_no='$accountNumber' and  (l.branch_code= (select u.branch_code from user_mstr as u where pf_index='$pfno'))");
     $row = mysqli_fetch_array($query);
-	if($row['loan_acc_no'] != "")
+	if($row['branch_code'] != "")
     {
         echo json_encode("BRANCH_VIEW_GRANTED");
     }

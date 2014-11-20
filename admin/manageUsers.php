@@ -8,7 +8,8 @@
         if( $_SESSION["role"] != "RACPC_ADMIN")
         {
            $_SESSION["role"] = "";
-        ?><!--meta http-equiv="refresh" content="0;URL=../login.html"--><?php
+		   $_SESSION["pfno"] = "";
+        ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
         }
     ?>
 	<script src="../tab-content/tabcontent.js" type="text/javascript"></script>
