@@ -57,7 +57,7 @@
         if( $_SESSION["role"] != "RACPC_DM")
         {
            $_SESSION["role"] = "";
-        ?><meta http-equiv="refresh" content="0;URL=login.html"><?php
+        ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
         }
     ?>
 <table border="0" style="width:100%;height:100%;border-width:2px;">

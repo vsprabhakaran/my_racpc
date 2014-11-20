@@ -10,7 +10,7 @@
     ?>
     <script type="text/javascript">
         function logout() {
-            window.top.location.href = "login.html";
+            window.top.location.href = "login.php";
         }
     </script>
 </head>

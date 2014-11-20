@@ -3,7 +3,8 @@
         if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW"))
         {
            $_SESSION["role"] = "";
-        ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
+		   $_SESSION["pfno"] = "";
+        ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
         }
 		else
 		{

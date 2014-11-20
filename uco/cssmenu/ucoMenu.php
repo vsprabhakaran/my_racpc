@@ -13,9 +13,9 @@
 
 <div id='cssmenu'>
 <ul>
-   <li class='active' ><a href='#'><span>Approve1 User</span></a></li>
+   <li class='active' ><a href='#'><span>Approve User</span></a></li>
    <li style="width: 73%; text-align:right; visibility: hidden;">&nbsp;</li>
-   <li style="text-align:center;"><a href='../../../logout.php'><span>Logout</span></a></li>
+   <li style="text-align:center;"><a href='../../logout.php'><span>Logout</span></a></li>
 </ul>
 </div>
 

@@ -55,7 +55,7 @@ if($password != "" && $row['adms_password']==$passwordHash && $role !="" )
                 <script type="text/javascript">
 	                alert("User role not found.");
                 </script>
-                <meta http-equiv="refresh" content="0;URL=login.html">
+                <meta http-equiv="refresh" content="0;URL=login.php">
             <?php
             break;
         }
@@ -67,7 +67,7 @@ else
         <script type="text/javascript">
 	        alert("Invalid username/password");
         </script>
-        <meta http-equiv="refresh" content="0;URL=login.html">
+        <meta http-equiv="refresh" content="0;URL=login.php">
 		
 <?php
   

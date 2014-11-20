@@ -9,7 +9,7 @@
         {
            $_SESSION["role"] = "";
 		   $_SESSION["pfno"] = "";
-        ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
+        ?><!--meta http-equiv="refresh" content="0;URL=../login.php"--><?php
         }
     ?>
     <script type="text/javascript" src="../jquery-latest.min.js"></script>
@@ -308,7 +308,9 @@
       if(enteredAccNumber!=fileName)
       {
       alert("File name and Loan Number mismatch. Upload correct document.");
-      document.getElementById('file').value='';
+                //Resetting the file element using wrap/unwrapping - refer stackoverflow.
+                $('#file').wrap('<form>').closest('form').get(0).reset();
+                $('#file').unwrap();
       }
       }
       
@@ -334,7 +336,7 @@
                   </div>
                   <div class="pure-control-group" id="newDocDiv" style="display: none">
                      <label for="file">Choose file</label>
-            <input id="file" type="file" name="file" disabled="disabled" onchange="validateFile()" />
+            <input id="file" type="file" name="file" onchange="validateFile()" />
                   </div>
                   <div class="pure-control-group" id="viewDocDiv" style="display:none">
                      <label for="fileURL">Document </label>

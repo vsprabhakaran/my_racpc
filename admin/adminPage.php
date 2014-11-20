@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang=''>
 <head>
+	<?php
+			session_start();
+			if( $_SESSION["role"] != "RACPC_ADMIN")
+			{
+			   $_SESSION["role"] = "";
+			?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
+			}
+			else
+			{
+		?>
    <title>Admin</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="../menustyles.css">
@@ -48,15 +58,7 @@
 <body>
 
 <div>
-    <?php
-        session_start();
-        if( $_SESSION["role"] != "RACPC_ADMIN")
-        {
-           $_SESSION["role"] = "";
-		   $_SESSION["pfno"] = "";
-        ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
-        }
-    ?>
+    
 <table border="0" style="width:100%;height:100%;border-width:2px;">
 <tr>
 <td colspan="3"> <div>
@@ -85,3 +87,6 @@
 
 </body>
 </html>
+<?php
+}
+?>

@@ -9,7 +9,7 @@
         {
            $_SESSION["role"] = "";
 		   $_SESSION["pfno"] = "";
-        ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
+        ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
         }
     ?>
 	<script type="text/javascript" src="../jquery-latest.min.js"></script>

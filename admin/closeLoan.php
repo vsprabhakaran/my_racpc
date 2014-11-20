@@ -69,8 +69,10 @@
         {
            $_SESSION["role"] = "";
 		   $_SESSION["pfno"] = "";
-        ?><meta http-equiv="refresh" content="0;URL=../login.html"><?php
+        ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
         }
+		else
+		{
     ?>
 </head>
 <body>
@@ -102,3 +104,6 @@
 
 </body>
 </html>
+<?php
+}
+?>

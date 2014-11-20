@@ -8,7 +8,7 @@
         {
            $_SESSION["role"] = "";
         ?>
-        <meta http-equiv="refresh" content="0;URL=../login.html">
+        <meta http-equiv="refresh" content="0;URL=../login.php">
     <?php
         }
     ?>
