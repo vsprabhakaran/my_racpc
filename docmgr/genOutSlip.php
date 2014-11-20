@@ -26,7 +26,6 @@
             success: function (msg) {
                 if (msg != "") {
                     returnMsg = msg.replace(/["']/g, "");
-                    //document.getElementById('myResults').innerHTML = returnMsg;
                 }
                 else alert("session user not Found");
             },
@@ -42,7 +41,6 @@
             url: phpURL,
             data: { pfno: pfNumber, type: typeCall },
             success: function (msg) {
-                //alert(msg);
                 if (msg != "") { returnMsg = msg.replace(/["']/g, ""); }
                 else alert("pf number not Found");
             },
@@ -58,18 +56,14 @@
 
 <div>
    <center>
-<table border="0" style="width:90%;height:100%;border-width:2px;">
+<table border="0" style="width:100%;height:100%;border-width:2px;">
 
 <tr>
 <td>
 <div>
 
-<!-- Frame for Barcode 
-<div>
-<iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;" marginheight="0" marginwidth="0" frameborder="0" src=''></iframe>
-<br/>
-</div>
--->
+
+
 <center>
     <img height=80 width=250 src="../img/header.png"/>
 </center>
@@ -103,14 +97,22 @@
         $('#myResults').text(racpc_name);
         var d = new Date();
         document.getElementById("date").innerHTML = d.toDateString();
-        //var new1 = document.getElementById('nam1').value; alert(new1);
-        //var new1 = $_POST["accountno"]; alert(new1);
-        
     </script>
+        
    <tr>
     <td><center><h4>ACCOUNT NUMBER</h4></center></td>
-    <td id="nam1"><center><?php echo $_POST["accountno"];?><br></center></td> 
-    <td><br> </td>
+    <td><center>
+    <?php echo $_POST["accountno"]; 
+    ?> <br>
+    </center></td> 
+<td>
+<div>
+<iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:12em; " 
+    marginheight="0" marginwidth="0" frameborder="0" src="../barcodegit/test.php?text=<?php echo $_POST['accountno'] ?>">
+</iframe>
+<br><br>
+</div>    
+</td>
    </tr>
    <tr>
     <td><center><h4>ACCOUNT HOLDER NAME</h4></center></td>
@@ -149,6 +151,7 @@
 		</td> 
     <td></td>
    </tr>
+     
    <tr>
     <td><center><h4>REASON</h4></center></td>
     <td style="word-wrap: break-word"><p style="text-align: justify"><center><?php echo $_POST["reason"]; ?></center></p></td> 

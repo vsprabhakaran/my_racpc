@@ -413,7 +413,7 @@
     </div>
 
     <div class="pure-control-group">
-        <label for="nameofGiver" > Name of the Reciver :</label>
+        <label for="nameofGiver" > Name of the Receiver :</label>
         <input type="text" id="nameofReciver" name="nameofReciver" readonly="true" />
     </div>
 
