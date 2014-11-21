@@ -157,4 +157,48 @@ function GetRequiredUserStatus($pfNumber,$requiredStatus)
     mysqli_close($con);
     return $statusResult;
 }
+
+function GetUserBranchCode($pfNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $colname = "branchcode";
+    $query=mysqli_query($con,"select branch_code as '$colname' from user_mstr where pf_index = '$pfNumber'");
+    $row = mysqli_fetch_array($query);
+    if($row[$colname] != "")
+    {
+        $returnValue =  $row[$colname];
+    }
+    else
+    {
+        $returnValue = "";
+    }
+     mysqli_close($con);
+     return $returnValue;
+}
+
+function GetUserRacpcCode($pfNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $colname = "racpc_code";
+
+    $query=mysqli_query($con,"select b.racpc_code as '$colname' from racpc_mstr r, branch_mstr b, user_mstr u
+    where r.racpc_code = b.racpc_code 
+    and b.branch_code = u.branch_code
+    and u.pf_index = '$pfNumber'");
+
+    $row = mysqli_fetch_array($query);
+    if($row[$colname] != "")
+    {
+        $returnValue =  $row[$colname];
+    }
+    else
+    {
+        $returnValue = "";
+    }
+     mysqli_close($con);
+     return $returnValue;
+}
+
 ?>

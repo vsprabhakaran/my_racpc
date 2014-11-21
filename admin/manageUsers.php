@@ -26,23 +26,7 @@
             if (result == "true") return true;
             else false;
         }
-        /*function isUserInADMS(pfNumber) {
-        var result = doPOST_Request(dbURL, pfNumber, 'isValidADMSUser');
-        if (result == "true") return true;
-        else false;
-        }
-        function isUserBranchViewer(pfNumber)
-        {
-        var result = doPOST_Request(dbURL, pfNumber, 'isUserRoleBranchView');
-        if (result == "true") return true;
-        else false;
-        }
-        function isUserRACPCViewer(pfNumber)
-        {
-        var result = doPOST_Request(dbURL, pfNumber, 'isUserRoleRacpcView');
-        if (result == "true") return true;
-        else false;
-        }*/
+        
         function PFNumberEnterred(thisObj) {
             pfNumber = $(thisObj).val();
             var className = $(thisObj).attr('class');
@@ -132,7 +116,7 @@
             $(thisObj).css("background-color", "#CCFFCC");
             var className = $(thisObj).attr('class');
             $("." + className + " a").css('visibility', 'visible');
-            $("." + className + " select").prop('disabled', false);
+            //$("." + className + " select").prop('disabled', false);
             $("." + className + " :button").prop('disabled', false);
             isPfNumberValid = true;
                 }
@@ -142,7 +126,7 @@
         function resetForm(thisObj) {
             var className = $(thisObj).attr('class');
             $("." + className + " a").css('visibility', 'hidden');
-            $("." + className + " select").prop('disabled', true);
+            //$("." + className + " select").prop('disabled', true);
             $("." + className + " :button").prop('disabled', true);
             $("." + className + " .error").css('visibility', 'hidden');
         }
@@ -181,7 +165,7 @@
         $(document).ready(function () {
 
             $("form a").css('visibility', 'hidden');
-            $("form select").prop('disabled', true);
+            //$("form select").prop('disabled', true);
             $("form :button").prop('disabled', true);
             $("form .error").css('visibility', 'hidden');
 
@@ -233,15 +217,6 @@
                         <label for="Error" style="color: #ff6a00">Error :</label>
                         <span id="Error"  class="createUser" style="color: #ff6a00"></span>
                     </div>
-					<div class="pure-control-group">
-					<div class="pure-u-1 pure-u-md-1-3">
-					<label for="role">User type</label>
-					<select id="crole" name="crole" class="pure-input-1-2 createUser" style="width:20%;">
-						  <option value="queryUser">Query User</option>
-						  <option value="branchUser">Branch User</option>
-					</select>
-					</div>	
-					</div>
 					<div class="pure-controls">
 					<button class="pure-button pure-button-primary createUser" id="cSubmitButton" name="cSubmitButton" type="submit">Create</button>
 					</div>

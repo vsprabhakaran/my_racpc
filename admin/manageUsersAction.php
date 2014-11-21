@@ -47,14 +47,13 @@
     if(strcmp($actionType,"UserCreationForm") == 0)
     {
         $pfNumber = $_POST['cpfid'];
-        $userType = $_POST['crole'];
         $accountCreated = FALSE;
         if(isValidUser($pfNumber) && !isValidADMSUser($pfNumber))
         {
-            if(strcmp($userType,'branchUser') == 0)
-                $accountCreated = InsertNewBranchViewUser($pfNumber);
-            else if(strcmp($userType,'queryUser') == 0)
+            if(strcmp(GetUserBranchCode($pfNumber),GetUserRacpcCode($pfNumber)) == 0)
                 $accountCreated = InsertNewRacpcViewUser($pfNumber);
+            else
+                $accountCreated = InsertNewBranchViewUser($pfNumber);
         }
         ($accountCreated)?(printSuccessPage("New User Created")):(printErrorPage("Error creating new user!!!"));
     }

@@ -60,6 +60,7 @@ color:Black;
 }
 #cssmenu #bg-one {
   height: 10px;
+  z-index: -2;
   background: #0f71ba;
 }
 #cssmenu #bg-two {
@@ -70,7 +71,7 @@ color:Black;
 #cssmenu #bg-three {
   bottom: 4px;
   height: 55px;
-  z-index: 3;
+  z-index: -1;
   background: #D7D7D7;
   /*background: -moz-linear-gradient(top, #555555 0%, #222222 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #555555), color-stop(100%, #222222));

@@ -153,7 +153,6 @@
                 return;
             }
             else if (loanStatus == "C") {    //The loan is closed so no need to get or populate the details regarding this loan
-                
                 invalidAccountNumberEnterred();
                 return;
             }
@@ -322,7 +321,7 @@
    <table style="width: 100%" border="0">
       <tr>
          <td style="height:15em;width:50%;">
-            <div style="height:10em">
+            <div>
                <form id="formid" class="pure-form pure-form-aligned" action="uploadDocumentAction.php" method="post" enctype="multipart/form-data">
                   <div class="pure-control-group">
                      <label for="accNumber" >Account Number</label>
