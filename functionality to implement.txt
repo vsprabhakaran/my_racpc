@@ -1,14 +1,16 @@
 Prabhakaran
 //1. Appending the second PDF to an already existing PDF for an account.
 //2. Moving the documents across the RACPC.
-3. IE menu bar pblm
+3. IE menu bar pblm - done
 4. resolve the DB function duplications for POST and PHP access.
-
+5. Hide location Details for branch view and racpc view
+6. View acc details as Iframe preview for admin
 Karthikeyan
-1. Barcode in slips
+1. Barcode in slips-done
 2. Activity Log
 
 Jagan
-1. Authorize every page
+1. Authorize every page - done
 3. After login redirect login page to respective home page - done
 4. Session timeout
+5. footer

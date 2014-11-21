@@ -57,7 +57,7 @@ switch($role)
 
 	<!-- Main HTML -->
 	
-<body style="background-image:url('img\\greyzz.png')">
+<body style="background-image:url('img/greyzz.png')">
 	
 	<!-- Begin Page Content -->
 	<!--div id="header">

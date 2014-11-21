@@ -160,7 +160,7 @@
     </script>
 </head>
 
-<body style="background-image:url('..\\img\\greyzz.png')">
+<body style="background-image:url('..\\img\\greyzz.png'); margin-right: 40%;">
     <script type="text/javascript">
         $(document).ready(function () {
 

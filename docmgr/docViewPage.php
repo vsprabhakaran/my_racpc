@@ -12,13 +12,13 @@
 <!doctype html>
 <html lang=''>
 <head>
-   <title>Admin</title>
+   <title>View Document</title>
    <link rel="stylesheet" href="../menustyles.css">
    <script src="../jquery-latest.min.js" type="text/javascript"></script>
    <script src="../script.js"></script>
    
 </head>
-<body>
+<body style="background-image:url('../img/greyzz.png')">
 
 <div>
     

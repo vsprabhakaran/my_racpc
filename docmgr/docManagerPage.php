@@ -60,15 +60,14 @@
         }
     </script>
 </head>
-<body>
+<body style="background-image:url('img/greyzz.png'); margin:0px;">
 
 
 <div>
 <table border="0" style="width:100%;height:100%;border-width:2px;">
 <tr>
-<td colspan="3"> <div>
+<td colspan="3">
 <iframe frameBorder="0" scrolling="no" src="../header.php" style="width: 100%;height: 90px;" marginheight="0" marginwidth="0" frameborder="0"></iframe>
-</div>
 </td>
 </tr>
 <tr><td colspan="3">
@@ -86,7 +85,7 @@
 </div>
 </td></tr>
 <tr>
-<td style="width: 1%"><br/></td>
+
 <td style="width: 100%" colspan="2">
 <iframe id="contentFrame" frameBorder="0" scrolling="no" src="docManagerPageOutSlip.php"  style="width: 100%;height: 800px;" marginheight="0" marginwidth="0" frameborder="0">
 </iframe></td>

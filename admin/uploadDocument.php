@@ -153,6 +153,7 @@
                 return;
             }
             else if (loanStatus == "C") {    //The loan is closed so no need to get or populate the details regarding this loan
+                
                 invalidAccountNumberEnterred();
                 return;
             }
@@ -365,13 +366,11 @@
                </form>
             </div>
          </td>
-         <td style="height:100%;width:50%;" rowspan="2">
+   <td style="height:100%;width:50%;">
             <iframe  id="pdfFile"  style="visibility: hidden;height:30em;width:100%;"> </iframe>
          </td>
       </tr>
-      <tr>
-         <td style="height:10em;width:50%;">&nbsp;</td>
-      </tr>
+  
    </table>
 </body>
 </html>

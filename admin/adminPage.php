@@ -12,7 +12,7 @@
 			else
 			{
 		?>
-   <title>Admin</title>
+   <title>RACPC Admin</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="../menustyles.css">
    <script src="../jquery-latest.min.js" type="text/javascript"></script>
@@ -56,7 +56,7 @@
         }
     </script>
 </head>
-<body>
+<body style="background-image:url('../img/greyzz.png')">
 
 <div>
     
@@ -82,7 +82,9 @@
 <td> <iframe id="contentFrame" frameBorder="0" scrolling="no" src="uploadDocument.php" style="width: 100%;height: 550px;" marginheight="0" marginwidth="0" frameborder="0"></iframe> </td>
 <td ><br/></td>
 </tr>
-<tr><td colspan="3"><br/></td></tr>
+<tr><td colspan="3">
+<iframe frameBorder="0" scrolling="no" src='../footer.php' style="width: 100%;height: 30%; background-color: #0f71ba;" marginheight="0" marginwidth="0" frameborder="0"/>
+</td></tr>
 </table>
 </div>
 
