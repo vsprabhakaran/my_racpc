@@ -75,10 +75,35 @@
             });
 
         }
+		function doPOST_Request(phpURL, accNumber, typeCall) {
+            var returnMsg = '';
+            $.ajax({
+                type: 'POST',
+                url: phpURL,
+                data: { accNo: accNumber, type: typeCall },
+                success: function (msg) {
+                    returnMsg = msg.replace(/["']/g, "");
+                    
+                },
+                error: function (msg) { alert("fail : " + msg); },
+                async: false
+            });
+            return returnMsg;
+        }
         function validAccountNumberEnterred() {
+			var enteredAccNumber = document.getElementById('accNumber').value;
+			var loanStatus=doPOST_Request('db/accountInformations.php',enteredAccNumber,'isLoanActive');
+			if(loanStatus=='true') {
             document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
             document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
             $('#viewButton').prop('disabled', false);
+			}
+			else 
+			
+			{
+				document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
+                alert("Loan is not active.");
+			}
         }
         function invalidAccountNumberEnterred() {
             document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";

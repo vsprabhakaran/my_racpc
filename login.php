@@ -1,6 +1,10 @@
 <?php
 session_start();
+if(isset($_SESSION["role"]))
 $role= $_SESSION["role"];
+else 
+$role="";
+
 switch($role)
     {
         case "RACPC_ADMIN":

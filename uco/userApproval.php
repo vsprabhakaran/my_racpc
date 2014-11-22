@@ -22,7 +22,7 @@ if (!$con)
 
 ?>
  <?php
- $sql    = 'SELECT * FROM adms_user_mstr where status_flag = "A"';
+ $sql    = 'SELECT * FROM adms_user_mstr where status_flag = "C"';
 $result = mysql_query($sql, $con);
 $pfarray = array();
 

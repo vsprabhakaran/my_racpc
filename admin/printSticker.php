@@ -4,7 +4,7 @@
     {
        $_SESSION["role"] = "";
        $_SESSION["pfno"] = "";
-?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
+        ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
     }
     else
     {
@@ -16,6 +16,15 @@
         <link rel="stylesheet" href="../css/pure-min.css">
         <script type="text/javascript" src="../jquery-latest.min.js"></script>
         <script type="text/javascript">
+		function reset()
+		{	
+			$("#rack").val("");
+			document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
+			document.getElementById("barcodeIFrame").style.display="none";
+			document.getElementById("rackIFrame").style.display="none";
+			document.getElementById('accNumber').style.backgroundColor = "";
+			
+		}
                 function accountNumButtonClick() {
                 var enteredAccNumber = document.getElementById('accNumber').value;
                 if (enteredAccNumber == "") {
@@ -34,16 +43,28 @@
                 });
             
             }
+			function doPOST_Request(phpURL, accNumber, typeCall) {
+				var returnMsg = '';
+				$.ajax({
+					type: 'POST',
+					url: phpURL,
+					data: { accNo: accNumber, type: typeCall },
+					success: function (msg) {
+						returnMsg = msg.replace(/["']/g, "");
+						
+					},
+					error: function (msg) { alert("fail : " + msg); },
+					async: false
+				});
+				return returnMsg;
+			}
             function validAccountNumberEnterred() {
                 var enteredAccNumber = document.getElementById('accNumber').value;
-                $.ajax({
-                    type: 'POST',
-                    url: '../db/accountInformations.php',
-                    data: { accNo: enteredAccNumber, type: 'GetRackNumberOfAccount' },
-                    success: function (msg) {
-                        if (msg != "") {
+			var loanStatus=doPOST_Request('../db/accountInformations.php',enteredAccNumber,'isLoanActive');
+				if(loanStatus=='true') {
+					var rackNo=doPOST_Request('../db/accountInformations.php',enteredAccNumber,'GetRackNumberOfAccount');
+                    if (rackNo != "") {
                             document.getElementById("barcodeIFrame").setAttribute('src',"../barcodegit/test.php?text="+ document.getElementById("accNumber").value);
-                            var rackNo = msg.replace(/["']/g, "");
                             $("#rack").val(rackNo);
                             $("#rackIFrame").prop("src","../barcodegit/test.php?text="+rackNo);
                             $('.accountNumberBarcode').css("display", "block");
@@ -52,15 +73,18 @@
                             document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
                             document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
                     }
-                    else if (msg == "false") {
+                else if (rackNo == "false") {
+					alert("Rack Number not found");
+					reset();
+                }
+              } 			  
+			else if(loanStatus=='false')
+			{
+				reset();
                         document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
-                        alert("Loan is already closed.");
+                alert("Loan is not active.");
                     }
-                    },
-                    error: function (msg) { alert("fail : " + msg); },
-                    async: false
-                });
-            
+			document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
                 var popup = window.open("../AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
                 $(popup).blur(function () { this.close(); });
             }
@@ -69,8 +93,8 @@
                 document.getElementById("rackIFrame").style.display="block";
             }
             function invalidAccountNumberEnterred() {
+            reset();
                 document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
-                document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
             
             }
             function nullAccountNumberEnterred() {
@@ -84,10 +108,10 @@
                 $(popup).blur(function () { this.close(); });
             }
         </script>
-    </head>
-    <body>
+</head>
+<body>
 
-        <script type="text/javascript">
+<script type="text/javascript">
             $(document).ready(function () {
                 $('.accountNumberBarcode').css("display", "none");
                 $('.rackNumberBarcode').css("display", "none");
@@ -100,9 +124,8 @@
                 });
             });
         </script>
-        <br>
-        <br>
-        <div>
+ <br><br>
+<div>
             <form id="formid" class="pure-form pure-form-aligned">
                 <div class="pure-control-group">
                     <label for="accNumber">Account Number</label>

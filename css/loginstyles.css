@@ -53,6 +53,15 @@ margin-left:200px;
 	animation-timing-function: linear;
 }
 
+#container1 {
+	position: relative;
+	width: 260px;
+	top: 40%;
+	left: 50%;
+	margin-top: -140px;
+	margin-left: -150px;
+}
+
 form {
 	margin: 0 auto;
 	margin-top: 20px;
@@ -131,6 +140,16 @@ input[type=password]:focus {
 	border-top: 1px solid #ccc;
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;
+}
+
+#lower1 {
+
+	width: 50%;
+	height: 69px;
+	margin-top: 250px;
+	margin-right:100px;
+	margin-left:40px;
+
 }
 
 input[type=checkbox] {

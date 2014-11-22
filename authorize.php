@@ -17,6 +17,10 @@ $role = $row['adms_role'];
 if($password != "" && $row['adms_password']==$passwordHash && $role !="" )
 {
 	$_SESSION["pfno"]=$pfno;
+	
+	if($row['adms_password']!="827ccb0eea8a706c4c34a16891f84e7b")
+	{
+	
     switch($role)
     {
         case "RACPC_ADMIN":
@@ -60,6 +64,18 @@ if($password != "" && $row['adms_password']==$passwordHash && $role !="" )
             break;
         }
     }
+	
+	}
+	else
+	{
+	 ?>
+                <script type="text/javascript">
+	                alert("Change Default Password.");
+                </script>
+                <meta http-equiv="refresh" content="0;URL=changePassword.php">
+            <?php
+	
+	}
 }
 else
 {
