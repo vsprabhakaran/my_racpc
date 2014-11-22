@@ -66,10 +66,10 @@
     {
         $isDocUpdateSuccess = FALSE;
 	}
-    $target_dir = "D:/uploads/";
-	if(! is_dir("D:/uploads/$branchCode"))
+    $target_dir = "E:/uploads/";
+	if(! is_dir("E:/uploads/$branchCode"))
 	{
-		mkdir("D:/uploads/$branchCode",0777);
+		mkdir("E:/uploads/$branchCode",0777);
 	}
     $target_dir = $target_dir.$branchCode.'/'.basename( $_FILES['file']['name']);
     $uploadOk=1;
@@ -181,10 +181,10 @@
         }
         else if(strcmp($actionType,"OldDocDocumentChange") == 0)
         {
-            $target_dir = "D:/uploads/";
-			if(! is_dir("D:/uploads/$branchCode"))
+            $target_dir = "E:/uploads/";
+			if(! is_dir("E:/uploads/$branchCode"))
 			{
-				mkdir("D:/uploads/$branchCode",0777);
+				mkdir("E:/uploads/$branchCode",0777);
 			}
 			$target_dir = $target_dir.$branchCode.'/'.basename( $_FILES['file']['name']);
             $uploadOk=1;

@@ -85,7 +85,7 @@
 	values ('$pf_index','$accountNumber','$ipaddress')"); 
 
      mysqli_close($con);
-        $filePath = "D://uploads/" .$branchCode."/". $accountNumber.".pdf";
+        $filePath = "E://uploads/" .$branchCode."/". $accountNumber.".pdf";
 
         if (file_exists($filePath))
         {

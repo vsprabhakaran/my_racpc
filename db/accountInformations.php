@@ -106,6 +106,16 @@ switch($request)
     validate_racpc_acc_user($_POST['pfno'],$_POST['accNo']);
     break;    
     }
+	case 'isValidForOutSlip':
+	{
+	isValidForOutSlip($_POST['accNo']);
+	break;
+	}
+	case 'isValidForInSlip':
+	{
+	isValidForInSlip($_POST['accNo']);
+	break;
+	}
 }
 }
 
@@ -132,6 +142,42 @@ function checkBranchViewAccess($accountNumber,$pfno)
     }
      mysqli_close($con);
 }
+function isValidForOutSlip($accountNumber)
+{
+	$con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"select loan_acc_no from adms_loan_account_mstr where loan_acc_no = '$accountNumber' and 
+	document_status NOT IN('OUT','A','C') and loan_status != 'C' ");
+    $row = mysqli_fetch_array($query);
+	if($row['loan_acc_no'] != "")
+    {
+        echo json_encode(TRUE);
+    }
+    else
+    {
+        echo json_encode(FALSE);
+    }
+     mysqli_close($con);
+}
+
+function isValidForInSlip($accountNumber)
+{
+	$con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"select loan_acc_no from adms_loan_account_mstr where loan_acc_no = '$accountNumber' and 
+	document_status NOT IN('IN','A','C') and loan_status != 'C' ");
+    $row = mysqli_fetch_array($query);
+	if($row['loan_acc_no'] != "")
+    {
+        echo json_encode(TRUE);
+    }
+    else
+    {
+        echo json_encode(FALSE);
+    }
+     mysqli_close($con);
+}
+
 function checkRacpcViewAccess($accountNumber,$pfno)
 {
 	$con = NULL;
@@ -230,7 +276,7 @@ function isLoanAccountInADMS($accountNumber)
     }
 	mysqli_close($con);
 }
-//check for checking whether account belongs corresponding adms user 
+// checking whether account belongs corresponding adms user 
 function isValidAdmsAccount($accountNumber,$login_pf_index)
 {
     $con = NULL;
@@ -242,8 +288,7 @@ and  l.branch_code =  b.branch_code
 and b.racpc_code = r.racpc_code 
 and b.racpc_code in
 ( select b1.racpc_code from user_mstr u, branch_mstr b1 
-  where u.pf_index = '$login_pf_index' and u.branch_code = b1.branch_code  
-)");
+  where u.pf_index = '$login_pf_index' and u.branch_code = b1.branch_code)");
     $row = mysqli_fetch_array($query);
     if($row['loan_acc_no'] != "")
     {

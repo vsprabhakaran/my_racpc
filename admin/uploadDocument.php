@@ -182,7 +182,7 @@
                     url: phpURL,
                     data: { accNo: accNumber, type: typeCall },
                     success: function (msg) {
-                        if (msg != "") returnMsg = msg.replace(/["']/g, "");
+                        if (msg != "") returnMsg = msg.replace(/["'\\]/g, "");
                         else alert("not Found");
                         if (msg == "false") returnMsg = "NA";
                     },
@@ -373,7 +373,7 @@
                                 <br>
                             </div>
                             <div class="pure-controls">
-                                <button class="pure-button pure-button-primary" id="formButton" disabled="disabled">Submit</button>
+            <button class="pure-button pure-button-primary" id="formButton" type="submit" disabled="disabled" >Submit</button>
                             </div>
                             <input type="hidden" name="actionTypeField" id="actionTypeField" value="null" />
                         </form>

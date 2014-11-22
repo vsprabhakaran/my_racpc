@@ -95,13 +95,25 @@
         var login_pf = doPOST_Request_SessionUser(phpURL,'getPfno');
         phpURL = '../db/accountInformations.php';
         var msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount");
+       if(msg == "true")
+		{
+		
+		phpURL = '../db/accountInformations.php';
+		msg = doPOST_Request_isValidForInSlip(phpURL,enteredAccNumber,"isValidForInSlip");
+		
         if (msg == "true") {
             validAccountNumberEnterred();
         }
         else if (msg == "false") {
             invalidAccountNumberEnterred();
+			alert(" Account Not Valid for IN Slip Generation");
             return;
         }
+		}
+		else 
+		{
+		alert("Acount Not Valid");   $('#accountno').val(""); return;
+		}
         document.getElementById('accountname').value = doPOST_Request(phpURL, enteredAccNumber, "GetAccountNameOfAccount");
         document.getElementById('brcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetBranchCodeOfAccount");
         document.getElementById('foliono').value = doPOST_Request(phpURL, enteredAccNumber, "GetFolioNumberOfAccount").replace(/["'\\]/g, ""); 
@@ -157,7 +169,7 @@
         $('#foliono').val("");
 		$('#reason').val(""); 
 		$('#pfnogiver').val("");
-		$('#pfnogiver').prop('disabled', true);
+		$('#pfnogiver').prop('disabled',false);
 		$('#accountno').val("");
 		$('#nameofGiver').val("");
 		$('#pfnogiver').val("");
@@ -166,6 +178,8 @@
         $('#genInslipButton').prop('disabled', true);
 		document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
 		document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
+		document.getElementById('accountno').style.backgroundColor = "";
+		document.getElementById('pfnogiver').style.backgroundColor = "";
     }
     function invalidAccountNumberEnterred() {
         document.getElementById('accountno').style.backgroundColor = "#FFC1C1";
@@ -188,7 +202,7 @@
     function invalidPFNumberEnterred() {
         document.getElementById('pfnogiver').style.backgroundColor = "#FFC1C1";
         document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
-		$('#nameofGiver').prop('disabled', true); 
+		$('#nameofGiver').prop('disabled', false); 
 		$('#reason').prop('disabled', true);
     }
 	function nullPFNumberEnterred() {
@@ -215,6 +229,21 @@
         return returnMsg;
 
     }
+	function doPOST_Request_isValidForInSlip(phpURL, enteredAccNumber, typeCall) {
+	var returnMsg = '';
+        $.ajax({
+            type: 'POST',
+            url: phpURL,
+            data: { accNo: enteredAccNumber, type: typeCall },
+            success: function (msg) {
+                if (msg != "") {  returnMsg = msg.replace(/["']/g, ""); }
+                else alert("Account Not valid for In slip");
+            },
+            error: function (msg) { alert("fail : " + msg); },
+            async: false
+        });
+        return returnMsg;
+	}
     function doPOST_Request(phpURL, pfNumber, typeCall) {
         var returnMsg = '';
         $.ajax({

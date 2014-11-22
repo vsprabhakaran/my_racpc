@@ -96,7 +96,7 @@
             <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onclick="showAccountDetails()">View Details</a> 
 		</div>
 		<div class="pure-controls">
-            <button class="pure-button pure-button-primary" id="formButton" disabled="disabled">Close Loan</button>
+            <button class="pure-button pure-button-primary" type="submit" id="formButton" disabled="disabled">Close Loan</button>
         </div>
 </form>
 

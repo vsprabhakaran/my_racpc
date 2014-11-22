@@ -56,13 +56,26 @@
         phpURL = '../db/accountInformations.php';
 
         var msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount");
+		
+		if(msg == "true")
+		{
+		
+		phpURL = '../db/accountInformations.php';
+		msg = doPOST_Request_isValidForOutSlip(phpURL,enteredAccNumber,"isValidForOutSlip");
+		
         if (msg == "true") {
             validAccountNumberEnterred();
         }
         else if (msg == "false") {
             invalidAccountNumberEnterred();
+			alert(" Account Not Valid for Out Slip Generation");
             return;
         }
+		}
+		else 
+		{
+		alert("Acount Not Valid");  $('#accountno').val(""); return;
+		}
         document.getElementById('accountname').value = doPOST_Request(phpURL, enteredAccNumber, "GetAccountNameOfAccount");
         document.getElementById('brcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetBranchCodeOfAccount");
         document.getElementById('foliono').value = doPOST_Request(phpURL, enteredAccNumber, "GetFolioNumberOfAccount").replace(/["'\\]/g, "");
@@ -115,7 +128,7 @@
         $('#foliono').val("");
         $('#reason').val("");
         $('#pfnorcv').val("");
-        $('#pfnorcv').prop('disabled', true);
+        $('#pfnorcv').prop('disabled',false);
         $('#accountno').val("");
         $('#nameofReciver').val("");
 		$('#productcode').val("");
@@ -123,6 +136,8 @@
         $('#genOutslipButton').prop('disabled', true);
 		document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
 		document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
+		document.getElementById('accountno').style.backgroundColor = "";
+		document.getElementById('pfnorcv').style.backgroundColor = "";
     }
     function invalidAccountNumberEnterred() {
         document.getElementById('accountno').style.backgroundColor = "#FFC1C1";
@@ -146,7 +161,7 @@
     function invalidPFNumberEnterred() {
         document.getElementById('pfnorcv').style.backgroundColor = "#FFC1C1";
         document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
-		$('#pfnorcv').prop('disabled', true); 
+		$('#pfnorcv').prop('disabled', false); 
 		$('#reason').prop('disabled', true);
     }
     function nullPFNumberEnterred() {
@@ -181,7 +196,7 @@
             data: { accNo: enteredAccNumber, login_pf_index: login_pf, type: typeCall },
             success: function (msg) {
                 if (msg != "") { returnMsg = msg.replace(/["']/g, ""); }
-                else alert("pf number not Found");
+                else alert("Account does not belong to RACPC");
             },
             error: function (msg) { alert("fail : " + msg); },
             async: false
@@ -189,6 +204,21 @@
         return returnMsg;
 
     }
+	function doPOST_Request_isValidForOutSlip(phpURL, enteredAccNumber, typeCall) {
+	var returnMsg = '';
+        $.ajax({
+            type: 'POST',
+            url: phpURL,
+            data: { accNo: enteredAccNumber, type: typeCall },
+            success: function (msg) {
+                if (msg != "") {  returnMsg = msg.replace(/["']/g, ""); }
+                else alert("Account Not valid for out slip");
+            },
+            error: function (msg) { alert("fail : " + msg); },
+            async: false
+        });
+        return returnMsg;
+	}
     function doPOST_Request_SessionUser(phpURL,typeCall) {
         var returnMsg = '';
         $.ajax({
@@ -375,7 +405,9 @@
 <div>
 <br/>
 <br/>
-    <table border="0" style="width: 100%;height: 100%"><tr><td style="width: 50%">
+    <table border="0" style="width: 100%;height: 100%">
+	<tr>
+	<td style="width: 50%" style="font-size:12px">
 <form name="genOutSlip" id="genOutSlip" action="genOutSlip.php" class="pure-form pure-form-aligned" method="POST" target="slip_upload_frame">
     <div class="pure-control-group"> 
         <label for="accountno" >Account Number :</label>
