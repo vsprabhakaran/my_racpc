@@ -322,7 +322,7 @@
                         <form id="formid" class="pure-form pure-form-aligned" action="uploadDocumentAction.php" method="post" enctype="multipart/form-data">
                             <div class="pure-control-group">
                                 <label for="accNumber">Account Number</label>
-                                <input type="text" id="accNumber" name="accNumber" autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" />
+            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" onblur="accountNumButtonClick()" />
                                 <!--<span><button name="accButton" onclick="accountNumButtonClick()">Go</button></span> -->
                                 <a id="getAccountDetailsSpan" href="#" style="visibility: hidden" onclick="showAccountDetails()">View Details</a>
                             </div>

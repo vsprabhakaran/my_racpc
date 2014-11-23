@@ -53,7 +53,7 @@
                 }
                 else if (msg == "false") {
 					document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
-                    alert("Loan is already closed.");
+                    alert("Loan is not active.");
                 }
                 },
                 error: function (msg) { alert("fail : " + msg); },
