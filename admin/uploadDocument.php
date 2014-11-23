@@ -40,8 +40,7 @@
 
                 if (isValidAccount(enteredAccNumber)) { validAccountNumberEnterred(enteredAccNumber); }
                 else { invalidAccountNumberEnterred(); return; }
-                //Hiding the pdf file whenever the account number is changed. Resetting the document actions as well.
-                document.getElementById("pdfFile").style.visibility = "hidden";
+            
 
             }
             function validAccountNumberEnterred(enteredAccNumber) {
@@ -65,7 +64,7 @@
                         else {
 
                             document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
-                            alert("You are trying to upload a closed loan. Access Denied.");
+                    alert("You are trying to access a closed loan!");
                         }
                     },
                     error: function (msg) { alert("fail : " + msg); },
@@ -92,6 +91,8 @@
                 $('.editAnchor').css({ "visibility": "hidden" });
                 $('.accountNumberBarcode').css("display", "none");
                 $('.rackNumberBarcode').css("display", "none");
+			$("#pdfFile").prop("src","");
+			$("#pdfFile").css({ "visibility": "hidden" });
                 whichAction = -1;
             }
             function invalidAccountNumberEnterred() {
