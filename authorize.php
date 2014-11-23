@@ -33,6 +33,7 @@ $role = $row['adms_role'];
 	}
 	else if($row['status_flag']=='E' && $passwordHash == $defaultHash)
 {
+		$_SESSION["pfno"]=$pfno;
 		?>
 			<script type="text/javascript">
 				alert("Change Default Password.");
