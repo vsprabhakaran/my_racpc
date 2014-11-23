@@ -91,7 +91,7 @@
           <td id="LoanStatusTag"></td>
       </tr>
       <?php
-          if(!($_SESSION["role"] == "BRANCH_USER" || $_SESSION["role"] == "RACPC_VIEW"))
+          if(!($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW"))
           {
       ?>
       <tr class="pure-table-odd">

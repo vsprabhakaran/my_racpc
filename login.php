@@ -3,7 +3,7 @@ session_start();
 if(isset($_SESSION["role"]))
 $role= $_SESSION["role"];
 else 
-	$role= '';
+$role="";
 
 switch($role)
     {

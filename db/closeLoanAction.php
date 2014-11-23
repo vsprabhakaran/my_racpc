@@ -59,7 +59,7 @@ $con = new mysqli("localhost", "root", "", "racpc_automation_db");
         die("Connection failed: " . $conn->connect_error);
     }
 	$query=mysqli_query($con,"UPDATE adms_loan_account_mstr set loan_status='C', document_status='C' where loan_acc_no ='$accountNumber'");
-	if($query>0)
+	if($query)
 	{
 	?>
 	<div class="pure-controls">
