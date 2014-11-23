@@ -66,11 +66,13 @@
 		function invalidAccountNumberEnterred() {
             document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
             document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
+         $(':button').prop("disabled", true);
             
         }
 		function nullAccountNumberEnterred() {
             document.getElementById('accNumber').style.backgroundColor = "";
             document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
+         $(':button').prop("disabled", true);
             
         }
 	</script>
@@ -92,7 +94,7 @@
 <form id="formid" class="pure-form pure-form-aligned" action="../db/closeLoanAction.php" method="POST" onsubmit="return confirm('Do you really want to close the loan?');">
 		<div class="pure-control-group">
             <label for="accNumber" >Account Number</label>
-            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" />
+            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" onblur="accountNumButtonClick()" />
             <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onclick="showAccountDetails()">View Details</a> 
 		</div>
 		<div class="pure-controls">

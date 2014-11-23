@@ -69,7 +69,7 @@
 <tr><td colspan="3"><div id='cssmenu'>
 <ul>
    <li id="uploadLoanTab" class='active' style="width: 15%"><a href='#' onclick="displayPanel('uploadLoanTab')"><span>Documents</span></a></li>
-   <li id="closeLoanTab"><a href='#' onclick="displayPanel('closeLoanTab')"><span>Close Loan</span></a></li>
+   <li id="closeLoanTab"><a href='#' onclick="displayPanel('closeLoanTab')"><span>Loan Closure</span></a></li>
    <li id="manageUserTab" ><a href='#' onclick="displayPanel('manageUserTab')"><span>Manage User</span></a></li>
    <li id="printStickerTab" ><a href='#' onclick="displayPanel('printStickerTab')"><span>Print Sticker</span></a></li>
    <li style="width: 33%; text-align:right; visibility: hidden;">&nbsp;</li>

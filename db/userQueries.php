@@ -39,7 +39,7 @@ function EnableADMSUser($pfNumber)
 {
     $con = NULL;
     db_prelude($con);  
-    $query=mysqli_query($con,"update adms_user_mstr set status_flag = 'E' where pf_index =  '$pfNumber'");
+    $query=mysqli_query($con,"update adms_user_mstr set status_flag = 'C' where pf_index =  '$pfNumber'");
     
     if($query)
         return TRUE;

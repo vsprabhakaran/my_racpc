@@ -1,3 +1,13 @@
+<?php
+        session_start();
+        if(!isset($_SESSION["role"]))
+        {
+           $_SESSION["role"] = "";
+           $_SESSION["pfno"] = "";
+        ?>
+<meta http-equiv="refresh" content="0;URL=login.php"><?php
+        }
+    ?>
 <!doctype html>
 <html lang=''>
 <head>
@@ -80,6 +90,10 @@
           <th>Loan Status</th>
           <td id="LoanStatusTag"></td>
       </tr>
+      <?php
+          if(!($_SESSION["role"] == "BRANCH_USER" || $_SESSION["role"] == "RACPC_VIEW"))
+          {
+      ?>
       <tr class="pure-table-odd">
           <th>Document Status</th>
           <td id="DocumentStatusTag"></td>
@@ -92,6 +106,10 @@
           <th>Rack Number</th>
           <td id="RackNumberTag"></td>
       </tr>
+      <?}?>
   </table>
 </body>
 </html>
+<?php
+}
+?>
