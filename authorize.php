@@ -31,7 +31,7 @@ $role = $row['adms_role'];
 			<meta http-equiv="refresh" content="0;URL=login.php">
 		<?php
 	}
-	else if($row['status_flag']=='E' && $passwordHash == $defaultHash)
+	else if($row['status_flag']=='E' || $passwordHash == $defaultHash)
 {
 		$_SESSION["pfno"]=$pfno;
 		?>
