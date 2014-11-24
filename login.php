@@ -101,7 +101,7 @@ switch($role)
 		
 	</div>
 	
-	
+	<iframe frameBorder="0" scrolling="no" src='footer.php' style="width: 100%;height: 5%; position:absolute; bottom:0; background-color: #0f71ba;" marginheight="0" marginwidth="0" frameborder="0"/>
 	<!-- End Page Content -->
 	
 </body>
