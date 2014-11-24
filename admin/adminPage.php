@@ -83,7 +83,7 @@
 <td ><br/></td>
 </tr>
 <tr><td colspan="3">
-<iframe frameBorder="0" scrolling="no" src='../footer.php' style="width: 100%;height: 30%; background-color: #0f71ba;" marginheight="0" marginwidth="0" frameborder="0"/>
+    <iframe frameBorder="0" scrolling="no" src='../footer.php' style="width: 100%;height: 30%; background-color: #0f71ba;" marginheight="0" marginwidth="0" frameborder="0"/>
 </td></tr>
 </table>
 </div>
