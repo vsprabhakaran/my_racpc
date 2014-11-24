@@ -405,14 +405,14 @@
 <div>
 <br/>
 <br/>
-    <table border="0" style="width: 100%;height: 100%">
+    <table border="0" style="width: 100%;height: 100%; font-size:15px">
 	<tr>
-	<td style="width: 50%" style="font-size:12px">
+	<td style="width:100%" style="font-size:12px">
 <form name="genOutSlip" id="genOutSlip" action="genOutSlip.php" class="pure-form pure-form-aligned" method="POST" target="slip_upload_frame">
     <div class="pure-control-group"> 
         <label for="accountno" >Account Number :</label>
-        <input type="text" name="accountno" id="accountno" onkeydown="if (event.keyCode == 13) showdetails()" /> 
-        <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onclick="showAccountDetails()">View Details</a>
+        <input type="text" name="accountno" id="accountno" onKeyDown="if (event.keyCode == 13) showdetails()" /> 
+        <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onClick="showAccountDetails()">View Details</a>
 </div>
 
     <div class="pure-control-group">
@@ -444,7 +444,7 @@
         <label for="pfnorcv" >  Receivers's PF Number :</label>
 
         <input type="text" name="pfnorcv" id="pfnorcv" onKeyDown="if (event.keyCode == 13) showUdetails()" />
-        <a id="getUserDetailsSpan" href="#"  style="visibility: hidden" onclick="showUserDetails()">View Details</a>
+        <a id="getUserDetailsSpan" href="#"  style="visibility: hidden" onClick="showUserDetails()">View Details</a>
     </div>
 
     <div class="pure-control-group">
@@ -461,15 +461,17 @@
 <input class="pure-button pure-button-primary" type="submit" 
     value="Generate Out Slip" id="genOutslipButton" 
     onclick="$('#genOutSlip').submit();InputCheck();validate_racpc();outUpdateDocStatus();outActivityLogUpdate();" disabled="disabled" />  
-<input class="pure-button pure-button-primary" type="button" value="Reset" id="reset" onclick="resetForm()"/>  
+<input class="pure-button pure-button-primary" type="button" value="Reset" id="reset" onClick="resetForm()"/>  
             </div>
 
                 
             </center>
 <p style="color: #33089e"> ** Account Number and Receiver should belong to same RACPC </p>
-</form></td>
-<td style="width: 50%;height: 100%;" >
-<iframe id="slip_upload_frame" name="slip_upload_frame" style="width: 100%;height:400px;" marginheight="0" marginwidth="0" frameborder="0"></iframe>
+</form>
+</td>
+<td style="width:75%;height: 100%;" >
+<iframe id="slip_upload_frame" name="slip_upload_frame" style="width: 800px;height:400px;" marginheight="0" marginwidth="0" frameborder="0">
+</iframe>
         </td>
     </tr>
 </table>

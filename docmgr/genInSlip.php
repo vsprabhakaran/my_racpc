@@ -83,7 +83,7 @@
   <tr>
     <td colspan="3" style="font-family: Arial, Helvetica, Sans-Serif; font-size: large; font-weight: 600">
     <center>
-        <h3>INSLIP FORM </h3>
+        <h5>INSLIP FORM </h5>
         <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif; font-size: large; font-weight: 300"></div>
         <p id="date"></p>
     </center>
@@ -99,47 +99,48 @@
         document.getElementById("date").innerHTML = d.toDateString();
     </script>
    <tr>
-    <td><center><h4>ACCOUNT NUMBER</h4></center></td>
+    <td><center><h5>ACCOUNT NUMBER</h5></center></td>
     <td><center><?php echo $_POST["accountno"]; ?><br></center></td> 
     
     <td>
     <div>
-    <iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:12em; " 
-    marginheight="0" marginwidth="0" frameborder="0" src="../barcodegit/test.php?text=<?php echo $_POST['accountno'] ?>">
+	<!-- added variable check for hidding print button and reducing the size of barcode for slip generation -->
+    <iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em;" 
+	marginheight="0" marginwidth="0" frameborder="0" src="../barcodegit/test.php?text= <?php echo $_POST['accountno'] ?> & check=1" />
     </iframe>
     <br> <br>
     </div>
     </td>
    </tr>
    <tr>
-    <td><center><h4>ACCOUNT HOLDER NAME</h4></center></td>
+    <td><center><h5>ACCOUNT HOLDER NAME</h5></center></td>
     <td><center><?php echo $_POST["accountname"]; ?><br></center></td> 
     <td></td>
    </tr>
    <tr>
-    <td><center><h4>PRODUCT DESCRIPTION</h4></center></td>
+    <td><center><h5>PRODUCT DESCRIPTION</h5></center></td>
     <td><center><?php echo $_POST["productcode"]; ?><br></center></td> 
     <td></td>
    </tr>
 <!--
    <tr>
-    <td><center><h4>BRANCH CODE</h4></center></td>
+    <td><center><h5>BRANCH CODE</h5></center></td>
     <td><center><?php echo $_POST["brcode"]; ?><br></center></td> 
     <td></td>
    </tr>
 -->
    <tr>
-    <td><center><h4>BRANCH NAME</h4></center></td>
+    <td><center><h5>BRANCH NAME</h5></center></td>
     <td><center><?php echo $_POST["brname"]; ?><br></center></td> 
     <td></td>
    </tr>
     <tr>
-    <td><center><h4>FOLIO NUMBER</h4></center></td>
+    <td><center><h5>FOLIO NUMBER</h5></center></td>
     <td><center><?php echo $_POST["foliono"]; ?><br></center></td> 
     <td></td>
    </tr>
    <tr>
-    <td><center><h4>GIVER DETAILS</h4></center></td>
+    <td><center><h5>GIVER DETAILS</h5></center></td>
     <td>
         <center>
         <?php echo $_POST["pfnogiver"]; ?><br><br> 
@@ -148,7 +149,7 @@
     <td></td>
    </tr>
    <tr>
-    <td><center><h4>COMMENTS</h4></center></td>
+    <td><center><h5>COMMENTS</h5></center></td>
     <td style="word-wrap: break-word; text-justify: distribute">
        <p style="text-align: justify"><center><?php echo $_POST["reason"]; ?> </center></p>
     </td> 
