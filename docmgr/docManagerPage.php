@@ -67,7 +67,8 @@
 <table border="0" style="width:100%;height:100%;border-width:2px;">
 <tr>
 <td colspan="3">
-<iframe frameBorder="0" scrolling="no" src="../header.php" style="width: 100%;height: 90px;" marginheight="0" marginwidth="0" frameborder="0"></iframe>
+<iframe frameBorder="0" scrolling="no" src="../header.php" style="width: 100%;height: 90px;" marginheight="0" marginwidth="0" frameborder="0">
+</iframe>
 </td>
 </tr>
 <tr><td colspan="3">
