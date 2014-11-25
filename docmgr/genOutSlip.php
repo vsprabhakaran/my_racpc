@@ -53,6 +53,12 @@
 
     }
 </script>
+<style type="text/css">
+td
+{
+padding:1em 0ex 1ex 0em;
+}
+</style>
 </head>
 <body>
 

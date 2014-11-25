@@ -34,7 +34,7 @@ array_push($pfarray,$pf_index);
 
 	}
 //echo count($pfarray);
-
+$noofrows=0;
 if(count($pfarray)>0)
 {
 $pfname = array();
@@ -47,10 +47,11 @@ for($i=0;$i<count($pfarray);$i++)
 array_push($pfdetail,$pfarray[$i]." -- ".$rec1['emp_name']);
 //print_r($pfdetail);
 }
+$noofrows=count($pfdetail);
 }
 //echo count($pfname);
 //echo count($pfdetail);
-$noofrows=count($pfdetail);
+
 //echo $noofrows;
 ?>
 <form action='UCOApproved.php' method='post'>

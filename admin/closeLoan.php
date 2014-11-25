@@ -17,6 +17,7 @@
    <script type="text/javascript" src="../jquery-latest.min.js"></script>
 	<script type="text/javascript">
 		function accountNumButtonClick() {
+		 resetForm();
             var enteredAccNumber = document.getElementById('accNumber').value;
             if (enteredAccNumber == "") {
                 nullAccountNumberEnterred();
@@ -53,7 +54,7 @@
                 }
                 else if (msg == "false") {
 					document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
-                    alert("Loan is not active.");
+                    throwError("Loan is not active.");
                 }
                 },
                 error: function (msg) { alert("fail : " + msg); },
@@ -75,11 +76,21 @@
          $(':button').prop("disabled", true);
             
         }
+	 function throwError(errorMessage) {
+		$(".error").css('visibility', 'visible');
+		$("#Error").text(errorMessage);
+	}
+	function resetForm()
+	{
+		document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
+		$(".error").css('visibility', 'hidden');
+	}
 	</script>
 </head>
 <body>
 <script type="text/javascript">
         $(document).ready(function () {
+			resetForm();
             $('#formid').bind("keyup keypress", function(e) {
               var code = e.keyCode || e.which; 
               if (code  == 13) {               
@@ -91,11 +102,16 @@
  </script>
  <br/><br/>
  <div>
-<form id="formid" class="pure-form pure-form-aligned" action="../db/closeLoanAction.php" method="POST" onsubmit="return confirm('Do you really want to close the loan?');">
+<form id="formid" class="pure-form pure-form-aligned" action="../db/closeLoanAction.php" method="POST" onSubmit="return confirm('Do you really want to close the loan?');">
 		<div class="pure-control-group">
             <label for="accNumber" >Account Number</label>
-            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" onblur="accountNumButtonClick()" />
-            <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onclick="showAccountDetails()">View Details</a> 
+            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onKeyDown="if (event.keyCode == 13) accountNumButtonClick()" onBlur="accountNumButtonClick()" />
+            <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onClick="showAccountDetails()">View Details</a> 
+			<br/>
+			<div class="pure-control-group error">
+				<label for="Error" class="error" style="color: #ff6a00">Error :</label>
+				<span id="Error"  class="error" style="color: #ff6a00"></span>
+			</div>
 		</div>
 		<div class="pure-controls">
             <button class="pure-button pure-button-primary" type="submit" id="formButton" disabled="disabled">Close Loan</button>

@@ -18,7 +18,7 @@ session_start();
 <?php 
 
 
-$approveuser=$_POST[auser];
+$approveuser=$_POST['auser'];
 
 
 $userapprove = strtok($approveuser, " ");

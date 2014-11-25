@@ -50,7 +50,8 @@ $mpassword=md5($npassword);
     		die("Connection failed: " . $conn->connect_error);
 			}
 		$query=mysqli_query($con,"update adms_user_mstr set adms_password='$mpassword'  where pf_index = '$pfno'");
-		echo $query;
+		//echo $query;
+		$query=mysqli_query($con,"update adms_user_mstr set status_flag='A' where pf_index='$pfno'");
 		if($query)
 		{
 		echo "<b>Password updated successfully. <br><br>Please login with New Password.</b>";

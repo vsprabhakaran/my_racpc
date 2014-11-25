@@ -9,7 +9,7 @@ session_start();
 <body bgcolor="#FOFOFO">
 <?php 
 
-$auser = $_SESSION[appuser];
+$auser = $_SESSION['appuser'];
 
 
 $con = mysql_connect("localhost","root");
@@ -20,7 +20,7 @@ if (!$con)
   $db=mysql_select_db("racpc_automation_db",$con);
 
 
-$query1 = mysql_query("update adms_user_mstr set status_flag='A' where pf_index='$auser'");
+$query1 = mysql_query("update adms_user_mstr set status_flag='E' where pf_index='$auser'");
 if(!$query1)
 {
 	echo "<form action='userApproval.php'>";

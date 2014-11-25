@@ -26,6 +26,7 @@
 			
 		}
                 function accountNumButtonClick() {
+				resetForm();
                 var enteredAccNumber = document.getElementById('accNumber').value;
                 if (enteredAccNumber == "") {
                     nullAccountNumberEnterred();
@@ -93,13 +94,11 @@
                 document.getElementById("rackIFrame").style.display="block";
             }
             function invalidAccountNumberEnterred() {
-            reset();
                 document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
             
             }
             function nullAccountNumberEnterred() {
                 document.getElementById('accNumber').style.backgroundColor = "";
-                document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
             
             }
             function showAccountDetails() {
@@ -107,6 +106,13 @@
                 var popup = window.open("../AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
                 $(popup).blur(function () { this.close(); });
             }
+			function resetForm()
+			{
+				document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
+				$(".accountNumberBarcode").css("display","none");
+				$(".rackNumberBarcode").css("display","none");
+				$("#rack").val("");
+			}
         </script>
 </head>
 <body>
@@ -129,8 +135,8 @@
             <form id="formid" class="pure-form pure-form-aligned">
                 <div class="pure-control-group">
                     <label for="accNumber">Account Number</label>
-                    <input type="text" id="accNumber" name="accNumber" autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" />
-                    <a id="getAccountDetailsSpan" href="#" style="visibility: hidden" onclick="showAccountDetails()">View Details</a>
+                    <input type="text" id="accNumber" name="accNumber" autocomplete="off" onKeyDown="if (event.keyCode == 13) accountNumButtonClick()" />
+                    <a id="getAccountDetailsSpan" href="#" style="visibility: hidden" onClick="showAccountDetails()">View Details</a>
                 </div>
                 <div>
                     <table border="0">
@@ -139,7 +145,7 @@
                                 <iframe id="barcodeIFrame" class="accountNumberBarcode" frameborder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
                             </td>
                             <td>
-                                <img src="../img/print_icon.jpg" class="accountNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onclick="window.frames['barcodeIFrame'].focus();window.frames.print();" />
+                                <img src="../img/print_icon.jpg" class="accountNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="window.frames['barcodeIFrame'].focus();window.frames.print();" />
                             </td>
                         </tr>
                     </table>
@@ -147,7 +153,7 @@
                 </div>
                 <div class="pure-control-group">
                     <label for="rack">Rack Location</label>
-                    <input type="text" id="rack" name="rack" autocomplete="off" disabled="true" onkeydown="if (event.keyCode == 13) showRackBarcode()" />
+                    <input type="text" id="rack" name="rack" autocomplete="off" disabled="true" onKeyDown="if (event.keyCode == 13) showRackBarcode()" />
                 </div>
                 <div>
                     <table border="0">
@@ -156,7 +162,7 @@
                                 <iframe id="rackIFrame" class="rackNumberBarcode" frameborder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
                             </td>
                             <td>
-                                <img src="../img/print_icon.jpg" class="rackNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onclick="window.frames['rackIFrame'].focus();window.frames.print();" />
+                                <img src="../img/print_icon.jpg" class="rackNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="window.frames['rackIFrame'].focus();window.frames.print();" />
                             </td>
                         </tr>
                     </table>

@@ -112,7 +112,10 @@
 		}
 		else 
 		{
-		alert("Acount Not Valid");   $('#accountno').val(""); return;
+		alert("Acount Not Valid");   
+		resetForm();
+		//$('#accountno').val(""); 
+		return;
 		}
         document.getElementById('accountname').value = doPOST_Request(phpURL, enteredAccNumber, "GetAccountNameOfAccount");
         document.getElementById('brcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetBranchCodeOfAccount");
@@ -446,7 +449,7 @@
 <div>
    <br/>
    <br/>
-<table border="0" style="width: 100%;height: 100%; font-size:15px">
+<table border="0" style="width: 100%;height: 100%; font-size:13px">
 	<tr>
 	<td style="width:100%" style="font-size:12px">
 <form name="genInSlip" id="genInSlip" action="genInSlip.php" class="pure-form pure-form-aligned" method="POST" target="slip_upload_frame">
@@ -503,8 +506,9 @@
 <p style="color: #33089e"> ** Account Number and Giver should belong to same RACPC </p>
 </form>
 </td>
-        <td style="width:75%;height: 100%;" >
-            <iframe id="slip_upload_frame" name="slip_upload_frame" style="width: 800px;height:400px;" frameBorder="0"  marginheight="0" marginwidth="0" frameborder="0"></iframe>
+        <td style="width:100%;height: 100%;" >
+<iframe id="slip_upload_frame" name="slip_upload_frame" style="width:600px;height:400px;" frameBorder="0"  marginheight="0" marginwidth="0" frameborder="0">
+</iframe>
         </td>
         </tr>
         </table>  

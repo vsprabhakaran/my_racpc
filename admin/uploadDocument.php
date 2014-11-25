@@ -251,6 +251,11 @@
             });
 
             } */
+			 function checkFolioNumber() {
+                var folioNumber = $('#folio_no').val();
+                var pattern = /^[a-z0-9\/]+$/i;
+                return pattern.test(folioNumber);
+            }
         </script>
     </head>
     <body>
@@ -279,11 +284,19 @@
                     }
                     else if ((whichAction & ACTION_TYPE.OldDocFolioChange) && (whichAction & ACTION_TYPE.OldDocRackChange)) {
                         if ((!$('#folio_no').val()) || (!$('#rack_no').val())) isFormValid = false;
-                        alertMsg = "Please enter new folio and rack number."
+                        alertMsg = "Please enter new folio and rack number.";
+						if (isFormValid) {
+                            isFormValid = checkFolioNumber();
+                            if(!isFormValid) alertMsg = "Folio Number can be alpanumeric and only symbol allowed is / (forward slash)";
+                        }
                     }
                     else if (whichAction == ACTION_TYPE.OldDocFolioChange) {
                         if (!$('#folio_no').val()) isFormValid = false;
-                        alertMsg = "Please enter new folio number."
+                        alertMsg = "Please enter new folio number.";
+						if (isFormValid) {
+                            isFormValid = checkFolioNumber();
+                            if(!isFormValid) alertMsg = "Folio Number can be alpanumeric and only symbol allowed is / (forward slash)";
+                        }
                     }
                     else if (whichAction == ACTION_TYPE.OldDocRackChange) {
                         if (!$('#rack_no').val()) isFormValid = false;
@@ -322,9 +335,9 @@
                         <form id="formid" class="pure-form pure-form-aligned" action="uploadDocumentAction.php" method="post" enctype="multipart/form-data">
                             <div class="pure-control-group">
                                 <label for="accNumber">Account Number</label>
-            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" onblur="accountNumButtonClick()" />
+            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onKeyDown="if (event.keyCode == 13) accountNumButtonClick()" onBlur="accountNumButtonClick()" />
                                 <!--<span><button name="accButton" onclick="accountNumButtonClick()">Go</button></span> -->
-                                <a id="getAccountDetailsSpan" href="#" style="visibility: hidden" onclick="showAccountDetails()">View Details</a>
+                                <a id="getAccountDetailsSpan" href="#" style="visibility: hidden" onClick="showAccountDetails()">View Details</a>
                             </div>
                                                             <!--div  barcode gen JS method>
                                                      <a id="printBarcode" href="#" onclick="print()" ><div id="accBarcode"></div></a>
@@ -336,7 +349,7 @@
                                             <iframe id="barcodeIFrame" class="accountNumberBarcode" frameborder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
                                         </td>
                                         <td>
-                                            <img src="../img/print_icon.jpg" class="accountNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onclick="window.frames['barcodeIFrame'].focus();window.frames.print();" />
+                                            <img src="../img/print_icon.jpg" class="accountNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="window.frames['barcodeIFrame'].focus();window.frames.print();" />
                                         </td>
                                     </tr>
                                 </table>
@@ -344,21 +357,21 @@
                             </div>
                             <div class="pure-control-group" id="newDocDiv" style="display: none">
                                 <label for="file">Choose file</label>
-                                <input id="file" type="file" name="file" onchange="validateFile()" />
+                                <input id="file" type="file" name="file" onChange="validateFile()" />
                             </div>
                             <div class="pure-control-group" id="viewDocDiv" style="display:none">
                                 <label for="fileURL">Document </label>
-                                <a id="viewDocumentURL" href="#" onclick="showDocument()">View Document</a>
+                                <a id="viewDocumentURL" href="#" onClick="showDocument()">View Document</a>
                             </div>
                             <div class="pure-control-group">
                                 <label for="folio_no">Folio No</label>
                                 <input id="folio_no" type="text" name="folio_no" disabled="disabled" autocomplete="off" style="color: #000" />
-                                <a class="editAnchor" href="#" onclick="FolioEditClick()"><img class="editImg" src="../img/write.png" alt="edit" /></a>
+                                <a class="editAnchor" href="#" onClick="FolioEditClick()"><img class="editImg" src="../img/write.png" alt="edit" /></a>
                             </div>
                             <div class="pure-control-group">
                                 <label for="rack_no">Rack Location</label>
-                                <input id="rack_no" type="text" name="rack_no" disabled="disabled" autocomplete="off" onkeydown="if (event.keyCode == 13) showRackBarcode()" style="color: #000" />
-                                <a class="editAnchor" href="#" onclick="RacKEditClick()"><img class="editImg" src="../img/write.png" alt="edit" /></a>
+                                <input id="rack_no" type="text" name="rack_no" disabled="disabled" autocomplete="off" onKeyDown="if (event.keyCode == 13) showRackBarcode()" style="color: #000" />
+                                <a class="editAnchor" href="#" onClick="RacKEditClick()"><img class="editImg" src="../img/write.png" alt="edit" /></a>
                             </div>
                             <div>
                                 <table border="0">
@@ -367,7 +380,7 @@
                                             <iframe id="rackIFrame" class="rackNumberBarcode" frameborder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
                                         </td>
                                         <td>
-                                            <img src="../img/print_icon.jpg" class="rackNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onclick="window.frames['rackIFrame'].focus();window.frames.print();" />
+                                            <img src="../img/print_icon.jpg" class="rackNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="window.frames['rackIFrame'].focus();window.frames.print();" />
                                         </td>
                                     </tr>
                                 </table>

@@ -17,15 +17,17 @@ session_start();
 <?php
 $number=$_GET["text"];
 //added variable check for hidding print button and reducing the size of barcode for slip generation
+if(isset($_GET["check"]))
 $check =$_GET["check"];
-
+else 
+$check="";
 if($check == '') 
 {
 echo "<img alt='testing' src='barcode.php?text=$number' height=150px width=250px /> ";
 }
 else
 {
-echo "<img alt='testing' src='barcode.php?text=$number' height=150px width=200px />";
+echo "<img alt='testing' src='barcode.php?text=$number' height=150px width=150px />";
 }
 ?>
 
