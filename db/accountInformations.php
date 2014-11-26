@@ -282,8 +282,9 @@ function isValidAdmsAccount($accountNumber,$login_pf_index)
     $con = NULL;
     db_prelude($con);  
     $query=mysqli_query($con,"select l.loan_acc_no
-from loan_account_mstr l,branch_mstr b,racpc_mstr r
+from loan_account_mstr l,branch_mstr b,racpc_mstr r,adms_loan_account_mstr am
 where l.loan_acc_no='$accountNumber' 
+and l.loan_acc_no = am.loan_acc_no
 and  l.branch_code =  b.branch_code
 and b.racpc_code = r.racpc_code 
 and b.racpc_code in

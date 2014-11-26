@@ -68,6 +68,7 @@
         var enteredAccNumber = document.getElementById('accountno').value;
         var phpURL = '../db/accountInformations.php';
         doPOST_Request(phpURL, enteredAccNumber, "InUpdateDocStatus");
+        InActivityLogUpdate();
             }
     function InActivityLogUpdate() {
         //ActivateGenButton();
@@ -94,9 +95,10 @@
         var phpURL = '../getPfnoFromSession.php';
         var login_pf = doPOST_Request_SessionUser(phpURL,'getPfno');
         phpURL = '../db/accountInformations.php';
-        var msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount");
-       if(msg == "true")
-		{
+        var msg = doPOST_Request(phpURL, enteredAccNumber, "isValidAccount");
+        if (msg == "true") {
+            msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount");
+            if (msg == "true") {
 		
 		phpURL = '../db/accountInformations.php';
 		msg = doPOST_Request_isValidForInSlip(phpURL,enteredAccNumber,"isValidForInSlip");
@@ -110,11 +112,9 @@
             return;
         }
 		}
-		else 
-		{
-		alert("Acount Not Valid");   
+            else {
+                alert("Acount is Not Valid Adms Account");
 		resetForm();
-		//$('#accountno').val(""); 
 		return;
 		}
         document.getElementById('accountname').value = doPOST_Request(phpURL, enteredAccNumber, "GetAccountNameOfAccount");
@@ -124,6 +124,9 @@
         document.getElementById('productcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetLoanProductOfAccount");
         $('#genInslipButton').prop('disabled', true);
         $('#reason').prop('disabled', true);
+            $('#accountno').prop('readonly', "readonly");
+        }
+        else { alert("invalid account");document.getElementById('accountno').value=''; return; }
     }
     function showUdetails() {
         var enteredPFNumber = $('#pfnogiver').val();
@@ -136,9 +139,14 @@
         $.post(phpURL, { pfno: enteredPFNumber, type: 'isValidUser' }, function (msg) {
             if (msg == "true") {
                 validPFNumberEnterred();
+                validate_racpc();                
             }
             else if (msg == "false") {
                 invalidPFNumberEnterred();
+                alert("Invalid PF number Entered");
+                document.getElementById('nameofGiver').value = '';
+                document.getElementById('pfnogiver').value = '';
+                document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
                 return;
             }
 
@@ -149,6 +157,8 @@
 		document.getElementById('nameofGiver').value = doPOST_RequestUser(phpURL, enteredPFNumber, "GetUserName"); 
         $('#genInslipButton').prop('disabled', true);
         $('#reason').prop('disabled', false);
+                 $('#pfnogiver').prop('readonly', "readonly");
+       
         }
     function showAccountDetails() {
         var enteredAccNumber = document.getElementById('accountno').value;
@@ -163,6 +173,8 @@
     }
 
     function resetForm() {
+        location.reload();
+        /*
         $('#genInslip').prop('disabled', true);
         $('#reason').prop('disabled', true);
         $('#accountname').val("");
@@ -174,6 +186,7 @@
 		$('#pfnogiver').val("");
 		$('#pfnogiver').prop('disabled',false);
 		$('#accountno').val("");
+        $('#accountno').prop('disabled', false);
 		$('#nameofGiver').val("");
 		$('#pfnogiver').val("");
         //$('#nameofGiver').val("");
@@ -183,6 +196,7 @@
 		document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
 		document.getElementById('accountno').style.backgroundColor = "";
 		document.getElementById('pfnogiver').style.backgroundColor = "";
+        */
     }
     function invalidAccountNumberEnterred() {
         document.getElementById('accountno').style.backgroundColor = "#FFC1C1";
@@ -360,7 +374,11 @@
             if (msg == true) { 
             }
             else {
-                alert("Borrower does not belong to document manager RACPC"); resetForm(); return;
+                alert("Returnee does not belong to your RACPC");
+                document.getElementById('pfnogiver').value = '';
+                document.getElementById('nameofGiver').value = '';
+                document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
+                return;
             }
         }
         var phpURL = '../db/accountInformations.php';
@@ -369,7 +387,9 @@
             if (msg == true) { 
             }
             else {
-                alert("Account does not belong to borrower RACPC"); resetForm(); return;
+                alert("Account does not belong to Returnee's RACPC");
+                resetForm();
+                return;
             }
 
         }
@@ -421,6 +441,9 @@
 	DeActivateGenButton();
             document.getElementById('slip_upload_frame').src = ""; resetForm();
 	}
+        var check = confirm("Confirm Slip Generation ?");
+        if (check == true) { InUpdateDocStatus(); }
+        else { alert("Slip Generation Cancelled"); return; }
 	}
 
 </script>
@@ -483,7 +506,7 @@
     </div>
     <div class="pure-control-group">
 		<label for="pfnogiver" >  Giver's PF Number :</label>
-		<input type="text" name="pfnogiver" id="pfnogiver" onKeyDown="if (event.keyCode == 13) showUdetails()"/>
+		<input type="text" name="pfnogiver" id="pfnogiver" onKeyDown="if (event.keyCode == 13) showUdetails();" />
         <a id="getUserDetailsSpan" href="#"  style="visibility: hidden" onClick="showUserDetails()">View Details</a>
     </div>
     <div class="pure-control-group">
@@ -498,7 +521,7 @@
     
     <div class="pure-controls">
          <input class="pure-button pure-button-primary" type="submit" value="Generate In Slip" id="genInslipButton" 
-		 onclick="$('#genInSlip').submit();InputCheck();validate_racpc();InUpdateDocStatus();InActivityLogUpdate();" disabled="disabled"	/>  
+		 onclick="$('#genInSlip').submit();InputCheck();" disabled="disabled"	/>  
 		 <input class="pure-button pure-button-primary" type="button" value="Reset" id="reset" onClick="resetForm()" />  
     </div> 
 

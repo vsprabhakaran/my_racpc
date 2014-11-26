@@ -196,7 +196,7 @@ padding:1em 0ex 1ex 0em;
     
 <tr>
 <th>DOCUMENT MANAGER SIGNATURE</th>
-<th>RECEIVER SIGNATURE</th>
+<th>RECEIVER'S SIGNATURE</th>
 </tr>
 <tr>
 <!--

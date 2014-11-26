@@ -195,7 +195,7 @@ padding:1em 0ex 1ex 0em;
     
 <tr>
 <th>DOCUMENT MANAGER SIGNATURE</th>
-<th>GIVER SIGNATURE</th>
+<th>RETURNEE'S SIGNATURE</th>
 </tr>
 <tr>
 <th><br><br><hr style="border-top: medium double #333; color: #333; text-align: center; padding: 0" /><br></th>

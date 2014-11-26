@@ -30,6 +30,7 @@
         var enteredAccNumber = document.getElementById('accountno').value;
         var phpURL = '../db/accountInformations.php';
         doPOST_Request(phpURL, enteredAccNumber, "OutUpdateDocStatus");
+        outActivityLogUpdate();
         
             }
     function outActivityLogUpdate() {
@@ -50,15 +51,17 @@
             nullAccountNumberEnterred();
             return;
         }
-        
         var phpURL = '../getPfnoFromSession.php';
         var login_pf = doPOST_Request_SessionUser(phpURL,'getPfno');
         phpURL = '../db/accountInformations.php';
+        var msg = doPOST_Request(phpURL, enteredAccNumber, "isValidAccount");
+        if (msg == "true") {
+            msg = doPOST_Request(phpURL, enteredAccNumber, "isValidAccount");
 
-        var msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount");
+            if (msg == "true") {
+                msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount");
 		
-		if(msg == "true")
-		{
+                if (msg == "true") {
 		
 		phpURL = '../db/accountInformations.php';
 		msg = doPOST_Request_isValidForOutSlip(phpURL,enteredAccNumber,"isValidForOutSlip");
@@ -72,11 +75,15 @@
             return;
         }
 		}
-		else 
-		{
-		alert("Acount Not Valid");  
+                else {
+                    alert("Acount is Not Valid Adms Account");
+                    resetForm();
+                    return;
+                }
+            }
+            else {
+                alert("Accouont is Invalid");
 		resetForm();
-		//$('#accountno').val(""); 
 		return;
 		}
         document.getElementById('accountname').value = doPOST_Request(phpURL, enteredAccNumber, "GetAccountNameOfAccount");
@@ -86,6 +93,10 @@
         document.getElementById('productcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetLoanProductOfAccount");
          $('#genOutslipButton').prop('disabled', true);
         $('#reason').prop('disabled', true);
+            $('#accountno').prop('readonly', "readonly");
+
+        }
+        else { alert("Invalid Account"); document.getElementById('accountno').value = ''; return; }
     }
     function showUdetails() {
         var enteredPFNumber = $('#pfnorcv').val();
@@ -98,9 +109,14 @@
         $.post(phpURL, { pfno: enteredPFNumber, type: 'isValidUser' }, function (msg) {
             if (msg == "true") {
                 validPFNumberEnterred();
+                validate_racpc();
             }
             else if (msg == "false") {
                 invalidPFNumberEnterred();
+                alert("Invalid PF number Entered");
+                document.getElementById('nameofReciver').value = '';
+                document.getElementById('pfnorcv').value = '';
+                document.getElementById('getUserDetailsSpan').style.visibility = "hidden"; 
                 return;
             }
         }).fail(function (msg) {
@@ -110,6 +126,7 @@
         document.getElementById('nameofReciver').value = doPOST_RequestUser(phpURL, enteredPFNumber, "GetUserName");
          $('#genOutslipButton').prop('disabled', true);
         $('#reason').prop('disabled', false);
+        $('#pfnorcv').prop('readonly', "readonly");
 
     }
     function showUserDetails() {
@@ -123,6 +140,8 @@
         $(popup).blur(function () { this.close(); });
     }
     function resetForm() {
+        location.reload();
+        /*
         $('#genInslip').prop('disabled', true);
         $('#reason').prop('disabled', true);
         $('#accountname').val("");
@@ -133,6 +152,8 @@
         $('#pfnorcv').val("");
         $('#pfnorcv').prop('disabled',false);
         $('#accountno').val("");
+        $('#accountno').prop('disabled', false);
+        //$('#accountno').prop('readonly', "false");
         $('#nameofReciver').val("");
 		$('#productcode').val("");
         document.getElementById('slip_upload_frame').src = "";
@@ -141,6 +162,7 @@
 		document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
 		document.getElementById('accountno').style.backgroundColor = "";
 		document.getElementById('pfnorcv').style.backgroundColor = "";
+        */
     }
     function invalidAccountNumberEnterred() {
         document.getElementById('accountno').style.backgroundColor = "#FFC1C1";
@@ -316,8 +338,11 @@
             if (msg == true) {
             }
             else {
-                alert("Borrower does not belong to document manager RACPC");
-                resetForm();
+                alert("Receiver does not belong to your RACPC");
+                document.getElementById('pfnorcv').value = '';
+                document.getElementById('nameofReciver').value = '';
+                document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
+                //resetForm();
                 return;
             }
         }
@@ -327,7 +352,9 @@
             if (msg == true) {
             }
             else {
-                alert("Account does not belong to borrower RACPC"); resetForm(); return;
+                alert("Account does not belong to Receiver's RACPC");
+                resetForm();
+                return;
             }
 
         }
@@ -379,6 +406,9 @@
 	DeActivateGenButton();
             document.getElementById('slip_upload_frame').src = ""; resetForm();
 	}
+        var check = confirm("Confirm Slip Generation ?");
+        if (check == true) { outUpdateDocStatus(); }
+        else { alert("Slip Generation Cancelled"); return; }
 	}
 
 </script>
@@ -463,7 +493,7 @@
 <div class="pure-controls">
 <input class="pure-button pure-button-primary" type="submit" 
     value="Generate Out Slip" id="genOutslipButton" 
-    onclick="$('#genOutSlip').submit();InputCheck();validate_racpc();outUpdateDocStatus();outActivityLogUpdate();" disabled="disabled" />  
+    onclick="$('#genOutSlip').submit();InputCheck();" disabled="disabled" />  
 <input class="pure-button pure-button-primary" type="button" value="Reset" id="reset" onClick="resetForm()"/>  
             </div>
 
