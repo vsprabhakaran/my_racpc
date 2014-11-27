@@ -26,8 +26,7 @@
             
             currentTab = tabName;
             var contentIFrame = document.getElementById("contentFrame");
-            switch(tabName)
-            {
+            switch (tabName) {
                 /*
                 case 'viewLocationTab':
                 {
@@ -50,6 +49,11 @@
                     contentIFrame.src = "../admin/printSticker.php";
                     break;
                 }
+                case 'ViewReport':
+                    {
+                        contentIFrame.src = 'ViewReport.php';
+                        break;
+                    }
         /*        default:
                 {
                     contentIFrame.src = "docManagerPageOutSlip.php";
@@ -80,7 +84,8 @@
    <li id="viewLocationTab"  ><a href='#' onclick="displayPanel('viewLocationTab')"><span>View Location</span></a></li>
     -->
    <li id="printStickerTab"><a href='#' onclick="displayPanel('printStickerTab')"><span>Print Sticker</span></a></li>
-   <li style="width: 49%; text-align:right; visibility: hidden;" >&nbsp;</li>
+   <li id="ViewReport"><a href='#' onclick="displayPanel('ViewReport')"><span>View Report</span></a></li>
+   <li style="width: 33%; text-align:right; visibility: hidden;" >&nbsp;</li>
    <li style="text-align:center;"><a href='../logout.php'><span>Logout</span></a></li>
 </ul>
 </div>

@@ -116,6 +116,11 @@ switch($request)
 	isValidForInSlip($_POST['accNo']);
 	break;
 	}
+    case 'ViewReport':
+    {
+    ViewReport($_POST['login_pf_index']);
+    break;
+    }
 }
 }
 
@@ -219,6 +224,7 @@ function isLoanActive($accountNumber)
     }
      mysqli_close($con);
 }
+//validate branch code and racpc of account number and the doc requester
 function validate_racpc_acc_user($pfno, $accountNumber){
     $con = NULL;
     db_prelude($con);  
@@ -230,6 +236,7 @@ function validate_racpc_acc_user($pfno, $accountNumber){
     and am.loan_acc_no = l.loan_acc_no 
     and l.branch_code = b1.branch_code
     and u.branch_code = b.branch_code
+    and b.branch_code = b1.branch_code
     and b.racpc_code = b1.racpc_code");
 
     $row = mysqli_fetch_array($query);
@@ -498,6 +505,38 @@ function InUpdateDocStatus($accountNumber)
     } 
      mysqli_close($con); 
 }
+function ViewReport($login_pf_index)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $colname = "borrower";
+    $query=mysqli_query($con,"SELECT MAX( dl.timestamp ) as '$colname' 
+FROM adms_loan_account_mstr am, loan_account_mstr l, document_activity_log dl
+WHERE am.document_status =  'OUT'
+AND am.loan_status =  'A'
+AND am.loan_acc_no = l.loan_acc_no
+AND l.loan_acc_no = dl.loan_acc_no
+AND dl.slip_type =  'OUT' 
+AND dl.docmgr_pf_index = '$login_pf_index' ");
+    
+    $row = mysqli_fetch_array($query);
+
+    if ( $row[$colname] != '')
+    {
+       //echo $row[$time]; echo $row[$account]; 
+       //echo "hello";
+       //echo $row[$colname];
+       //echo json_encode(TRUE);
+       echo json_encode(hello);
+    }
+    else
+    {
+        echo "fail";
+    echo json_encode(FALSE);
+    } 
+     mysqli_close($con); 
+}
+
 /*
 function OutActivityLogInsert($accountNumber,$borrower_pf,$login_pf,$s_type,$rson,$phno)
 {

@@ -105,10 +105,13 @@
 		
         if (msg == "true") {
             validAccountNumberEnterred();
+                    $('#accountno').prop('readonly', "readonly");
+                    $('#pfnogiver').prop('disabled',false);
         }
         else if (msg == "false") {
             invalidAccountNumberEnterred();
 			alert(" Account Not Valid for IN Slip Generation");
+                    resetForm();
             return;
         }
 		}
@@ -124,9 +127,9 @@
         document.getElementById('productcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetLoanProductOfAccount");
         $('#genInslipButton').prop('disabled', true);
         $('#reason').prop('disabled', true);
-            $('#accountno').prop('readonly', "readonly");
+           
         }
-        else { alert("invalid account");document.getElementById('accountno').value=''; return; }
+        else { alert("Invalid account"); document.getElementById('accountno').value = ''; return; }
     }
     function showUdetails() {
         var enteredPFNumber = $('#pfnogiver').val();
@@ -388,7 +391,10 @@
             }
             else {
                 alert("Account does not belong to Returnee's RACPC");
-                resetForm();
+                $('#pfnogiver').val("");
+                $('#nameofGiver').val("");
+                //resetForm();
+                // $('#pfnogiver').prop('disabled', false);
                 return;
             }
 
@@ -506,7 +512,7 @@
     </div>
     <div class="pure-control-group">
 		<label for="pfnogiver" >  Giver's PF Number :</label>
-		<input type="text" name="pfnogiver" id="pfnogiver" onKeyDown="if (event.keyCode == 13) showUdetails();" />
+		<input type="text" name="pfnogiver" id="pfnogiver" onKeyDown="if (event.keyCode == 13) showUdetails();" disabled="disabled"/>
         <a id="getUserDetailsSpan" href="#"  style="visibility: hidden" onClick="showUserDetails()">View Details</a>
     </div>
     <div class="pure-control-group">

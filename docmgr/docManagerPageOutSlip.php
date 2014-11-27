@@ -67,11 +67,13 @@
 		msg = doPOST_Request_isValidForOutSlip(phpURL,enteredAccNumber,"isValidForOutSlip");
 		
         if (msg == "true") {
-            validAccountNumberEnterred();
+                        validAccountNumberEnterred(); $('#accountno').prop('readonly', "readonly");
+                        $('#pfnorcv').prop('disabled',false);
         }
         else if (msg == "false") {
             invalidAccountNumberEnterred();
 			alert(" Account Not Valid for Out Slip Generation");
+                        resetForm();
             return;
         }
 		}
@@ -93,7 +95,7 @@
         document.getElementById('productcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetLoanProductOfAccount");
          $('#genOutslipButton').prop('disabled', true);
         $('#reason').prop('disabled', true);
-            $('#accountno').prop('readonly', "readonly");
+
 
         }
         else { alert("Invalid Account"); document.getElementById('accountno').value = ''; return; }
@@ -353,7 +355,10 @@
             }
             else {
                 alert("Account does not belong to Receiver's RACPC");
-                resetForm();
+                $('#pfnorcv').val("");
+                $('#nameofReciver').val("");
+                //$('#pfnorcv').prop('disabled', true);
+                //resetForm();
                 return;
             }
 
@@ -476,7 +481,7 @@
     <div class="pure-control-group">
         <label for="pfnorcv" >  Receivers's PF Number :</label>
 
-        <input type="text" name="pfnorcv" id="pfnorcv" onKeyDown="if (event.keyCode == 13) showUdetails()" />
+        <input type="text" name="pfnorcv" id="pfnorcv" onKeyDown="if (event.keyCode == 13) showUdetails()" disabled="disabled"/>
         <a id="getUserDetailsSpan" href="#"  style="visibility: hidden" onClick="showUserDetails()">View Details</a>
     </div>
 
