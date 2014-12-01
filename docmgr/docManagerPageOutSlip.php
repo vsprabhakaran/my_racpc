@@ -415,7 +415,8 @@
         if (check == true) { outUpdateDocStatus(); }
         else {
             alert("Slip Generation Cancelled");
-            document.getElementById('slip_upload_frame').src = "";
+            //document.getElementById('slip_upload_frame').src = "";
+             resetForm();
              }
 	}
 

@@ -1,7 +1,17 @@
+<!DOCTYPE html>
 <html>
 <body>
 <?php
-   
+   session_start();
+        if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW" || $_SESSION["role"] == "RACPC_ADMIN" ))
+        {
+           $_SESSION["role"] = "";
+           $_SESSION["pfno"] = "";
+        ?>
+		<meta http-equiv="refresh" content="0;URL=login.php"><?php
+        }
+		else
+		{
        function get_ip_address(){
             if (isset($_SERVER))
             {
@@ -39,16 +49,7 @@
         return $ipadres;
         }
  
-	session_start();
-        if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW" || $_SESSION["role"] == "RACPC_ADMIN" ))
-        {
-           $_SESSION["role"] = "";
-           $_SESSION["pfno"] = "";
-        ?>
-		<meta http-equiv="refresh" content="0;URL=login.php"><?php
-        }
-		else
-		{
+	
 	
 	$accountNumber = $_GET["accNo"];
     $pf_index = $_SESSION["pfno"];

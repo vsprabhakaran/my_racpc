@@ -451,7 +451,8 @@
         if (check == true) { InUpdateDocStatus(); }
         else {
             alert("Slip Generation Cancelled");
-            document.getElementById('slip_upload_frame').src = "";
+            //document.getElementById('slip_upload_frame').src = "";
+			resetForm();
         }
 	}
 
