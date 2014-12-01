@@ -15,6 +15,10 @@
 <head>
    <title>Generate Inslip</title>
     <script type="text/javascript" src="../jquery-latest.min.js"></script>
+     <link rel="stylesheet" href="../css/my_styles.css">
+    <link rel="stylesheet" href="../css/pure-min.css">
+ 
+
 <script>
     function printFunction() {
     window.print();
@@ -86,12 +90,12 @@ padding:1em 0ex 1ex 0em;
 <center>
 <div>
 
-  <table border="1" style="width:100%;height:100%;border-width:0px;border-collapse: collapse; table-layout: fixed">
+  <table border="1" style="width:100%;height:100%;border-width:0px;border-collapse: collapse;font-size:small; table-layout: fixed">
   <tr>
-    <td colspan="3" style="font-family: Arial, Helvetica, Sans-Serif; font-size: large; font-weight: 600">
+    <td colspan="3" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small;font-weight: 600">
     <center>
         <h5>INSLIP FORM </h5>
-        <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif; font-size: large; font-weight: 300"></div>
+        <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small; font-weight: 300"></div>
         <p id="date"></p>
     </center>
     </td>
@@ -147,7 +151,7 @@ padding:1em 0ex 1ex 0em;
     <td></td>
    </tr>
    <tr>
-    <td><center><h5>GIVER DETAILS</h5></center></td>
+    <td><center><h5>Returnee DETAILS</h5></center></td>
     <td>
         <center>
         <?php echo $_POST["pfnogiver"]; ?><br><br> 
@@ -179,6 +183,15 @@ padding:1em 0ex 1ex 0em;
 <table style="width:100%">
 
 <tr>
+<th>DOCUMENT MANAGER SIGNATURE</th>
+<th>RETURNEE'S SIGNATURE</th>
+</tr>
+<tr>
+<th><br><br><hr style="border-top: medium double #333; color: #333; text-align: center; padding: 0" /><br></th>
+<th><br><br><hr style="border-top: medium double #333; color: #333; text-align: center; padding: 0" /><br></th>
+</tr>
+
+<tr>
 <td colspan="2">
 <div class="pure-controls">
 <center>
@@ -193,14 +206,7 @@ padding:1em 0ex 1ex 0em;
 <br>
 </tr>
     
-<tr>
-<th>DOCUMENT MANAGER SIGNATURE</th>
-<th>RETURNEE'S SIGNATURE</th>
-</tr>
-<tr>
-<th><br><br><hr style="border-top: medium double #333; color: #333; text-align: center; padding: 0" /><br></th>
-<th><br><br><hr style="border-top: medium double #333; color: #333; text-align: center; padding: 0" /><br></th>
-</tr>
+
 </table>
 
 </body>

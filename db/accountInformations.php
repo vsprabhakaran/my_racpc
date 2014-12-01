@@ -464,7 +464,7 @@ function GetNoOfFilesForAccount($accountNumber)
     }
      mysqli_close($con);
 }
-
+// for doc mgr
 function OutUpdateDocStatus($accountNumber)
 {
    
@@ -485,7 +485,7 @@ function OutUpdateDocStatus($accountNumber)
     }
      mysqli_close($con);
 }
-
+// for doc mgr
 function InUpdateDocStatus($accountNumber)
 {
    $con = NULL;
@@ -509,31 +509,36 @@ function ViewReport($login_pf_index)
 {
     $con = NULL;
     db_prelude($con);  
-    $colname = "borrower";
-    $query=mysqli_query($con,"SELECT MAX( dl.timestamp ) as '$colname' 
+    $col1 = "time"; $col2 = "loan"; $col3 = "borrower";
+    $query=mysqli_query($con,"SELECT max( dl.timestamp ) as '$col1', dl.loan_acc_no as '$col2', dl.borrower_pf_index as '$col3'
 FROM adms_loan_account_mstr am, loan_account_mstr l, document_activity_log dl
 WHERE am.document_status =  'OUT'
 AND am.loan_status =  'A'
 AND am.loan_acc_no = l.loan_acc_no
 AND l.loan_acc_no = dl.loan_acc_no
 AND dl.slip_type =  'OUT' 
-AND dl.docmgr_pf_index = '$login_pf_index' ");
+    AND dl.docmgr_pf_index = '$login_pf_index'
+    group by 2 ");
     
-    $row = mysqli_fetch_array($query);
-
-    if ( $row[$colname] != '')
+ while($row_data = mysqli_fetch_array($query))
     {
-       //echo $row[$time]; echo $row[$account]; 
-       //echo "hello";
-       //echo $row[$colname];
-       //echo json_encode(TRUE);
-       echo json_encode(hello);
+  $row_time = $row_data[$col1];
+  $row_loan = $row_data[$col2];
+  $row_borrower = $row_data[$col3];
+  //echo $row_time;
+  //echo $row_loan;
+  //echo $row_borrower;
+  
+  echo json_encode($row_loan);
+  echo json_encode("s");
+  echo json_encode($row_borrower);
+  echo json_encode("s");
+  echo json_encode($row_time);
+  echo json_encode("s");
+  echo json_encode("x");
     }
-    else
-    {
-        echo "fail";
-    echo json_encode(FALSE);
-    } 
+
+
      mysqli_close($con); 
 }
 

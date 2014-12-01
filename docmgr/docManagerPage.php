@@ -49,9 +49,9 @@
                     contentIFrame.src = "../admin/printSticker.php";
                     break;
                 }
-                case 'ViewReport':
+                case 'ViewOutReport':
                     {
-                        contentIFrame.src = 'ViewReport.php';
+                        contentIFrame.src = 'ViewOutReport.php';
                         break;
                     }
         /*        default:
@@ -84,8 +84,11 @@
    <li id="viewLocationTab"  ><a href='#' onclick="displayPanel('viewLocationTab')"><span>View Location</span></a></li>
     -->
    <li id="printStickerTab"><a href='#' onclick="displayPanel('printStickerTab')"><span>Print Sticker</span></a></li>
-   <!--li id="ViewReport"><a href='#' onclick="displayPanel('ViewReport')"><span>View Report</span></a></li>-->
-   <li style="width: 33%; text-align:right; visibility: hidden;" >&nbsp;</li>
+   <!--
+    <li id="ViewReport"><a href='#' onclick="displayPanel('ViewReport')"><span>View Report</span></a></li>
+    -->
+   <li id="ViewOutReport"><a href='#' onclick="displayPanel('ViewOutReport')"><span>Out Slip Report</span></a></li>
+   <li style="width: 35%; text-align:right; visibility: hidden;" >&nbsp;</li>
    <li style="text-align:center;"><a href='../logout.php'><span>Logout</span></a></li>
 </ul>
 </div>

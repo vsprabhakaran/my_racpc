@@ -449,7 +449,10 @@
 	}
         var check = confirm("Confirm Slip Generation ?");
         if (check == true) { InUpdateDocStatus(); }
-        else { alert("Slip Generation Cancelled"); return; }
+        else {
+            alert("Slip Generation Cancelled");
+            document.getElementById('slip_upload_frame').src = "";
+        }
 	}
 
 </script>
@@ -511,7 +514,7 @@
         <input type="text" id="foliono" name="foliono" readonly="true" />
     </div>
     <div class="pure-control-group">
-		<label for="pfnogiver" >  Giver's PF Number :</label>
+		<label for="pfnogiver" >  Returnee's PF Number :</label>
 		<input type="text" name="pfnogiver" id="pfnogiver" onKeyDown="if (event.keyCode == 13) showUdetails();" disabled="disabled"/>
         <a id="getUserDetailsSpan" href="#"  style="visibility: hidden" onClick="showUserDetails()">View Details</a>
     </div>
@@ -532,7 +535,7 @@
     </div> 
 
 </center>
-<p style="color: #33089e"> ** Account Number and Giver should belong to same RACPC </p>
+<p style="color: #33089e"> ** Account Number and Returnee should belong to same RACPC </p>
 </form>
 </td>
         <td style="width:100%;height: 100%;" >

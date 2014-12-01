@@ -15,6 +15,9 @@
 <head>
    <title>Generate Outslip</title>
     <script type="text/javascript" src="../jquery-latest.min.js"></script>
+     <link rel="stylesheet" href="../css/my_styles.css">
+    <link rel="stylesheet" href="../css/pure-min.css">
+
 <script>
     function printFunction() {
     window.print();
@@ -86,12 +89,12 @@ padding:1em 0ex 1ex 0em;
 <center>
 <div>
 
-  <table border="1" style="width:100%;height:100%;border-width:0px;border-collapse: collapse;table-layout:fixed;" >
+  <table border="1" style="width:100%;height:100%;border-width:0px;border-collapse: collapse; font-size:small;table-layout:fixed;" >
   <tr >
-    <td colspan="3" style="font-family: Arial, Helvetica, Sans-Serif; font-weight: 600">
+    <td colspan="3" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small;font-weight: 600">
     <center>
         <h5>OUTSLIP FORM</h5> 
-        <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif;font-weight: 300"></div>
+        <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif;font-size:small;font-weight: 300"></div>
         <p id="date"></p>
     </center>
 	</td>
@@ -180,6 +183,18 @@ padding:1em 0ex 1ex 0em;
 <table style="width:100%">
  
 <tr>
+<th>DOCUMENT MANAGER SIGNATURE</th>
+<th>RECEIVER'S SIGNATURE</th>
+</tr>
+<tr>
+<!--
+    <th><br><br><hr style="border-top: dotted 1px;" /><br></th>
+-->
+<th><br><br><hr style="border-top: medium double #333; color: #333; text-align: center; padding: 0" /><br></th>
+<th><br><br><hr style="border-top: medium double #333; color: #333; text-align: center; padding: 0"/><br></th>
+</tr>
+
+<tr>
 <td colspan="2">
 <center>
 <div class="pure-controls">
@@ -194,17 +209,7 @@ padding:1em 0ex 1ex 0em;
 <br>
 </tr>
     
-<tr>
-<th>DOCUMENT MANAGER SIGNATURE</th>
-<th>RECEIVER'S SIGNATURE</th>
-</tr>
-<tr>
-<!--
-    <th><br><br><hr style="border-top: dotted 1px;" /><br></th>
--->
-<th><br><br><hr style="border-top: medium double #333; color: #333; text-align: center; padding: 0" /><br></th>
-<th><br><br><hr style="border-top: medium double #333; color: #333; text-align: center; padding: 0"/><br></th>
-</tr>
+
 
 
 

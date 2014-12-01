@@ -413,7 +413,10 @@
 	}
         var check = confirm("Confirm Slip Generation ?");
         if (check == true) { outUpdateDocStatus(); }
-        else { alert("Slip Generation Cancelled"); return; }
+        else {
+            alert("Slip Generation Cancelled");
+            document.getElementById('slip_upload_frame').src = "";
+             }
 	}
 
 </script>
