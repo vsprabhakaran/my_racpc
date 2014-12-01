@@ -40,7 +40,7 @@
 
                 if (isValidAccount(enteredAccNumber)) { validAccountNumberEnterred(enteredAccNumber); }
                 else { invalidAccountNumberEnterred(); return; }
-            
+
 
             }
             function validAccountNumberEnterred(enteredAccNumber) {
@@ -51,50 +51,35 @@
                     data: { accNo: enteredAccNumber, type: 'isLoanActive' },
                     success: function (msg) {
                         if (msg == "true" || (msg == "false" && !isLoanInADMS(enteredAccNumber))) {
+
                             
-                            document.getElementById("barcodeIFrame").setAttribute('src', "../barcodegit/test.php?text=" + document.getElementById("accNumber").value);
-                            $('.accountNumberBarcode').css("display", "block");
                             document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
                             $('#formButton').prop('disabled', false);
-                            $('#generateFP').prop('disabled', false);
                             document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
-                            //$("#accBarcode").barcode(enteredAccNumber, "code128",{barWidth:2, barHeight:30});
-                            populateFields(enteredAccNumber);
-                            showAccountDetailsIFrame();
+                            //$("#accBarcode").barcode(enteredAccNumber, "code128",{barWidth:2, barHeight:30})
+                           // showAccountDetailsIFrame();
                         }
                         else {
 
                             document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
-                    alert("You are trying to access a closed loan!");
+                            alert("You are trying to access a closed loan!");
                         }
                     },
                     error: function (msg) { alert("fail : " + msg); },
                     async: false
                 });
-
-
-
             }
-            function cleanFormValues() {
-                $('#folio_no').val("");
-                $('#rack_no').val("");
-                $('#file').val("");
-            }
+           
             function resetForm() {
-                cleanFormValues();
-                $('#folio_no').prop('disabled', true);
-                $('#rack_no').prop('disabled', true);
                 $('#formButton').prop('disabled', true);
-                $('#actionTypeField').val("null");
-                document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
-                document.getElementById("viewDocDiv").style.display = "none";
-                document.getElementById("newDocDiv").style.display = "none";
-                $('.editAnchor').css({ "visibility": "hidden" });
-                $('.accountNumberBarcode').css("display", "none");
-                $('.rackNumberBarcode').css("display", "none");
-			$("#pdfFile").prop("src","");
-			$("#pdfFile").css({ "visibility": "hidden" });
+                $("#pdfFile").prop("src", "");
+                $("#pdfFile").css({ "visibility": "hidden" });
                 whichAction = -1;
+            }
+            function isLoanInADMS(accountNumber) {
+                var result = doPOST_Request(dbURL, accountNumber, 'isLoanAccountInADMS');
+                if (result == "true") return true;
+                else false;
             }
             function invalidAccountNumberEnterred() {
                 document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
@@ -120,67 +105,7 @@
                 if (result == "true") return true;
                 else false;
             }
-            /* function showRackBarcode(){
-            var rack = $("#rack_no").val();
-            alert(rack);
-            $("#rackBarcode").barcode(rack, "code128", { barWidth: 2, barHeight: 30 });
-            } */
-            function isLoanInADMS(accountNumber) {
-                var result = doPOST_Request(dbURL, accountNumber, 'isLoanAccountInADMS');
-                if (result == "true") return true;
-                else false;
-            }
-            function populateFields(accountNumber) {
-
-                docStatus = doPOST_Request(dbURL, accountNumber, 'GetDocumentStatusOfAccount');
-                var enteredAccNumber = document.getElementById('accNumber').value;
-                var loanStatus;
-                $.ajax({
-                    type: 'POST',
-                    url: '../db/accountInformations.php',
-                    data: { accNo: enteredAccNumber, type: 'isLoanActive' },
-                    success: function (msg) {
-                        if (msg == "true") {
-                            loanStatus = 'A';
-                        }
-                        else if (msg == "false") {
-                            loanStatus = 'C';
-                        }
-                    },
-                    error: function (msg) { alert("fail : " + msg); },
-                    async: false
-                });
-
-                //Enable the fiels for editing coz the documnet and location details are not present
-                if (docStatus == "A" || !(isLoanInADMS(accountNumber))) {
-                    whichAction = ACTION_TYPE.NewDocument; $('#actionTypeField').val("NewDocument");
-                    $('#folio_no').prop('disabled', false);
-                    $('#rack_no').prop('disabled', false);
-                    document.getElementById("newDocDiv").style.display = "block";
-                    return;
-                }
-                else if (loanStatus == "C") {    //The loan is closed so no need to get or populate the details regarding this loan
-
-                    invalidAccountNumberEnterred();
-                    return;
-                }
-                else if (docStatus == "IN" || docStatus == "OUT") {
-                    noOfDocs_var = doPOST_Request(dbURL, accountNumber, 'GetNoOfFilesForAccount');
-                    if (noOfDocs_var == 1) {
-                        whichAction = ACTION_TYPE.OldDocNoChange; $('#actionTypeField').val("OldDocNoChange");
-                        $('.editAnchor').css({ "visibility": "visible" });
-                        document.getElementById("viewDocDiv").style.display = "block";
-                    }
-                    else {
-                        whichAction = ACTION_TYPE.OldDocDocumentChange; $('#actionTypeField').val("OldDocDocumentChange");
-                        document.getElementById("newDocDiv").style.display = "block";
-                    }
-                }
-                folioNumber_var = doPOST_Request(dbURL, accountNumber, 'GetFolioNumberOfAccount');
-                $("#folio_no").val(folioNumber_var);
-                rackNumber_var = doPOST_Request(dbURL, accountNumber, 'GetRackNumberOfAccount');
-                $("#rack_no").val(rackNumber_var);
-            }
+           
             function doPOST_Request(phpURL, accNumber, typeCall) {
                 var returnMsg = '';
                 $.ajax({
@@ -213,37 +138,9 @@
                     alert("fail : " + msg);
                 });
             }
-            function FolioEditClick() {
-                if (whichAction == -1) alert("cannot modify FolioNumber");
-                if (whichAction == ACTION_TYPE.OldDocNoChange) {
-                    $("#folio_no").prop('disabled', false);
-                    whichAction = ACTION_TYPE.OldDocFolioChange;
-                    $('#actionTypeField').val("OldDocFolioChange");
-                }
-                else if ((whichAction & ACTION_TYPE.OldDocRackChange)) {
-                    $("#folio_no").prop('disabled', false);
-                    whichAction |= ACTION_TYPE.OldDocFolioChange; $('#actionTypeField').val("OldDocRackChange,OldDocFolioChange");
-                }
-                else alert("invalid action!!!");
-            }
-            function RacKEditClick() {
-                if (whichAction == -1) alert("cannot modify RackNumber");
-                if (whichAction == ACTION_TYPE.OldDocNoChange) {
-                    $("#rack_no").prop('disabled', false);
-                    whichAction = ACTION_TYPE.OldDocRackChange;
-                    $('#actionTypeField').val("OldDocRackChange");
-                    //$('.editAnchor').css({ "visibility": "hidden" });
-                }
-                else if ((whichAction & ACTION_TYPE.OldDocFolioChange)) {
-                    $("#rack_no").prop('disabled', false);
-                    whichAction |= ACTION_TYPE.OldDocRackChange; $('#actionTypeField').val("OldDocRackChange,OldDocFolioChange");
-                }
-                else alert("invalid action!!!");
-            }
-            function showRackBarcode() {
-                document.getElementById("rackIFrame").setAttribute('src', "../barcodegit/test.php?text=" + document.getElementById("rack_no").value);
-                $('.rackNumberBarcode').css("display", "block");
-            }
+            
+            
+          
             /* function print(){
             var acc= $("#accNumber").val();
             alert(acc);
@@ -256,7 +153,7 @@
             });
 
             } */
-			 function checkFolioNumber() {
+            function checkFolioNumber() {
                 var folioNumber = $('#folio_no').val();
                 var pattern = /^[a-z0-9\/]+$/i;
                 return pattern.test(folioNumber);
@@ -281,7 +178,7 @@
                         if (!$('#file').val()) isFormValid = false;
                         else if (!$('#folio_no').val()) isFormValid = false;
                         else if (!$('#rack_no').val()) isFormValid = false;
-            
+
                     }
                     else if (whichAction == ACTION_TYPE.OldDocDocumentChange) {
                         if (!$('#file').val()) isFormValid = false;
@@ -289,16 +186,17 @@
                     }
                     else if ((whichAction & ACTION_TYPE.OldDocFolioChange) && (whichAction & ACTION_TYPE.OldDocRackChange)) {
                         if ((!$('#folio_no').val()) || (!$('#rack_no').val())) isFormValid = false;
-                        alertMsg = "Please enter new folio and rack number.";
-						if (isFormValid) {
+                        alertMsg = "Please enter new folio and rack number."
+                        if (isFormValid) {
                             isFormValid = checkFolioNumber();
                             if(!isFormValid) alertMsg = "Folio Number can be alpanumeric and only symbol allowed is / (forward slash)";
                         }
+
                     }
                     else if (whichAction == ACTION_TYPE.OldDocFolioChange) {
                         if (!$('#folio_no').val()) isFormValid = false;
-                        alertMsg = "Please enter new folio number.";
-						if (isFormValid) {
+                        alertMsg = "Please enter new folio number."
+                        if (isFormValid) {
                             isFormValid = checkFolioNumber();
                             if(!isFormValid) alertMsg = "Folio Number can be alpanumeric and only symbol allowed is / (forward slash)";
                         }
@@ -328,13 +226,8 @@
                     $('#file').wrap('<form>').closest('form').get(0).reset();
                     $('#file').unwrap();
                 }
+            }
 
-            }
-            function generateFPFunc() {
-                var number = document.getElementById('accNumber').value;
-                //$("#genLink").prop("href", "firstPage/generate.php?accNo=" + number);
-                $("#pdfFile").prop("src", "firstPage/generate.php?accNo=" + number);
-            }
         </script>
         <br />
         <br />
@@ -345,64 +238,19 @@
                         <form id="formid" class="pure-form pure-form-aligned" action="uploadDocumentAction.php" method="post" enctype="multipart/form-data">
                             <div class="pure-control-group">
                                 <label for="accNumber">Account Number</label>
-            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onKeyDown="if (event.keyCode == 13) accountNumButtonClick()" onBlur="accountNumButtonClick()" />
+            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" onblur="accountNumButtonClick()"/>
                                 <!--<span><button name="accButton" onclick="accountNumButtonClick()">Go</button></span> -->
-                                <a id="getAccountDetailsSpan" href="#" style="visibility: hidden" onClick="showAccountDetails()">View Details</a>
+                                <a id="getAccountDetailsSpan" href="#" style="visibility: hidden" onclick="showAccountDetails()">View Details</a>
                             </div>
                                                             <!--div  barcode gen JS method>
                                                      <a id="printBarcode" href="#" onclick="print()" ><div id="accBarcode"></div></a>
                                                      </div-->
-                            <div>
-                                <table border="0">
-                                    <tr>
-                                        <td>
-                                            <iframe id="barcodeIFrame" class="accountNumberBarcode" frameborder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
-                                        </td>
-                                        <td>
-                                            <img src="../img/print_icon.jpg" class="accountNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="window.frames['barcodeIFrame'].focus();window.frames.print();" />
-                                        </td>
-                                    </tr>
-                                </table>
-                                <br />
-                            </div>
-                            <div class="pure-control-group" id="newDocDiv" style="display: none">
-                                <label for="file">Choose file</label>
-                                <input id="file" type="file" name="file" onChange="validateFile()" />
-                            </div>
-                            <div class="pure-control-group" id="viewDocDiv" style="display:none">
-                                <label for="fileURL">Document </label>
-                                <a id="viewDocumentURL" href="#" onClick="showDocument()">View Document</a>
-                            </div>
-                            <div class="pure-control-group">
-                                <label for="folio_no">Folio No</label>
-                                <input id="folio_no" type="text" name="folio_no" disabled="disabled" autocomplete="off" style="color: #000" />
-                                <a class="editAnchor" href="#" onClick="FolioEditClick()"><img class="editImg" src="../img/write.png" alt="edit" /></a>
-                            </div>
-                            <div class="pure-control-group">
-                                <label for="rack_no">Rack Location</label>
-                                <input id="rack_no" type="text" name="rack_no" disabled="disabled" autocomplete="off" onKeyDown="if (event.keyCode == 13) showRackBarcode()" style="color: #000" />
-                                <a class="editAnchor" href="#" onClick="RacKEditClick()"><img class="editImg" src="../img/write.png" alt="edit" /></a>
-                            </div>
-                            <div>
-                                <table border="0">
-                                    <tr>
-                                        <td>
-                                            <iframe id="rackIFrame" class="rackNumberBarcode" frameborder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
-                                        </td>
-                                        <td>
-                                            <img src="../img/print_icon.jpg" class="rackNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="window.frames['rackIFrame'].focus();window.frames.print();" />
-                                        </td>
-                                    </tr>
-                                </table>
-                                <br>
-                            </div>
                             <div class="pure-controls">
-            <button class="pure-button pure-button-primary" id="formButton" type="submit" disabled="disabled" >Submit</button>
-                                 <button class="pure-button pure-button-primary" id="generateFP" type="button" disabled="disabled" onclick="generateFPFunc()" >Generate</button>
+            <button class="pure-button pure-button-primary" id="formButton" type="submit" disabled="disabled" >Generate</button>
                             </div>
                             <input type="hidden" name="actionTypeField" id="actionTypeField" value="null" />
                         </form>
-                    </div>
+                </div>
                 </td>
                 <td style="height:100%;width:50%;" rowspan="2">
                     <iframe id="pdfFile"  frameBorder="0"  marginheight="0" marginwidth="0"  style="visibility: hidden;height:30em;width:100%;"> </iframe>

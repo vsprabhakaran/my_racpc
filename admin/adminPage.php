@@ -14,6 +14,7 @@
 		?>
    <title>RACPC Admin</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pure-min.css">
     <link rel="stylesheet" href="../menustyles.css">
    <script src="../jquery-latest.min.js" type="text/javascript"></script>
    <script src="../script.js"></script>

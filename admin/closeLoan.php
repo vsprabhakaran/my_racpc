@@ -40,6 +40,11 @@
             var popup = window.open("../AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
             $(popup).blur(function () { this.close(); });
         }
+     function showAccountDetailsIFrame() {
+         var enteredAccNumber = document.getElementById('accNumber').value;
+         $("#accountPreview").prop("src", "../AccountDetailsWindow.php?accNo=" + enteredAccNumber);
+         $("#accountPreview").css({ "visibility": "visible" });
+     }
 		function validAccountNumberEnterred() {
             document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
 			var enteredAccNumber = document.getElementById('accNumber').value;
@@ -51,6 +56,7 @@
                     if (msg == "true") {
                     document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
 					$('#formButton').prop('disabled', false);
+                     showAccountDetailsIFrame();
                 }
                 else if (msg == "false") {
 					document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
@@ -60,9 +66,6 @@
                 error: function (msg) { alert("fail : " + msg); },
                 async: false
             });
-			
-			var popup = window.open("../AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
-            $(popup).blur(function () { this.close(); });
         }
 		function invalidAccountNumberEnterred() {
             document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
@@ -83,6 +86,7 @@
 	function resetForm()
 	{
 		document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
+         $("#accountPreview").css({ "visibility": "hidden" });
 		$(".error").css('visibility', 'hidden');
 	}
 	</script>
@@ -102,6 +106,9 @@
  </script>
  <br/><br/>
  <div>
+    <table border="0" style="width:100%;">
+        <tr>
+            <td style="width:40%;vertical-align: top;">
 <form id="formid" class="pure-form pure-form-aligned" action="../db/closeLoanAction.php" method="POST" onSubmit="return confirm('Do you really want to close the loan?');">
 		<div class="pure-control-group">
             <label for="accNumber" >Account Number</label>
@@ -117,6 +124,14 @@
             <button class="pure-button pure-button-primary" type="submit" id="formButton" disabled="disabled">Close Loan</button>
         </div>
 </form>
+            </td>
+                
+            <td style="width:60%">
+                <iframe id="accountPreview"  frameBorder="0"  marginheight="0" marginwidth="0"  style="visibility: hidden;height:30em;width:80%;"> </iframe>
+            </td>
+        </tr>
+    </table>
+
 
 </div>
 
