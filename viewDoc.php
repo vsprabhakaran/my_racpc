@@ -150,7 +150,7 @@
         }
         </script>
     </head>
-<body>
+<body style="background-image:url('img/greyzz.png')">
 <script type="text/javascript">
         $(document).ready(function () {
 			resetForm();
@@ -167,7 +167,11 @@
 <!--object data="myfile.pdf" type="application/pdf" width="100%" height="100%"-->
   <!-- Account Number :  <input type="text" id="accno"/>
     <button id="submit" onclick="getPDF()">View</button> -->
+	<table style="width: 100%; height:100%">
+	<tr>
 	<br><br>
+	<td style="vertical-align:top; width:45%;">
+	
 	<form id="formid" class="pure-form pure-form-aligned">
 	<div class="pure-control-group">
             <label for="accNumber" >Account Number</label>
@@ -182,8 +186,13 @@
 	</form>
 	<button id="viewButton" class="pure-button pure-button-primary" onclick="getPDF()" style="margin-left:180px" disabled="disabled">View</button>
 			<br><br>
-	
-<iframe  id="pdfFile" height="75%" width="100%" style="visibility: hidden"> </iframe>
+
+	</td>
+	<td style="vertical-align:top">
+		<iframe  id="pdfFile" height="90%" width="100%" style="visibility: hidden"> </iframe>
+	</td>
+</tr>
+</table>
 </body>
 </html>
 <?php 
