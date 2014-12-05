@@ -161,4 +161,53 @@ function getBranchCode($accNo)
     $row=mysqli_fetch_array($query);
 	return ($row[0]);
 }
+function isValidAccount($accountNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"select loan_acc_no from loan_account_mstr where loan_acc_no = '$accountNumber'");
+    $row = mysqli_fetch_array($query);
+    mysqli_close($con);
+    if($row['loan_acc_no'] != "")
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
+function isLoanAccountInADMS($accountNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"select loan_acc_no from adms_loan_account_mstr where loan_acc_no = '$accountNumber'");
+    $row = mysqli_fetch_array($query);
+    mysqli_close($con);
+    if($row['loan_acc_no'] != "")
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+function isLoanActive($accountNumber)
+{
+	$con = NULL;
+    db_prelude($con);  
+    $query=mysqli_query($con,"select loan_status from adms_loan_account_mstr where loan_acc_no = '$accountNumber'");
+    $row = mysqli_fetch_array($query);
+    mysqli_close($con);
+    if($row['loan_status'] == "A")
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
 ?>

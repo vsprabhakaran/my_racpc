@@ -40,8 +40,6 @@
 
                 if (isValidAccount(enteredAccNumber)) { validAccountNumberEnterred(enteredAccNumber); }
                 else { invalidAccountNumberEnterred(); return; }
-            
-
             }
             function validAccountNumberEnterred(enteredAccNumber) {
                 //Resetting some elements before actions

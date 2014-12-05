@@ -46,7 +46,7 @@
                 }
                 case 'printStickerTab':
                  {
-                    contentIFrame.src = "../admin/printSticker.php";
+                    contentIFrame.src = "docManagerPrintSticker.php";
                     break;
                 }
                 case 'ViewOutReport':

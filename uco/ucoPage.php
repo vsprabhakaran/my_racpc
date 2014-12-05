@@ -9,7 +9,7 @@
 <table border="0" style="width:100%;height:100%;border-width:2px;">
 <tr>
 <td> <div>
-<iframe scrolling="no" frameBorder="0" src="header.php" style="width: 100%;height: 90px;" marginheight="0" marginwidth="0" frameborder="0"></iframe></div>
+<iframe scrolling="no" frameBorder="0" src="../header.php" style="width: 100%;height: 90px;" marginheight="0" marginwidth="0" frameborder="0"></iframe></div>
 </td>
 </tr>
 
