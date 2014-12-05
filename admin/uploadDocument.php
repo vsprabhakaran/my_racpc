@@ -398,7 +398,7 @@
                             </div>
                             <div class="pure-controls">
             <button class="pure-button pure-button-primary" id="formButton" type="submit" disabled="disabled" >Submit</button>
-                                 <button class="pure-button pure-button-primary" id="generateFP" type="button" disabled="disabled" onclick="generateFPFunc()" >Generate</button>
+                                 <button class="pure-button pure-button-primary" id="generateFP" type="button" disabled="disabled" onClick="generateFPFunc()" >Generate</button>
                             </div>
                             <input type="hidden" name="actionTypeField" id="actionTypeField" value="null" />
                         </form>

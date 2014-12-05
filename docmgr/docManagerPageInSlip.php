@@ -520,7 +520,7 @@
         <a id="getUserDetailsSpan" href="#"  style="visibility: hidden" onClick="showUserDetails()">View Details</a>
     </div>
     <div class="pure-control-group">
-        <label for="nameofGiver" > Name of the Giver :</label>
+        <label for="nameofGiver" > Name of the Returnee :</label>
         <input type="text" id="nameofGiver" name="nameofGiver" readonly="true" />
     </div>
 	

@@ -145,7 +145,7 @@
             </tr>
               <tr>
                   <td colspan="3">
-                   <center><button type="button" id="generate" onclick="printPage()" class="pure-button pure-button-primary">Print</button></center>   
+                   <center><button type="button" id="generate" onClick="printPage()" class="pure-button pure-button-primary">Print</button></center>   
                   </td>
               </tr>
           </table>

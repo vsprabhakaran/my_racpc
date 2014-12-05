@@ -1,17 +1,6 @@
-<!DOCTYPE html>
 <html>
 <body>
 <?php
-   session_start();
-        if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW" || $_SESSION["role"] == "RACPC_ADMIN" ))
-        {
-           $_SESSION["role"] = "";
-           $_SESSION["pfno"] = "";
-        ?>
-		<meta http-equiv="refresh" content="0;URL=login.php"><?php
-        }
-		else
-		{
        function get_ip_address(){
             if (isset($_SERVER))
             {
@@ -49,6 +38,18 @@
         return $ipadres;
         }
  
+   session_start();
+        if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW" || $_SESSION["role"] == "RACPC_ADMIN" ))
+        {
+           $_SESSION["role"] = "";
+           $_SESSION["pfno"] = "";
+        ?>
+		<meta http-equiv="refresh" content="0;URL=login.php"><?php
+        }
+		else
+		{
+      
+
 	
 	
 	$accountNumber = $_GET["accNo"];
@@ -72,7 +73,7 @@
     else
     {
         echo "Branch code not found.";
-        //(FALSE);
+        return;
     }
 
     // activity log for document viewing with ip address 
@@ -82,8 +83,7 @@
         {
         die("Connection failed: " . $conn->connect_error);
         }  
-    $query=mysqli_query($con,"INSERT INTO doc_view_activity_log (pf_index,loan_acc_no,ip_address)
-	values ('$pf_index','$accountNumber','$ipaddress')"); 
+   $query=mysqli_query($con,"INSERT INTO doc_view_activity_log (pf_index,loan_acc_no,ip_address) values('$pf_index','$accountNumber','$ipaddress')"); 
 
      mysqli_close($con);
         $filePath = "E://uploads/" .$branchCode."/". $accountNumber.".pdf";
