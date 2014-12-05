@@ -122,6 +122,16 @@ switch($request)
        validate_racpc_user($_POST['pfno'],$_POST['login_pfno']);
        break;
    }
+   case 'checkOldPassword':
+   {
+       checkOldPassword($_POST['pwd']);
+       break;
+   }
+   case 'updateNewPassword':
+   {
+       updateNewPassword($_POST['pwd']);
+       break;
+   }
     
 }
 
@@ -132,6 +142,35 @@ function db_prelude(&$con)
         die("Connection failed: " . $conn->connect_error);
     }
 }
+function checkOldPassword($old)
+{
+    $con=NULL;
+    db_prelude($con);
+    $pfNumber=$_SESSION["pfno"];
+    $query=mysqli_query($con,"select adms_password from adms_user_mstr where pf_index = '$pfNumber'");
+    $row = mysqli_fetch_array($query);
+    if($row["adms_password"]== md5($old))
+    echo json_encode(TRUE);
+    else
+    echo json_encode(FALSE);
+    mysqli_close($con);
+}
+
+function updateNewPassword($new)
+{
+    $con=NULL;
+    db_prelude($con);
+    $pfNumber=$_SESSION["pfno"];
+    $newHash=md5($new);
+    $udpate=mysqli_query($con,"update adms_user_mstr set adms_password='$newHash' where pf_index = '$pfNumber'");
+	$rowcount=mysqli_affected_rows($con);
+    if($rowcount>0)
+    echo json_encode(TRUE);
+    else
+    echo json_encode(FALSE);
+    mysqli_close($con);  
+}
+
 function isValidUser($pfNumber)
 {
     $con = NULL;
