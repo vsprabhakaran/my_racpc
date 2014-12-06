@@ -61,7 +61,7 @@
 <style type="text/css">
 td
 {
-padding:1em 0ex 1ex 0em;
+padding:1em 0ex 0ex 0em;
 }
 </style>
 
@@ -94,8 +94,11 @@ padding:1em 0ex 1ex 0em;
   <tr>
     <td colspan="3" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small;font-weight: 600">
     <center>
-        <h5>INSLIP FORM </h5>
-        <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small; font-weight: 300"></div>
+        <h3>INSLIP FORM </h3>
+        <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small; font-weight: 300"></div>      
+        <!--
+        <div id="docmgrname" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small; font-weight: 300"></div>
+        -->
         <p id="date"></p>
     </center>
     </td>
@@ -105,9 +108,14 @@ padding:1em 0ex 1ex 0em;
         var pfNumber = doPOST_Request_SessionUser(phpURL,'getPfno');
         phpURL = '../db/UserInformations.php';
         var racpc_name = doPOST_Request(phpURL, pfNumber, "GetUserRacpcName");
-        $('#myResults').text(racpc_name);
+          var racpc_code = doPOST_Request(phpURL, pfNumber, "GetUserBranchCode");
+          $('#myResults').text(racpc_name+ " (" + racpc_code + ")");
+          //var docmgrname = doPOST_Request(phpURL, pfNumber, "GetUserName");
+          //$('#docmgrname').text(docmgrname +" ("+ pfNumber + ")");
+
         var d = new Date();
-        document.getElementById("date").innerHTML = d.toDateString();
+          var msg = d.toLocaleString();
+          document.getElementById("date").innerHTML = msg;
     </script>
    <tr>
     <td><center><h5>ACCOUNT NUMBER</h5></center></td>
@@ -151,7 +159,7 @@ padding:1em 0ex 1ex 0em;
     <td></td>
    </tr>
    <tr>
-    <td><center><h5>Returnee DETAILS</h5></center></td>
+    <td><center><h5>RETURNEE DETAILS</h5></center></td>
     <td>
         <center>
         <?php echo $_POST["pfnogiver"]; ?><br><br> 
@@ -159,6 +167,18 @@ padding:1em 0ex 1ex 0em;
         </center></td> 
     <td></td>
    </tr>
+    
+ <tr>
+    <td><center><h5>DOCUMENT MANAGER DETAILS</h5></center></td>
+    <td>
+        <center>
+               <?php echo $_POST["did"]; ?><br><br>
+               <?php echo $_POST["dname"]; ?><br><br> 
+        </center>
+		</td>  
+    <td></td>
+    </tr>
+           
    <tr>
     <td><center><h5>COMMENTS</h5></center></td>
     <td style="word-wrap: break-word; text-justify: distribute">
@@ -186,10 +206,12 @@ padding:1em 0ex 1ex 0em;
 <th>DOCUMENT MANAGER SIGNATURE</th>
 <th>RETURNEE'S SIGNATURE</th>
 </tr>
+<!--
 <tr>
 <th><br><br><hr style="border-top: medium double #333; color: #333; text-align: center; padding: 0" /><br></th>
 <th><br><br><hr style="border-top: medium double #333; color: #333; text-align: center; padding: 0" /><br></th>
 </tr>
+-->
 
 <tr>
 <td colspan="2">

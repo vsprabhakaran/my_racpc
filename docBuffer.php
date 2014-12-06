@@ -1,6 +1,7 @@
 <html>
 <body>
 <?php
+   
        function get_ip_address(){
             if (isset($_SERVER))
             {
@@ -39,7 +40,7 @@
         }
  
    session_start();
-        if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW" || $_SESSION["role"] == "RACPC_ADMIN" ))
+        if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW" || $_SESSION["role"] == "RACPC_ADMIN" || $_SESSION["role"] == "RACPC_DM" ))
         {
            $_SESSION["role"] = "";
            $_SESSION["pfno"] = "";
@@ -49,9 +50,6 @@
 		else
 		{
       
-
-	
-	
 	$accountNumber = $_GET["accNo"];
     $pf_index = $_SESSION["pfno"];
     $ipaddress = get_ip_address();
@@ -83,7 +81,8 @@
         {
         die("Connection failed: " . $conn->connect_error);
         }  
-   $query=mysqli_query($con,"INSERT INTO doc_view_activity_log (pf_index,loan_acc_no,ip_address) values('$pf_index','$accountNumber','$ipaddress')"); 
+    $query=mysqli_query($con,"INSERT INTO doc_view_activity_log (pf_index,loan_acc_no,ip_address)  
+	values ('$pf_index','$accountNumber','$ipaddress')"); 
 
      mysqli_close($con);
         $filePath = "E://uploads/" .$branchCode."/". $accountNumber.".pdf";

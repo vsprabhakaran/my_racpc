@@ -54,6 +54,11 @@
                         contentIFrame.src = 'ViewOutReport.php';
                         break;
                     }
+                case 'ViewDoc':
+                    {
+                        contentIFrame.src = '../viewDoc.php';
+                        break;
+                    }
         /*        default:
                 {
                     contentIFrame.src = "docManagerPageOutSlip.php";
@@ -87,8 +92,9 @@
    <!--
     <li id="ViewReport"><a href='#' onclick="displayPanel('ViewReport')"><span>View Report</span></a></li>
     -->
-   <li id="ViewOutReport"><a href='#' onclick="displayPanel('ViewOutReport')"><span>Out Slip Report</span></a></li>
-   <li style="width: 35%; text-align:right; visibility: hidden;" >&nbsp;</li>
+   <li id="ViewOutReport" style="width: 15%;"><a href='#' onclick="displayPanel('ViewOutReport')"><span>Out Slip Report</span></a></li>
+   <li id="ViewDoc" style="width: 15%"><a href='#' onclick="displayPanel('ViewDoc')"><span>View Document</span></a></li>
+   <li style="width: 15%; text-align:right; visibility: hidden;" >&nbsp;</li>
    <li style="text-align:center;"><a href='../logout.php'><span>Logout</span></a></li>
 </ul>
 </div>

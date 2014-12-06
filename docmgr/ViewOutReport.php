@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>MySQL Table Viewer</title>
+        <title>OutSlip Report</title>
         <style>
  table a:link {
 	color: #666;
@@ -134,8 +134,9 @@ $con = new mysqli("localhost", "root", "", "racpc_automation_db");
 // sending query
 $pfno = $_SESSION["pfno"];
 $col1 = "Loan Account Number";
-$col2 = "Generation Time"; 
-$col3 = "Out Slip Receiver";
+$col2 = "Out Time"; 
+
+$col3 = "Receiver PF Index";
 $col4 = "Receiver Name";
 $result = mysqli_query($con,"SELECT dl.loan_acc_no as '$col1' , max(dl.timestamp) as '$col2', dl.borrower_pf_index as '$col3', u.emp_name as '$col4'
     FROM adms_loan_account_mstr am, loan_account_mstr l, document_activity_log dl, user_mstr u
@@ -145,7 +146,7 @@ $result = mysqli_query($con,"SELECT dl.loan_acc_no as '$col1' , max(dl.timestamp
     AND l.loan_acc_no = dl.loan_acc_no
     AND dl.slip_type = 'OUT'
     AND dl.docmgr_pf_index = '$pfno'
-    AND dl.docmgr_pf_index = u.pf_index
+    AND dl.borrower_pf_index = u.pf_index
     group by 1");
 if (!$result) {
     die("Query to show fields from table failed");

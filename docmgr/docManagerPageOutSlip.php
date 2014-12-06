@@ -53,51 +53,52 @@
         }
         var phpURL = '../getPfnoFromSession.php';
         var login_pf = doPOST_Request_SessionUser(phpURL,'getPfno');
+        
+        document.getElementById('did').value = doPOST_Request_SessionUser(phpURL, 'getPfno');
+        phpURL = '../db/UserInformations.php';
+        document.getElementById('dname').value = doPOST_RequestUser(phpURL, login_pf, "GetUserName");
+        
         phpURL = '../db/accountInformations.php';
+        
         var msg = doPOST_Request(phpURL, enteredAccNumber, "isValidAccount");
         if (msg == "true") {
             msg = doPOST_Request(phpURL, enteredAccNumber, "isValidAccount");
 
             if (msg == "true") {
-                msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount");
-		
+            msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount"); 
                 if (msg == "true") {
-		
-		phpURL = '../db/accountInformations.php';
-		msg = doPOST_Request_isValidForOutSlip(phpURL,enteredAccNumber,"isValidForOutSlip");
-		
-        if (msg == "true") {
+                phpURL = '../db/accountInformations.php';
+		        msg = doPOST_Request_isValidForOutSlip(phpURL,enteredAccNumber,"isValidForOutSlip");
+		            if (msg == "true") {
                         validAccountNumberEnterred(); $('#accountno').prop('readonly', "readonly");
                         $('#pfnorcv').prop('disabled',false);
-        }
-        else if (msg == "false") {
-            invalidAccountNumberEnterred();
-			alert(" Account Not Valid for Out Slip Generation");
-                        resetForm();
-            return;
-        }
-		}
-                else {
+                           }
+                    else if (msg == "false") {
+                    invalidAccountNumberEnterred();
+			        alert(" Account Not Valid for Out Slip Generation");
+                    resetForm();
+                    return;
+                    }
+                }
+		            else {
                     alert("Acount is Not Valid Adms Account");
                     resetForm();
                     return;
-                }
+                    }
             }
             else {
-                alert("Accouont is Invalid");
-		resetForm();
-		return;
-		}
+            alert("Accouont is Invalid");
+		    resetForm();
+		    return;
+		    }
         document.getElementById('accountname').value = doPOST_Request(phpURL, enteredAccNumber, "GetAccountNameOfAccount");
         document.getElementById('brcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetBranchCodeOfAccount");
         document.getElementById('foliono').value = doPOST_Request(phpURL, enteredAccNumber, "GetFolioNumberOfAccount").replace(/["'\\]/g, "");
         document.getElementById('brname').value = doPOST_Request(phpURL, enteredAccNumber, "GetBranchNameOfAccount");
         document.getElementById('productcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetLoanProductOfAccount");
-         $('#genOutslipButton').prop('disabled', true);
+        $('#genOutslipButton').prop('disabled', true);
         $('#reason').prop('disabled', true);
-
-
-        }
+         }
         else { alert("Invalid Account"); document.getElementById('accountno').value = ''; return; }
     }
     function showUdetails() {
@@ -112,6 +113,8 @@
             if (msg == "true") {
                 validPFNumberEnterred();
                 validate_racpc();
+              
+                //$('#pfnorcv').prop('readonly', "readonly"); //karthik
             }
             else if (msg == "false") {
                 invalidPFNumberEnterred();
@@ -128,7 +131,7 @@
         document.getElementById('nameofReciver').value = doPOST_RequestUser(phpURL, enteredPFNumber, "GetUserName");
          $('#genOutslipButton').prop('disabled', true);
         $('#reason').prop('disabled', false);
-        $('#pfnorcv').prop('readonly', "readonly");
+        //$('#pfnorcv').prop('readonly', "readonly");
 
     }
     function showUserDetails() {
@@ -334,30 +337,37 @@
         var borrower_pf_index = document.getElementById('pfnorcv').value;
         var msg;
 
-        var phpURL = '../db/UserInformations.php';
+       phpURL = '../db/UserInformations.php';
         if (login_pf != '' && borrower_pf_index != '') {
             msg = doPOST_Request_validate_racpc_user(phpURL, borrower_pf_index, login_pf, "validate_racpc_user");
             if (msg == true) {
+                document.getElementById("pfnorcv").readOnly = true;
             }
             else {
                 alert("Receiver does not belong to your RACPC");
                 document.getElementById('pfnorcv').value = '';
                 document.getElementById('nameofReciver').value = '';
                 document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
-                //resetForm();
+                $('#genOutslipButton').prop('disabled', true);
+                $('#reason').prop('disabled', true);
+                document.getElementById("pfnorcv").readOnly = false;
                 return;
             }
         }
-        var phpURL = '../db/accountInformations.php';
+        phpURL = '../db/accountInformations.php';
         if (enteredAccNumber != '' && borrower_pf_index != '') {
             msg = doPOST_Request_validate_racpc_acc_user(phpURL, borrower_pf_index, enteredAccNumber, "validate_racpc_acc_user");
             if (msg == true) {
+                document.getElementById("pfnorcv").readOnly = true;
             }
             else {
                 alert("Account does not belong to Receiver's RACPC");
-                $('#pfnorcv').val("");
-                $('#nameofReciver').val("");
-                //$('#pfnorcv').prop('disabled', true);
+                document.getElementById('pfnorcv').value = '';
+                document.getElementById('nameofReciver').value = '';
+                $('#genOutslipButton').prop('disabled', true);
+                $('#reason').prop('disabled', true);
+                document.getElementById("pfnorcv").readOnly = false;
+                document.getElementById('getUserDetailsSpan').style.visibility = "hidden";
                 //resetForm();
                 return;
             }
@@ -509,6 +519,20 @@
                 
             </center>
 <p style="color: #33089e"> ** Account Number and Receiver should belong to same RACPC </p>
+
+
+<div class="pure-control-group">
+        <label for="dname" style="visibility: hidden" > Document manager name</label>
+        <input type="text" style ="visibility: hidden" id="dname" name="dname" readonly="true" />
+</div> 
+
+
+<div class="pure-control-group">
+        <label for="did" style="visibility: hidden"> Document manager id</label>
+        <input type="text" style ="visibility: hidden" id="did" name="did" readonly="true" />
+</div> 
+
+
 </form>
 </td>
 <td style="width:100%;height:100%;" >
