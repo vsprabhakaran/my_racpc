@@ -57,11 +57,11 @@
         }
     </script>
 </head>
-<body style="background-image:url('../img/greyzz.png')">
+<body style="background-image:url('../img/greyzz.png'); margin: 0">
 
 <div>
     
-<table border="0" style="width:100%;height:100%;border-width:2px;">
+<table border="0" style="width:100%;height:100%;border-width:0px;">
 <tr>
 <td colspan="3"> <div>
 <iframe frameBorder="0" scrolling="no" src="../header.php" style="width: 100%;height: 90px;" marginheight="0" marginwidth="0" frameborder="0"></iframe></div>

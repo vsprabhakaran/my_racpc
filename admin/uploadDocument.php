@@ -261,7 +261,7 @@
             }
         </script>
     </head>
-    <body>
+    <body style="margin: 0">
         <script type="text/javascript">
             $(document).ready(function () {
                 resetForm();
@@ -336,7 +336,7 @@
         </script>
         <br />
         <br />
-        <table style="width: 100%" border="0">
+        <table style="width: 100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td style="height:15em;width:50%;">
             <div>

@@ -82,11 +82,13 @@
         //When the user is disabled, the password is automatically reset.
         if($validationToProceed)
         {
-            $userDisableOrEnableDone = ResetADMSUserPassword($pfNumber);
-            if((strcmp($TODO,"Disable") == 0) && $userDisableOrEnableDone)
+            if((strcmp($TODO,"Disable") == 0))
                 $userDisableOrEnableDone = DisableADMSUser($pfNumber);
-            elseif ((strcmp($TODO,"Enable") == 0) && $userDisableOrEnableDone)
+            elseif ((strcmp($TODO,"Enable") == 0))
+            {
+                ResetADMSUserPassword($pfNumber);
                 $userDisableOrEnableDone = EnableADMSUser($pfNumber);
+            }
         }
         ($userDisableOrEnableDone)?(printSuccessPage("User $TODO succesful")):(printErrorPage("Error in user $TODO!!!"));
     }

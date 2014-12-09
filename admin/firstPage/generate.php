@@ -31,32 +31,40 @@
             document.getElementById('BranchCodeTag').innerHTML = doPOST_Request(phpURL, enteredAccNumber, "GetBranchCodeOfAccount");
             document.getElementById('BranchNameTag').innerHTML = doPOST_Request(phpURL, enteredAccNumber, "GetBranchNameOfAccount");
             document.getElementById('LoanProductTag').innerHTML = doPOST_Request(phpURL, enteredAccNumber, "GetLoanProductOfAccount");
-
-            
-        });
-        function doPOST_Request(phpURL, number, typeCall) {
-                var returnMsg = '';
-                $.ajax({
-                    type: 'POST',
-                    url: phpURL,
-                    data: { accNo: number, type: typeCall },
-                    success: function (msg) {
-                        if (msg != "") returnMsg = msg.replace(/["']/g, "");
-                        else alert("not Found");
-                        if (msg == "false") returnMsg = "NA";
-                    },
-                    error: function (msg) { alert("fail : " + msg); },
-                    async: false
-                });
-                return returnMsg;
+            var storage = doPOST_Request(phpURL, enteredAccNumber, "GetRackNumberOfAccount");
+            if (storage != "NA") {
+                $("#storageContent").text(storage);
+                $("#storageContent").css("height","46px");
+            }
+            else {
+                $("#storageBox").css("display", "block");
             }
 
-            function getParameterByName(name) {
-                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+
+        });
+        function doPOST_Request(phpURL, number, typeCall) {
+            var returnMsg = '';
+            $.ajax({
+                type: 'POST',
+                url: phpURL,
+                data: { accNo: number, type: typeCall },
+                success: function (msg) {
+                    if (msg != "") returnMsg = msg.replace(/["']/g, "");
+                    else alert("not Found");
+                    if (msg == "false") returnMsg = "NA";
+                },
+                error: function (msg) { alert("fail : " + msg); },
+                async: false
+            });
+            return returnMsg;
+        }
+
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
                 results = regex.exec(location.search);
-                return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-            }   
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
         function printPage() {
             $("#generate").css("visibility", "hidden");
             window.print();
@@ -124,12 +132,12 @@
                 <td id="BranchNameTag"><br/>
                 </td> 
             </tr>
-            <tr>
+            <tr style="height: 52px">
                 <td>
                     <center>STORAGE<center>
                 </td>
                 <td width="50">:</td>
-                <td><img src='box.png'/></td>
+                <td id="storageContent"><img id="storageBox" src='box.png' style="display: none;"/></td>
             </tr>
             <tr>
                 <td>

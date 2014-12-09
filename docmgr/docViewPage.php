@@ -18,7 +18,7 @@
    <script src="../script.js"></script>
    
 </head>
-<body style="background-image:url('../img/greyzz.png')">
+<body style="background-image:url('../img/greyzz.png'); margin: 0;">
 
 <div>
     
@@ -39,11 +39,11 @@
  </div>
 </td></tr>
 <tr>
-<td style="width: 1%"><br/></td>
+<td style="width: 5%"><br/></td>
 <td><br/>
-<iframe id="contentFrame" frameBorder="0" scrolling="no" src="../viewDoc.php" style="width: 100%;height: 500px;" marginheight="0" marginwidth="0" frameborder="0"></iframe>
+<iframe id="contentFrame" frameBorder="0" scrolling="no" src="../viewDoc.php" style="width: 100%;height: 50em;" marginheight="0" marginwidth="0" frameborder="0"></iframe>
 </td>
-<td style="width: 1%"><br/></td>
+<td style="width: 5%"><br/></td>
 </tr>
 <tr><td colspan="3">
 <iframe frameBorder="0" scrolling="no" src='../footer.php' style="width: 100%;height: 2em; position:relative; bottom:0; background-color: #0f71ba;" marginheight="0" marginwidth="0" frameborder="0"/>

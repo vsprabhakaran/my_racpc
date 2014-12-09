@@ -15,56 +15,89 @@ function db_prelude(&$con)
 
 function ResetADMSUserPassword($pfNumber)
 {
+    $adminPfIndex=$_SESSION["pfno"];
     $con = NULL;
     db_prelude($con);  
     $query=mysqli_query($con,"update adms_user_mstr set adms_password = MD5('12345'), status_flag = 'E' where pf_index =  '$pfNumber'");
     
     if($query)
-        return TRUE;
+       {
+           $logquery=mysqli_query($con,"insert into user_activity_log (admin_pf_index,target_pf_index,description) values ('$adminPfIndex','$pfNumber','Reset')");
+            if($logquery)
+            return TRUE;
+            else
+            return "Log Entry failed";
+       } 
     else
         return FALSE;
 }
 function DisableADMSUser($pfNumber)
 {
+    $adminPfIndex=$_SESSION["pfno"];
     $con = NULL;
     db_prelude($con);  
     $query=mysqli_query($con,"update adms_user_mstr set status_flag = 'D' where pf_index =  '$pfNumber'");
     
     if($query)
-        return TRUE;
+       {
+           $logquery=mysqli_query($con,"insert into user_activity_log (admin_pf_index,target_pf_index,description) values ('$adminPfIndex','$pfNumber','Disabled')");
+            if($logquery)
+            return TRUE;
+            else
+            return "Log Entry failed";
+       } 
     else
         return FALSE;
 }
 function EnableADMSUser($pfNumber)
 {
+    $adminPfIndex=$_SESSION["pfno"];
     $con = NULL;
     db_prelude($con);  
     $query=mysqli_query($con,"update adms_user_mstr set status_flag = 'C' where pf_index =  '$pfNumber'");
     
     if($query)
-        return TRUE;
+       {
+           $logquery=mysqli_query($con,"insert into user_activity_log (admin_pf_index,target_pf_index,description) values ('$adminPfIndex','$pfNumber','Enabled')");
+            if($logquery)
+            return TRUE;
+            else
+            return "Log Entry failed";
+       } 
     else
         return FALSE;
 }
 function InsertNewBranchViewUser($pfNumber)
 {
+    $adminPfIndex=$_SESSION["pfno"];
     $con = NULL;
     db_prelude($con);  
     $query=mysqli_query($con,"insert into adms_user_mstr(pf_index ,adms_password ,adms_role ,status_flag)  values ('$pfNumber',MD5('12345'),'BRANCH_VIEW','C')");
-    
-    if($query)
-        return TRUE;
+   if($query)
+       {
+           $logquery=mysqli_query($con,"insert into user_activity_log (admin_pf_index,target_pf_index,description) values ('$adminPfIndex','$pfNumber','BranchViewCreated')");
+            if($logquery)
+            return TRUE;
+            else
+            return "Log Entry failed";
+       } 
     else
         return FALSE;
 }
 function InsertNewRacpcViewUser($pfNumber)
 {
+    $adminPfIndex=$_SESSION["pfno"];
     $con = NULL;
     db_prelude($con);  
     $query=mysqli_query($con,"insert into adms_user_mstr(pf_index ,adms_password ,adms_role ,status_flag)  values ('$pfNumber',MD5('12345'),'RACPC_VIEW','C')");
-    
     if($query)
-        return TRUE;
+       {
+           $logquery=mysqli_query($con,"insert into user_activity_log (admin_pf_index,target_pf_index,description) values ('$adminPfIndex','$pfNumber','RacpcViewCreated')");
+            if($logquery)
+            return TRUE;
+            else
+            return "Log Entry failed";
+       } 
     else
         return FALSE;
 }
