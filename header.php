@@ -37,7 +37,15 @@
             height: 100%;
         }
 
-
+        .shadow {
+	        -moz-box-shadow: 3px 3px 4px #000;
+	        -webkit-box-shadow: 3px 3px 4px #000;
+	        box-shadow: 3px 3px 4px #000;
+	        /* For IE 8 */
+	        -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+	        /* For IE 5.5 - 7 */
+	        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+        }
     </style>
 </head>
 <body style="background-image:url('img\\greyzz.png')">
@@ -82,7 +90,7 @@
 <td style="width: 20%;text-align: right;border-width: 2px;border-color: #000;font-family: 'Trebuchet MS';padding-right: 3em;">
 <div class="contaier">
     <div id="name"></div>
-    <div id="changePass"><img src="img/changepassword.png" alt="change the password" style="min-height: 100%;max-width: 100%" onClick="window.open('changePwd.php','Details','resizable=1,scrollbars=yes,height=300,width=500')"/></div>
+    <div id="changePass" ><img class="shadow" src="img/changepassword.png" alt="change the password" style="min-height: 100%;max-width: 100%" onClick="window.open('changePwd.php','Details','resizable=1,scrollbars=yes,height=300,width=500')"/></div>
     <div id="desig"></div>
 
 </div>

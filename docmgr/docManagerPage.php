@@ -27,13 +27,6 @@
             currentTab = tabName;
             var contentIFrame = document.getElementById("contentFrame");
             switch (tabName) {
-                /*
-                case 'viewLocationTab':
-                {
-                    contentIFrame.src = "";
-                    break;
-                }
-                */
                 case 'inSlipTab':
                  {
                     contentIFrame.src = "docManagerPageInSlip.php";
