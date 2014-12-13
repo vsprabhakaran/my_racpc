@@ -16,6 +16,8 @@
         <link rel="stylesheet" href="../css/pure-min.css">
         <script type="text/javascript" src="../jquery-latest.min.js"></script>
         <script type="text/javascript" src="../jquery-barcode.js"></script>
+		<script type="text/javascript" src="js/deployJava.js"></script>
+		<script type="text/javascript" src="sendCommand.js"></script>
         <script type="text/javascript">
             var dbURL = '../db/accountInformations.php';
             var docStatus_var = "0";
@@ -261,7 +263,7 @@
             }
         </script>
     </head>
-    <body style="margin: 0">
+    <body style="background-image:url('../img/greyzz.png'); margin: 0">
         <script type="text/javascript">
             $(document).ready(function () {
                 resetForm();
@@ -357,7 +359,7 @@
                                             <iframe id="barcodeIFrame" class="accountNumberBarcode" frameborder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
                                         </td>
                                         <td>
-                                            <img src="../img/print_icon.jpg" class="accountNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="window.frames['barcodeIFrame'].focus();window.frames.print();" />
+                                            <img src="../img/print_icon.jpg" class="accountNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="printZPL();" />
                                         </td>
                                     </tr>
                                 </table>
@@ -388,7 +390,7 @@
                                             <iframe id="rackIFrame" class="rackNumberBarcode" frameborder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
                                         </td>
                                         <td>
-                                            <img src="../img/print_icon.jpg" class="rackNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="window.frames['rackIFrame'].focus();window.frames.print();" />
+                                            <img src="../img/print_icon.jpg" class="rackNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="printZPL();" />
                                         </td>
                                     </tr>
                                 </table>
@@ -396,7 +398,9 @@
                             </div>
                             <div class="pure-controls">
             <button class="pure-button pure-button-primary" id="formButton" type="submit" disabled="disabled" >Submit</button>
+                                    &nbsp;
                                  <button class="pure-button pure-button-primary" id="generateFP" type="button" disabled="disabled" onClick="generateFPFunc()" >Generate</button>
+                                
                             </div>
                             <input type="hidden" name="actionTypeField" id="actionTypeField" value="null" />
                         </form>

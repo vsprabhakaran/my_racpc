@@ -99,7 +99,12 @@ padding:1em 0ex 0ex 0em;
         <!--
         <div id="docmgrname" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small; font-weight: 300"></div>
         -->
-        <p id="date"></p>
+        <p id="date">
+		<?php
+		date_default_timezone_set('Asia/Calcutta');
+		echo date('d/m/Y  h:i:s a');
+		?>
+		</p>
     </center>
     </td>
     </tr>
@@ -113,9 +118,9 @@ padding:1em 0ex 0ex 0em;
           //var docmgrname = doPOST_Request(phpURL, pfNumber, "GetUserName");
           //$('#docmgrname').text(docmgrname +" ("+ pfNumber + ")");
 
-        var d = new Date();
+       /*  var d = new Date();
           var msg = d.toLocaleString();
-          document.getElementById("date").innerHTML = msg;
+          document.getElementById("date").innerHTML = msg; */
     </script>
    <tr>
     <td><center><h5>ACCOUNT NUMBER</h5></center></td>

@@ -40,7 +40,7 @@
         .shadow {
 	        -moz-box-shadow: 3px 3px 4px #000;
 	        -webkit-box-shadow: 3px 3px 4px #000;
-	        box-shadow: 3px 3px 4px #000;
+	        box-shadow: 0px 1px 8px #0B7396;
 	        /* For IE 8 */
 	        -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
 	        /* For IE 5.5 - 7 */

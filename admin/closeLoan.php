@@ -8,7 +8,7 @@
         }
 		else
 		{
-    ?>
+?>
 <!doctype html>
 <html lang=''>
 <head>
@@ -16,6 +16,21 @@
    <link rel="stylesheet" href="../css/pure-min.css">
    <script type="text/javascript" src="../jquery-latest.min.js"></script>
 	<script type="text/javascript">
+        function doPOST_Request(phpURL, accNumber, typeCall) {
+            var returnMsg = '';
+            $.ajax({
+                type: 'POST',
+                url: phpURL,
+                data: { accNo: accNumber, type: typeCall },
+                success: function (msg) {
+                    returnMsg = msg;
+                },
+                error: function (msg) { alert("fail : " + msg); },
+                async: false
+            });
+            return returnMsg;
+        }
+
 		function accountNumButtonClick() {
 		 resetForm();
             var enteredAccNumber = document.getElementById('accNumber').value;
@@ -48,43 +63,39 @@
 		function validAccountNumberEnterred() {
             document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
 			var enteredAccNumber = document.getElementById('accNumber').value;
-			$.ajax({
-                type: 'POST',
-                url: '../db/accountInformations.php',
-                data: { accNo: enteredAccNumber, type: 'isLoanActive' },
-                success: function (msg) {
-                    if (msg == "true") {
+            var loanActive = doPOST_Request('../db/accountInformations.php', enteredAccNumber, 'isLoanActive');
+            var documentStatus = doPOST_Request('../db/accountInformations.php', enteredAccNumber, 'GetDocumentStatusOfAccount');
+            if (loanActive == "true") {
+                if (documentStatus != '"OUT"') {
                     document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
 					$('#formButton').prop('disabled', false);
                      showAccountDetailsIFrame();
                 }
-                else if (msg == "false") {
+                else {
+                    document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
+                    throwError("Loan document is not inside RACPC!");
+                }
+            }
+            else if (loanActive == "false") {
 					document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
                     throwError("Loan is not active.");
                 }
-                },
-                error: function (msg) { alert("fail : " + msg); },
-                async: false
-            });
         }
 		function invalidAccountNumberEnterred() {
             document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
             document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
          $(':button').prop("disabled", true);
-            
         }
 		function nullAccountNumberEnterred() {
             document.getElementById('accNumber').style.backgroundColor = "";
             document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
          $(':button').prop("disabled", true);
-            
         }
 	 function throwError(errorMessage) {
 		$(".error").css('visibility', 'visible');
 		$("#Error").text(errorMessage);
 	}
-	function resetForm()
-	{
+        function resetForm() {
 		document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
          $("#accountPreview").css({ "visibility": "hidden" });
 		$(".error").css('visibility', 'hidden');
@@ -108,11 +119,11 @@
  <div>
     <table border="0" style="width:100%;">
         <tr>
-            <td style="width:40%;vertical-align: top;">
+                <td style="width:50%;vertical-align: top;">
 <form id="formid" class="pure-form pure-form-aligned" action="../db/closeLoanAction.php" method="POST" onSubmit="return confirm('Do you really want to close the loan?');">
 		<div class="pure-control-group">
             <label for="accNumber" >Account Number</label>
-            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onKeyDown="if (event.keyCode == 13) accountNumButtonClick()" onBlur="accountNumButtonClick()" />
+                            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onKeyDown="if (event.keyCode == 13) accountNumButtonClick()" />
             <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onClick="showAccountDetails()">View Details</a> 
 			<br/>
 			<div class="pure-control-group error">

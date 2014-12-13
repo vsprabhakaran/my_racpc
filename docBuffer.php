@@ -86,13 +86,18 @@
 
      mysqli_close($con);
         $filePath = "E://uploads/" .$branchCode."/". $accountNumber.".pdf";
+        $filename=$accountNumber.".pdf";
 
         if (file_exists($filePath))
         {
-			 $contents = file_get_contents($filePath);
+			// $contents = file_get_contents($filePath);
             header('Content-Type: application/pdf');
             header('Content-Length: ' . filesize($filePath));
-            echo $contents;
+            header('Content-Disposition: inline; filename="' . $filename . '"');
+            header('Content-Transfer-Encoding: binary');
+            header('Accept-Ranges: bytes'); 
+           // echo $contents;
+           @readfile($filePath);
         }
 		else echo "file not found";
 	}

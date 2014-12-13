@@ -12,7 +12,7 @@ session_start();
 <html>
 <head>
 </head>
-<body onclick='window.print()'>
+<body>
 
 <?php
 $number=$_GET["text"];

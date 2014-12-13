@@ -14,66 +14,59 @@
 	<link rel="stylesheet" href="css/pure-min.css">
 	<script type="text/javascript" src="/my_racpc/jquery-latest.min.js"></script>
     <script type="text/javascript">
-            function getPDF() {
-				var enteredAccNumber = document.getElementById('accNumber').value;
-				if(checkFileAccess(enteredAccNumber))
-				{
-					document.getElementById("pdfFile").setAttribute('src',"docBuffer.php?accNo="+enteredAccNumber);
-					document.getElementById("pdfFile").style.visibility = "visible";
-				}
-				else
-				{
-					invalidAccountNumberEnterred();
-					throwError("You dont have access to view this file!");
-				}
+        function getPDF() {
+            var enteredAccNumber = document.getElementById('accNumber').value;
+            if (checkFileAccess(enteredAccNumber)) {
+                document.getElementById("pdfFile").setAttribute('src', "docBuffer.php?accNo=" + enteredAccNumber);
+                document.getElementById("pdfFile").style.visibility = "visible";
             }
-			function checkFileAccess(enteredAccNumber)
-			{
-				var pfno= doPOST_RequestExt('getPfnoFromSession.php',"",'','getPfno');
-				var role= doPOST_RequestExt('getPfnoFromSession.php',"",'','getRole');
-				var branchCode= doPOST_RequestExt('db/accountInformations.php',enteredAccNumber,'','GetBranchCodeOfAccount');
-				if (role=="BRANCH_VIEW")
-				{
-					var status= doPOST_RequestExt('db/accountInformations.php',enteredAccNumber,pfno,'checkBranchViewAccess');	
-				}
-				else if (role=="RACPC_VIEW" || role=="RACPC_ADMIN" || role=="RACPC_DM" )
-				{
-					var status= doPOST_RequestExt('db/accountInformations.php',enteredAccNumber,pfno,'checkRacpcViewAccess');	
-				}
-				else { 
-					return false;
-				}
-				if(status=='RACPC_VIEW_GRANTED' || status=='BRANCH_VIEW_GRANTED')
-				{
-					return true;
-                }
-				else { 
-					return false;
-				}
+            else {
+                invalidAccountNumberEnterred();
+                throwError("You dont have access to view this file!");
             }
-			function doPOST_RequestExt(phpURL, accNumber,pfnum, typeCall) {
-				var returnMsg = '';
-                $.ajax({
-                    type: 'POST',
-                    url: phpURL,
-                    data: { accNo: accNumber,pfno: pfnum, type: typeCall },
-                    success: function (msg) {
-						//alert(typeCall+" " +msg);
-                        if (msg != "") returnMsg = msg.replace(/["']/g, "");
-                        else alert("msg is empty");
-                        if (msg == "false") 
-						{
-							returnMsg = "NA";
-                }
-                    },
-                    error: function (msg) { alert("fail : " + msg); },
-                    async: false
+        }
+        function checkFileAccess(enteredAccNumber) {
+            var pfno = doPOST_RequestExt('getPfnoFromSession.php', "", '', 'getPfno');
+            var role = doPOST_RequestExt('getPfnoFromSession.php', "", '', 'getRole');
+            var branchCode = doPOST_RequestExt('db/accountInformations.php', enteredAccNumber, '', 'GetBranchCodeOfAccount');
+            if (role == "BRANCH_VIEW") {
+                var status = doPOST_RequestExt('db/accountInformations.php', enteredAccNumber, pfno, 'checkBranchViewAccess');
+            }
+            else if (role == "RACPC_VIEW" || role == "RACPC_ADMIN" || role == "RACPC_DM") {
+                var status = doPOST_RequestExt('db/accountInformations.php', enteredAccNumber, pfno, 'checkRacpcViewAccess');
+            }
+            else {
+                return false;
+            }
+            if (status == 'RACPC_VIEW_GRANTED' || status == 'BRANCH_VIEW_GRANTED') {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        function doPOST_RequestExt(phpURL, accNumber, pfnum, typeCall) {
+            var returnMsg = '';
+            $.ajax({
+                type: 'POST',
+                url: phpURL,
+                data: { accNo: accNumber, pfno: pfnum, type: typeCall },
+                success: function (msg) {
+                    //alert(typeCall+" " +msg);
+                    if (msg != "") returnMsg = msg.replace(/["']/g, "");
+                    else alert("msg is empty");
+                    if (msg == "false") {
+                        returnMsg = "NA";
+                    }
+                },
+                error: function (msg) { alert("fail : " + msg); },
+                async: false
             });
-                return returnMsg;
-            }
-			
-			function accountNumButtonClick() {
-			resetForm();
+            return returnMsg;
+        }
+
+        function accountNumButtonClick() {
+            resetForm();
             var enteredAccNumber = document.getElementById('accNumber').value;
             if (enteredAccNumber == "") {
                 nullAccountNumberEnterred();
@@ -91,7 +84,7 @@
             });
 
         }
-		function doPOST_Request(phpURL, accNumber, typeCall) {
+        function doPOST_Request(phpURL, accNumber, typeCall) {
             var returnMsg = '';
             $.ajax({
                 type: 'POST',
@@ -99,7 +92,7 @@
                 data: { accNo: accNumber, type: typeCall },
                 success: function (msg) {
                     returnMsg = msg.replace(/["']/g, "");
-                    
+
                 },
                 error: function (msg) { alert("fail : " + msg); },
                 async: false
@@ -107,32 +100,29 @@
             return returnMsg;
         }
         function validAccountNumberEnterred() {
-			var enteredAccNumber = document.getElementById('accNumber').value;
-			if(!checkFileAccess(enteredAccNumber))
-			{
-				invalidAccountNumberEnterred();
-				throwError("You dont have access to view this file!");
-				return;
-			}
-			var loanStatus=doPOST_Request('db/accountInformations.php',enteredAccNumber,'isLoanActive');
-			if(loanStatus=='true') {
-            document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
-            document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
-            $('#viewButton').prop('disabled', false);
-			}
-			else 
-			{
-				document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
+            var enteredAccNumber = document.getElementById('accNumber').value;
+            if (!checkFileAccess(enteredAccNumber)) {
+                invalidAccountNumberEnterred();
+                throwError("You dont have access to view this file!");
+                return;
+            }
+            var loanStatus = doPOST_Request('db/accountInformations.php', enteredAccNumber, 'isLoanActive');
+            if (loanStatus == 'true') {
+                document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
+                document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
+                $('#viewButton').prop('disabled', false);
+            }
+            else {
+                document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
                 throwError("Loan is not active.");
-			}
+            }
         }
-		function resetForm()
-		{
-			document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
-			$('#pdfFile').css("visibility","hidden");
+        function resetForm() {
+            document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
+            $('#pdfFile').css("visibility", "hidden");
             $('#viewButton').prop('disabled', true);
-			$(".error").css('visibility', 'hidden');
-		}
+            $(".error").css('visibility', 'hidden');
+        }
         function invalidAccountNumberEnterred() {
             document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
         }
@@ -144,7 +134,7 @@
             var popup = window.open("AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
             $(popup).blur(function () { this.close(); });
         }
-		function throwError(errorMessage) {
+        function throwError(errorMessage) {
             $(".error").css('visibility', 'visible');
             $("#Error").text(errorMessage);
         }

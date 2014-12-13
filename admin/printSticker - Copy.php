@@ -15,8 +15,6 @@
         <link rel="stylesheet" href="css/styles.css">
         <link rel="stylesheet" href="../css/pure-min.css">
         <script type="text/javascript" src="../jquery-latest.min.js"></script>
-		<script type="text/javascript" src="js/deployJava.js"></script>
-		<script type="text/javascript" src="sendCommand.js"></script>
         <script type="text/javascript">
 		function reset()
 		{	
@@ -117,7 +115,7 @@
 			}
         </script>
 </head>
-<body style="background-image:url('../img/greyzz.png'); margin: 0">
+<body>
 
 <script type="text/javascript">
             $(document).ready(function () {
@@ -147,7 +145,7 @@
                                 <iframe id="barcodeIFrame" class="accountNumberBarcode" frameborder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
                             </td>
                             <td>
-                                <img src="../img/print_icon.jpg" class="accountNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="printZPL()" />
+                                <img src="../img/print_icon.jpg" class="accountNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="window.frames['barcodeIFrame'].focus();window.frames.print();" />
                             </td>
                         </tr>
                     </table>
@@ -164,7 +162,7 @@
                                 <iframe id="rackIFrame" class="rackNumberBarcode" frameborder="0" scrolling="no" style="height:4em;width:15em; padding-left:10em;display:none" marginheight="0" marginwidth="0" frameborder="0" src=""></iframe>
                             </td>
                             <td>
-                                <img src="../img/print_icon.jpg" class="rackNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="printZPL()" />
+                                <img src="../img/print_icon.jpg" class="rackNumberBarcode" style="height: 2em;width: 2em;padding:1ex 1ex 0ex 1ex;" alt="print" onClick="window.frames['rackIFrame'].focus();window.frames.print();" />
                             </td>
                         </tr>
                     </table>

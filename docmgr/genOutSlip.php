@@ -95,7 +95,12 @@ padding:1em 0ex 0ex 0em;
     <center>
         <h3>OUTSLIP FORM</h3> 
         <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif;font-size:small;font-weight: 300"></div>
-        <p id="date"></p>
+        <p id="date">
+		<?php
+		date_default_timezone_set('Asia/Calcutta');
+		echo date('d/m/Y  h:i:s a');
+		?>
+		</p>
     </center>
 	</td>
     </tr>
@@ -108,9 +113,9 @@ padding:1em 0ex 0ex 0em;
       $('#myResults').text(racpc_name + " (" + racpc_code + ")");
       //var docmgrname = doPOST_Request(phpURL, pfNumber, "GetUserName");
       //$('#docmgrname').text(docmgrname +" ("+ pfNumber + ")");
-        var d = new Date();
+        /* var d = new Date();
       var msg = d.toLocaleString();
-      document.getElementById("date").innerHTML = msg;
+      document.getElementById("date").innerHTML = msg; */
     </script>
         
    <tr>
