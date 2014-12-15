@@ -13,7 +13,7 @@ if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW" ||
 		{
 
 $request = $_POST['type'];
-
+require_once("../db/dbConnection.php");
 switch($request)
 {
     case 'isValidAccount':
@@ -124,13 +124,6 @@ switch($request)
 }
 }
 
-function db_prelude(&$con)
-{
-    $con = new mysqli("localhost", "root", "", "racpc_automation_db");
-    if ($con->connect_errno) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-}
 function checkBranchViewAccess($accountNumber,$pfno)
 {
 	$con = NULL;

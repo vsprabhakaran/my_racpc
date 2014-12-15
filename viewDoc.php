@@ -18,7 +18,7 @@
             var enteredAccNumber = document.getElementById('accNumber').value;
             if (checkFileAccess(enteredAccNumber)) {
                 document.getElementById("pdfFile").setAttribute('src', "docBuffer.php?accNo=" + enteredAccNumber);
-                document.getElementById("pdfFile").style.visibility = "visible";
+                $('#pdfFile').show();
             }
             else {
                 invalidAccountNumberEnterred();
@@ -119,7 +119,7 @@
         }
         function resetForm() {
             document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
-            $('#pdfFile').css("visibility", "hidden");
+            $('#pdfFile').hide();
             $('#viewButton').prop('disabled', true);
             $(".error").css('visibility', 'hidden');
         }
@@ -172,7 +172,7 @@
 	</form>
 	<button id="viewButton" class="pure-button pure-button-primary" onclick="getPDF()" style="margin-left:180px" disabled="disabled">View</button>
 			<br><br>
-		<iframe  id="pdfFile" height="85%" width="100%" style="visibility: hidden"> </iframe>
+		<iframe  id="pdfFile" height="85%" width="100%" style="display: none"> </iframe>
 </body>
 </html>
 <?php 

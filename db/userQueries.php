@@ -5,13 +5,7 @@ error_reporting(E_ALL | E_STRICT);
 if(!isset($_SESSION)) session_start();
 
 
-function db_prelude(&$con)
-{
-    $con = new mysqli("localhost", "root", "", "racpc_automation_db");
-    if ($con->connect_errno) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-}
+require_once("../db/dbConnection.php");
 
 function ResetADMSUserPassword($pfNumber)
 {
@@ -134,6 +128,27 @@ function isValidADMSUser($pfNumber)
     }
     mysqli_close($con);
 }
+function isUserRacpcUser($pfNumber) //This return true when user belongs to a racpc branch.
+{
+    $con = NULL;
+    db_prelude($con); 
+    $colname = "racpccode"; 
+    $query=mysqli_query($con,"select b.racpc_code as '$colname' from  branch_mstr b, user_mstr u
+    where b.branch_code = b.racpc_code 
+    and b.branch_code = u.branch_code
+    and u.pf_index = '$pfNumber'");
+    $row = mysqli_fetch_array($query);
+    mysqli_close($con);
+    if($row[$colname] != "")
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+    
+}
 function GetRequiredUserRole($pfNumber,$requiredRole)
 {
     $con = NULL;
@@ -233,5 +248,44 @@ function GetUserRacpcCode($pfNumber)
      mysqli_close($con);
      return $returnValue;
 }
+function GetUserRacpcName($pfNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $colname = "racpc_name";
 
+    $query=mysqli_query($con,"select racpc_name as '$colname' from racpc_mstr r, branch_mstr b, user_mstr u
+    where r.racpc_code = b.racpc_code 
+    and b.branch_code = u.branch_code
+    and u.pf_index = '$pfNumber'");
+    $row = mysqli_fetch_array($query);
+    if($row[$colname] != "")
+    {
+        $returnValue =  $row[$colname];
+    }
+    else
+    {
+        $returnValue = "";
+    }
+     mysqli_close($con);
+     return $returnValue;
+}
+function GetUserPhone($pfNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $colname = "phone_no";
+    $query=mysqli_query($con,"select phone_no as '$colname' from user_mstr where pf_index = '$pfNumber'");
+    $row = mysqli_fetch_array($query);
+    mysqli_close($con);
+    if($row[$colname] != "")
+    {
+        return $row[$colname];
+    }
+    else
+    {
+        return "NA";
+    }
+    
+}
 ?>

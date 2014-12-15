@@ -10,13 +10,7 @@ if( !($_SESSION["role"] == "BRANCH_VIEW" || $_SESSION["role"] == "RACPC_VIEW" ||
            $_SESSION["pfno"] = "";
         ?><meta http-equiv="refresh" content="0;URL=../login.php"><?php
         }
-function db_prelude(&$con)
-{
-    $con = new mysqli("localhost", "root", "", "racpc_automation_db");
-    if ($con->connect_errno) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-}
+require_once("../db/dbConnection.php");
 // function to get the ip address of machine
 function get_ip_address(){
             if (isset($_SERVER))
@@ -159,6 +153,27 @@ function getBranchCode($accNo)
 	$colname = "branch_code"; 
     $query=mysqli_query($con,"SELECT branch_code AS '$colname' FROM loan_account_mstr WHERE loan_acc_no = '$accNo'");
     $row=mysqli_fetch_array($query);
+    mysqli_close($con);
+	return ($row[0]);
+}
+function getRacpcNameofAccount($accountNumber)
+{
+	$con = NULL;
+    db_prelude($con);
+	$colname = "racpc_name"; 
+    $query=mysqli_query($con,"SELECT r.racpc_name AS '$colname' FROM `loan_account_mstr` l, branch_mstr b, racpc_mstr r where l.branch_code = b.branch_code and r.racpc_code = b.racpc_code and l.loan_acc_no = '$accountNumber'");
+    $row=mysqli_fetch_array($query);
+    mysqli_close($con);
+	return ($row[0]);
+}
+function getRacpcCodeofAccount($accountNumber)
+{
+	$con = NULL;
+    db_prelude($con);
+	$colname = "racpc_code"; 
+    $query=mysqli_query($con,"SELECT b.racpc_code AS '$colname' FROM `loan_account_mstr` l, branch_mstr b where l.branch_code = b.branch_code and l.loan_acc_no = '$accountNumber'");
+    $row=mysqli_fetch_array($query);
+    mysqli_close($con);
 	return ($row[0]);
 }
 function isValidAccount($accountNumber)
@@ -209,5 +224,96 @@ function isLoanActive($accountNumber)
     {
         return FALSE;
     }
+}
+function GetDocumentStatusOfAccount($accountNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $colname = "doc_status";
+    $query=mysqli_query($con,"SELECT document_status AS '$colname' FROM adms_loan_account_mstr WHERE loan_acc_no ='$accountNumber'");
+    $row = mysqli_fetch_array($query);
+	mysqli_close($con);
+    if($row[$colname] != "")
+    {
+        return $row[$colname];
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+function GetRackNumberOfAccount($accountNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $colname = "rack_num";
+    $query=mysqli_query($con,"SELECT rack AS '$colname' FROM adms_loan_account_mstr WHERE loan_acc_no ='$accountNumber'");
+    $row = mysqli_fetch_array($query);
+    mysqli_close($con);
+    return ($row[0]);
+}
+function GetAccountNameOfAccount($accountNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $colname = "name";
+    $query=mysqli_query($con,"SELECT acc_holder_name AS '$colname' FROM loan_account_mstr WHERE loan_acc_no = '$accountNumber'");
+    $row = mysqli_fetch_array($query);
+    mysqli_close($con);
+    return ($row[0]);
+}
+function GetUserName($pfNumber)
+{
+    $con = NULL;
+    db_prelude($con);  
+    $colname = "UserName";
+    $query=mysqli_query($con,"select emp_name as '$colname' from user_mstr where pf_index = '$pfNumber'");
+    $row = mysqli_fetch_array($query);
+    mysqli_close($con);
+    return ($row[0]);
+     
+}
+
+function OutUpdateDocStatus($accountNumber,$borrower_pf,$login_pf,$rson,$phno)
+{
+    $con = NULL;
+    db_prelude($con);  
+    
+    $query=mysqli_query($con,"UPDATE adms_loan_account_mstr set document_status='OUT' where loan_acc_no ='$accountNumber' ");
+    $rowcount=$query;
+    $query=mysqli_query($con,"INSERT INTO document_activity_log (loan_acc_no,borrower_pf_index,docmgr_pf_index,slip_type,reason,phone_no)
+	values ('$accountNumber','$borrower_pf','$login_pf','OUT','$rson','$phno')");
+    mysqli_close($con);
+    if ($rowcount > 0)
+    {
+       return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+     
+}
+// for doc mgr
+function InUpdateDocStatus($accountNumber,$borrower_pf,$login_pf,$rson,$phno)
+{
+   $con = NULL;
+    db_prelude($con);  
+    
+    
+    $query=mysqli_query($con,"UPDATE adms_loan_account_mstr set document_status='IN' where loan_acc_no ='$accountNumber' ");
+    $rowcount=$query;
+    
+    $query=mysqli_query($con,"INSERT INTO document_activity_log (loan_acc_no,borrower_pf_index,docmgr_pf_index,slip_type,reason,phone_no)
+	values ('$accountNumber','$borrower_pf','$login_pf','IN','$rson','$phno')");
+    mysqli_close($con); 
+    if ($rowcount > 0)
+    {
+       return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    } 
 }
 ?>

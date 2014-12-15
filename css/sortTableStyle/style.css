@@ -1,0 +1,53 @@
+table.tablesorter {
+	font-size: 16px;
+	background-color: #ffffff;
+	font-family:"Trebuchet MS";
+	border: 2px solid #000;
+}
+table.tablesorter caption {
+	padding: 5px;
+	font-size:20px;
+	font-weight:bold;
+}
+table.tablesorter th {
+	text-align: left;
+	padding: 5px;
+	background-color: #ffffff;
+	min-width: 150px;
+	max-width: 290px;
+    word-wrap: break-word;
+}
+table.tablesorter td {
+	padding: 5px 5px 5px 15px;
+	min-width: 150px;
+	max-width: 280px;
+    word-wrap: break-word;
+	text-align:justify;
+	border: 1px dotted #ffffff;
+}
+table.tablesorter .passed {
+	background-color: #CCFFCC;
+}
+table.tablesorter .failed {
+	background-color: #FFC1C1;
+}
+table.tablesorter .header {
+	background-image: url(bg.jpg);
+	background-repeat: no-repeat;
+	border-left: 1px solid #FFF;
+	border-right: 1px solid #000;
+	border-top: 1px solid #FFF;
+	padding-left: 30px;
+	padding-top: 8px;
+	max-width: 100%;
+	min-width:100%;
+    max-height: 100%;
+}
+table.tablesorter .headerSortUp {
+	background-image: url(asc.jpg);
+	background-repeat: no-repeat;
+}
+table.tablesorter .headerSortDown {
+	background-image: url(desc.jpg);
+	background-repeat: no-repeat;
+}
