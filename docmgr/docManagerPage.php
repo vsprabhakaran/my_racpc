@@ -29,31 +29,37 @@
             switch (tabName) {
                 case 'inSlipTab':
                  {
+                   $("#contentFrame").prop("scrolling","no");
                     contentIFrame.src = "docManagerPageInSlip.php";
                     break;
                 }
                 case 'outSlipTab':
                  {
+                   $("#contentFrame").prop("scrolling","no");
                     contentIFrame.src = "docManagerPageOutSlip.php";
                     break;
                 }
                 case 'printStickerTab':
                  {
+                   $("#contentFrame").prop("scrolling","no");
                     contentIFrame.src = "docManagerPrintSticker.php";
                     break;
                 }
                 case 'ViewOutReport':
                 {
+                    $("#contentFrame").prop("scrolling","yes");
                     contentIFrame.src = 'ViewOutReport.php';
                     break;
                 }
                 case 'BulkSlip':
                 {
+                  $("#contentFrame").prop("scrolling","yes");
                     contentIFrame.src = 'docManagerBulkSlipInput.php';
                     break;
                 }
                 case 'ViewDoc':
                 {
+                  $("#contentFrame").prop("scrolling","no");
                     contentIFrame.src = '../viewDoc.php';
                     break;
                 }
@@ -85,20 +91,20 @@
    <!--
     <li id="ViewReport"><a href='#' onclick="displayPanel('ViewReport')"><span>View Report</span></a></li>
     -->
-   <li id="ViewOutReport" style="width: 13%;"><a href='#' onclick="displayPanel('ViewOutReport')"><span>Out Slip Report</span></a></li>
-   <li id="ViewDoc" style="width: 13%"><a href='#' onclick="displayPanel('ViewDoc')"><span>View Document</span></a></li>
+   <li id="ViewOutReport" ><a href='#' onclick="displayPanel('ViewOutReport')"><span>Out Slip Report</span></a></li>
+   <li id="ViewDoc" ><a href='#' onclick="displayPanel('ViewDoc')"><span>View Document</span></a></li>
     <li id="BulkSlip"><a href='#' onclick="displayPanel('BulkSlip')"><span>Bulk Slip</span></a></li>
-   <li style="width: 11%; text-align:right; visibility: hidden;" >&nbsp;</li>
-   <li style="text-align:center;"><a href='../logout.php'><span>Logout</span></a></li>
+   <li style=" text-align:right; visibility: hidden;" >&nbsp;</li>
+   <li style="text-align:center;float:right;"><a href='../logout.php'><span>Logout</span></a></li>
 </ul>
 </div>
 </td></tr>
 <tr>
-<td style="width: 5%"></td>
-<td style="width: 90%">
-<iframe id="contentFrame" frameBorder="0" scrolling="yes" src="docManagerPageOutSlip.php"  style="width: 100%;height: 800px;" marginheight="0" marginwidth="0" frameborder="0">
+<td ></td>
+<td style="width: 100%">
+<iframe id="contentFrame" frameBorder="0" scrolling="no" src="docManagerPageOutSlip.php"  style="width: 100%;height: 800px;" marginheight="0" marginwidth="0" frameborder="0">
 </iframe></td>
-<td style="width: 5%"></td>
+<td ></td>
 </tr>
 <tr><td colspan="3" >
 <iframe frameBorder="0" scrolling="no" src='../footer.php' style="width: 100%;height: 2em; position:relative; bottom:0; background-color: #0f71ba;" marginheight="0" marginwidth="0" frameborder="0"/>

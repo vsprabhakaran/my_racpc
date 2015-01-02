@@ -59,7 +59,7 @@ deployQZ();
 		findPrinter();		 
 		qz.append('^XA\n');
 		var num= $("#accNumber").val();
-		qz.append('^FO90,700^BY4\n');
+		qz.append('^FO90,90^BY4\n');
 		qz.append('^BCN,160,Y,N,N\n');
 		qz.append('^FD'+num+'^FS\n');	
 		qz.append('^XZ\n');
@@ -71,8 +71,8 @@ deployQZ();
 		var title = document.getElementById("title");
 		if (qz) {
 			try {
-				title.innerHTML = title.innerHTML + " " + qz.getVersion();
-				document.getElementById("content").style.background = "#F0F0F0";
+				//title.innerHTML = title.innerHTML + " " + qz.getVersion();
+				
 			} catch(err) { // LiveConnect error, display a detailed meesage
 				document.getElementById("content").style.background = "#F5A9A9";
 				alert("ERROR:  \nThe applet did not load correctly.  Communication to the " + 

@@ -226,7 +226,7 @@
             data: { accNo: enteredAccNumber, login_pf_index: login_pf, type: typeCall },
             success: function (msg) {
                 if (msg != "") { returnMsg = msg.replace(/["']/g, ""); }
-                else alert("Account does not belong to RACPC");
+                else alert("Mismatch in branch code of Account Number and returnee.");
             },
             error: function (msg) { alert("fail : " + msg); },
             async: false
@@ -459,53 +459,53 @@
 <br/>
     <table border="0" style="width: 100%;height: 100%; font-size:13px">
 	<tr>
-	<td style="width:100%" style="font-size:12px">
+	<td style="width:40%" style="font-size:12px">
 <form name="genOutSlip" id="genOutSlip" action="genOutSlip.php" class="pure-form pure-form-aligned" method="POST" target="slip_upload_frame">
     <div class="pure-control-group"> 
-        <label for="accountno" >Account Number :</label>
+        <label for="accountno" >Account Number</label>
         <input type="text" name="accountno" id="accountno" onKeyDown="if (event.keyCode == 13) showdetails()" /> 
         <a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onClick="showAccountDetails()">View Details</a>
 </div>
 
     <div class="pure-control-group">
-        <label for="accountname" >Account Holder Name:</label>
+        <label for="accountname" >Account Holder Name</label>
         <input type="text" id="accountname" name="accountname" readonly="true"/> 
     </div>
 
      <div class="pure-control-group">
-        <label for="productcode" >Product Code:</label>
+        <label for="productcode" >Product Code</label>
         <input type="text" id="productcode" name="productcode" readonly="true"/> 
     </div> 
 
      <div class="pure-control-group">
-        <label for="brcode" >Branch Code :</label>
+        <label for="brcode" >Branch Code</label>
         <input type="text" id="brcode" name="brcode" readonly="true" /> 
      </div>
     
      <div class="pure-control-group">
-        <label for="brcode" >Branch Name :</label> 
+        <label for="brcode" >Branch Name</label>
         <input type="text" id="brname" name="brname" readonly="true" /> 
      </div>
     
 <div class="pure-control-group">
-        <label for="foliono" > Folio number :</label>
+        <label for="foliono" > Folio number</label>
         <input type="text" id="foliono" name="foliono" readonly="true" />
 </div> 
     
     <div class="pure-control-group">
-        <label for="pfnorcv" >  Receivers's PF Number :</label>
+        <label for="pfnorcv" >  Receiver's PF Number</label>
 
         <input type="text" name="pfnorcv" id="pfnorcv" onKeyDown="if (event.keyCode == 13) showUdetails()" disabled="disabled"/>
         <a id="getUserDetailsSpan" href="#"  style="visibility: hidden" onClick="showUserDetails()">View Details</a>
     </div>
 
     <div class="pure-control-group">
-        <label for="nameofReciver" > Name of the Receiver :</label>
+        <label for="nameofReciver" > Name of the Receiver</label>
         <input type="text" id="nameofReciver" name="nameofReciver" readonly="true" />
     </div>
 
 <div class="pure-control-group">
-<label for="reason" > Comments :</label>
+<label for="reason" > Comments</label>
     <textarea rows="4" cols="22" name="reason" id="reason" onKeyDown="if (event.keyCode == 13) if(validate_reason()=='true'){ActivateGenButton();}"  disabled="disabled"> </textarea>  
 </div>      
     
@@ -535,8 +535,8 @@
 
 </form>
 </td>
-<td style="width:100%;height:100%;" >
-<iframe id="slip_upload_frame" name="slip_upload_frame" style="width: 600px;height:400px;" marginheight="0" marginwidth="0" frameborder="0">
+<td style="width:60%;height:100%;" >
+<iframe id="slip_upload_frame" name="slip_upload_frame" style="width: 100%;height:500px;" marginheight="0" marginwidth="0" frameborder="0">
 </iframe>
         </td>
     </tr>

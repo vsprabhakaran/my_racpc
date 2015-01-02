@@ -9,7 +9,7 @@
     <style type="text/css">
         .container
         {
-            height: 100%; 
+            height: 100%;
             min-height: 100%;
         }
 
@@ -83,14 +83,14 @@
 
 </script>
 <div>
-<table border="0" >
+<table border="0" style="width:100%" >
 <tr>
-<td style="width: 20%;"><img height=80 width=300 src="img/header.png" /></td>
-<td style="width: 40%;"> <center><img height=80 width=300 src="img/title.png" /></center></td>
-<td style="width: 20%;text-align: right;border-width: 2px;border-color: #000;font-family: 'Trebuchet MS';padding-right: 3em;">
+<td style="width: 30%;"><img height=80 width=300 src="img/header.png" /></td>
+<td style="width: 35%;"> <center><img height=80 width=300 src="img/title.png" /></center></td>
+<td style="width: 40%;text-align: right;border-width: 2px;border-color: #000;font-family: 'Trebuchet MS';">
 <div class="contaier">
     <div id="name"></div>
-    <div id="changePass" ><img class="shadow" src="img/changepassword.png" alt="change the password" style="min-height: 100%;max-width: 100%" onClick="window.open('changePwd.php','Details','resizable=1,scrollbars=yes,height=300,width=500')"/></div>
+    <div id="changePass" ><img class="shadow" src="img/changepassword.png" alt="change the password" style="height: 50px;" onClick="window.open('changePwd.php','Details','resizable=1,scrollbars=yes,height=300,width=500')"/></div>
     <div id="desig"></div>
 
 </div>

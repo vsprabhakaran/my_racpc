@@ -71,22 +71,22 @@
                 <td colspan="3">
                    <div id='cssmenu'>
                     <ul>
-                       <li id="uploadLoanTab" class='active' style="width: 15%"><a href='#' onClick="displayPanel('uploadLoanTab')"><span>Documents</span></a></li>
+                       <li id="uploadLoanTab" class='active'><a href='#' onClick="displayPanel('uploadLoanTab')"><span>Documents</span></a></li>
                        <li id="closeLoanTab"><a href='#' onClick="displayPanel('closeLoanTab')"><span>Loan Closure</span></a></li>
                        <li id="manageUserTab" ><a href='#' onClick="displayPanel('manageUserTab')"><span>Manage User</span></a></li>
                        <li id="printStickerTab" ><a href='#' onClick="displayPanel('printStickerTab')"><span>Print Sticker</span></a></li>
-                       <li style="width: 33%; text-align:right; visibility: hidden;">&nbsp;</li>
-                       <li style="text-align:center;"><a href='../logout.php' ><span>Logout</span></a></li>
+                       <li style="width: 20%; text-align:right; visibility: hidden;">&nbsp;</li>
+                       <li style="text-align:center;float:right;"><a href='../logout.php' ><span>Logout</span></a></li>
                     </ul>
                    </div>
                 </td>
             </tr>
             <tr >
-                <td style="width: 5%"><br/></td>
+                <td><br/></td>
                 <td> 
                     <iframe id="contentFrame" frameBorder="0" scrolling="no" src="uploadDocument.php" style="width: 100%;height: 550px;" marginheight="0" marginwidth="0" frameborder="0"></iframe> 
                 </td>
-                <td style="width: 5%" ><br/></td>
+                <td><br/></td>
             </tr>
             <tr>
                 <td colspan="3">

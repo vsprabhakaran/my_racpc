@@ -221,7 +221,23 @@ function isLoanActive($accountNumber)
 function validate_racpc_acc_user($pfno, $accountNumber){
     $con = NULL;
     db_prelude($con);  
-
+    $query=mysqli_query($con,"select b.racpc_code as racpc_code 
+    from adms_user_mstr au, adms_loan_account_mstr am,loan_account_mstr l,branch_mstr b,user_mstr u,racpc_mstr r
+    where au.pf_index ='$pfno' 
+    and au.pf_index = u.pf_index    
+    and u.branch_code = r.racpc_code
+    and am.loan_acc_no = '$accountNumber'
+    and am.loan_acc_no = l.loan_acc_no 
+    and l.branch_code = b.branch_code
+    and b.racpc_code = r.racpc_code");
+    $row = mysqli_fetch_array($query);
+    if($row['racpc_code'] != "")
+    {
+         echo json_encode(TRUE);
+    }
+    else
+    {
+    //echo json_encode(FALSE);
     $query=mysqli_query($con,"select b.racpc_code as racpc_code
     from user_mstr u, branch_mstr b, adms_loan_account_mstr am, loan_account_mstr l, branch_mstr b1
     where u.pf_index = '$pfno'
@@ -240,6 +256,7 @@ function validate_racpc_acc_user($pfno, $accountNumber){
     else
     {
         echo json_encode(FALSE);
+    }
     }
      mysqli_close($con);
 }

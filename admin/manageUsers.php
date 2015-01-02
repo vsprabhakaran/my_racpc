@@ -196,7 +196,7 @@
         });
     </script>
 <br/>
-<div style="margin: 0 auto;">
+<div style="margin-left:5%;">
         <ul class="tabs" data-persist="true" style="float:left">
             <li><a href="#view1">Create User</a></li>
             <li><a href="#view2">Reset Password</a></li>

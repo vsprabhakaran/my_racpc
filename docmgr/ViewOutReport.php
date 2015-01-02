@@ -139,21 +139,27 @@ $col2 = "Out Time";
 $col3 = "Receiver PF Index";
 $col4 = "Receiver Name";
 $result = mysqli_query($con,"SELECT dl.loan_acc_no as '$col1' , max(dl.timestamp) as '$col2', dl.borrower_pf_index as '$col3', u.emp_name as '$col4'
-    FROM adms_loan_account_mstr am, loan_account_mstr l, document_activity_log dl, user_mstr u
+    FROM adms_loan_account_mstr am, loan_account_mstr l, document_activity_log dl, user_mstr u,branch_mstr b, branch_mstr b1, racpc_mstr r1
     WHERE am.document_status = 'OUT'
     AND am.loan_status = 'A'
     AND am.loan_acc_no = l.loan_acc_no
     AND l.loan_acc_no = dl.loan_acc_no
+    AND l.branch_code = b1.branch_code
     AND dl.slip_type = 'OUT'
     AND dl.docmgr_pf_index = '$pfno'
     AND dl.borrower_pf_index = u.pf_index
-    group by 1");
+    AND u.branch_code = b.branch_code
+    AND b.racpc_code = b1.racpc_code
+    group by 1
+    ORDER BY 2 ASC ");
 if (!$result) {
     die("Query to show fields from table failed");
 }
 
 $fields_num = mysqli_num_fields($result);
-echo "<table border='1'><tr>";
+echo "<br><br>";
+echo "<center>";
+echo "<table border='1' style='margin: 0px;'><tr>";
 // printing table headers
 for($i=0; $i<$fields_num; $i++)
 {
@@ -172,7 +178,8 @@ while($row = mysqli_fetch_row($result))
   mysqli_close($con);
  // echo json_encode(TRUE);
  //}
-
+echo "</table>";
+echo "</center>";
 
         }
 ?>

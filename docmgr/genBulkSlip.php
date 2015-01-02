@@ -196,7 +196,7 @@
     function PrintTalbeFooter(&$table)
     {
         $table.= '</table>
-        <div class="pure-controls" style="text-align:center;padding:1em;"><button class="pure-button pure-button-primary" id="printButton" name="printButton" style="" type="button"  onclick="printSlip()">Print Table</button>
+        <div class="pure-controls" style="text-align:center;padding:1em;"><button class="pure-button pure-button-primary" id="printButton" name="printButton" style="" type="button"  onclick="printSlip()">Print Slip</button>
         </div>';
     }
     function PrintAccountNumbers(&$table,$BulkSlipAccNumbers)
