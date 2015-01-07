@@ -29,32 +29,33 @@
             switch (tabName) {
                 case 'inSlipTab':
                  {
-                   $("#contentFrame").prop("scrolling","no");
+                   //$("#contentFrame").prop("scrolling","no");
                     contentIFrame.src = "docManagerPageInSlip.php";
                     break;
                 }
                 case 'outSlipTab':
                  {
-                   $("#contentFrame").prop("scrolling","no");
+                   //$("#contentFrame").prop("scrolling","no");
                     contentIFrame.src = "docManagerPageOutSlip.php";
                     break;
                 }
                 case 'printStickerTab':
                  {
-                   $("#contentFrame").prop("scrolling","no");
+                   //$("#contentFrame").prop("scrolling","no");
                     contentIFrame.src = "docManagerPrintSticker.php";
                     break;
                 }
                 case 'ViewOutReport':
                 {
-                    $("#contentFrame").prop("scrolling","yes");
+                //    $("#contentFrame").prop("scrolling","yes");
                     contentIFrame.src = 'ViewOutReport.php';
                     break;
                 }
                 case 'BulkSlip':
                 {
-                  $("#contentFrame").prop("scrolling","yes");
+
                     contentIFrame.src = 'docManagerBulkSlipInput.php';
+                    //$("#contentFrame").prop("scrolling","yes");
                     break;
                 }
                 case 'ViewDoc':
@@ -102,7 +103,7 @@
 <tr>
 <td ></td>
 <td style="width: 100%">
-<iframe id="contentFrame" frameBorder="0" scrolling="no" src="docManagerPageOutSlip.php"  style="width: 100%;height: 800px;" marginheight="0" marginwidth="0" frameborder="0">
+<iframe id="contentFrame" frameBorder="0" src="docManagerPageOutSlip.php"  style="width: 100%;height: 800px;" marginheight="0" marginwidth="0" frameborder="0">
 </iframe></td>
 <td ></td>
 </tr>

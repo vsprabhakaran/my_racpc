@@ -28,6 +28,12 @@
                 text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
                 background: rgb(202, 60, 60); /* this is a maroon */
             }
+            .button-success {
+                color: white;
+                border-radius: 4px;
+                text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+                background: rgb(28, 184, 65); /* this is a green */
+            }
           </style>
         <script type="text/javascript" src="../jquery-latest.min.js"></script>
         <script type="text/javascript" src="../jquery.tablesorter.min.js"></script>
@@ -86,7 +92,7 @@
                 $DocMgrPFNumber = $_SESSION['pfno'];
                 $errorMessage = "null";
                 $lines = explode(PHP_EOL, $fileContents);
-                $AccountNumberCSV = "";
+
                 //Check for only numbers in the file.
                 $lineCounter = 0;
                 foreach ($lines as $line) {
@@ -96,10 +102,8 @@
                         $isSlipGenerationPossbile = FALSE;
                         break;
                     }
-                    $AccountNumberCSV .= $line.",";
                 }
-                //Removing the trailing comma
-                $AccountNumberCSV = trim($AccountNumberCSV,",");
+
 
                 //Check for repeating account numbers in the file
                 if(($isSlipGenerationPossbile) && (count(array_unique($lines))<count($lines)))
@@ -108,7 +112,8 @@
                     $isSlipGenerationPossbile = FALSE;
                 }
                 $table = '<div style="height:100%;width:100%;text-align:center;">';
-                
+                $hasErrorAccountNumbers = FALSE;
+                $PassedAccountNumberCSV = "";
                 if($isSlipGenerationPossbile)
                 {
                     printTableHeader($table,$slipType);
@@ -116,13 +121,16 @@
                         if(!SlipGenerationTest($slipType,$OusiderPFNumber,$DocMgrPFNumber,$currentAccNo,$errorMessage))
                         {
                             printErrorTableRow($table,$currentAccNo,$errorMessage);
-                            $isSlipGenerationPossbile = FALSE;
+                            $hasErrorAccountNumbers = TRUE;
                         }
                         else
                         {
                             printPassedTableRow($table,$currentAccNo,$errorMessage);
+                            $PassedAccountNumberCSV .= $currentAccNo.",";
                         }
                     }
+                    //Removing the trailing comma
+                    $PassedAccountNumberCSV = trim($PassedAccountNumberCSV,",");
                     $table.= '</tbody><table><div>';
                     echo $table;
                 }
@@ -138,10 +146,13 @@
             <button class="button-error pure-button"  name="backButton2" style="float: left;" type="button"  onclick="goBack()">Back</button>&nbsp;&nbsp;
             <button class="pure-button pure-button-primary" id="printButton" name="printButton" style="" type="button"  onclick="printTable()">Print Table</button>&nbsp;&nbsp;
             <?php
-                if($isSlipGenerationPossbile) // Generates this part only when all the uploaded numbers has valid slip generation possbility.
-                { ?>
-                    <button class="pure-button pure-button-primary" id="formButton" style="float: right;" type="submit" >Generate Slip</button>  
-                    <input type="hidden" id="BulkSlipAccNumbers" value="<?php echo $AccountNumberCSV; ?>" name="BulkSlipAccNumbers"/>  
+                if($isSlipGenerationPossbile && $PassedAccountNumberCSV != "") // Generates this part only when all the uploaded numbers has valid slip generation possbility.
+                {
+                    ?>
+                    <button class="pure-button <?php echo ($hasErrorAccountNumbers)?"button-error":"button-success"; ?>" id="formButton" style="float: right;" type="submit" >
+                        <?php echo ($hasErrorAccountNumbers)?"Generate Slip Anyway":"Generate Slip"; ?>
+                    </button>
+                    <input type="hidden" id="BulkSlipAccNumbers" value="<?php echo $PassedAccountNumberCSV; ?>" name="BulkSlipAccNumbers"/>
                     <input type="hidden" id="OutsiderPFNumber" value="<?php echo $OusiderPFNumber; ?>" name="OutsiderPFNumber" />
                     <input type="hidden" id="SlipType" value="<?php echo $slipType; ?>" name="SlipType"/>
                     <input type="hidden" id="reason" value="<?php echo $_POST['reason'] ?>" name="reason" />
@@ -209,9 +220,19 @@
 			    $docStatus = GetDocumentStatusOfAccount($AccountNumber);
 			    if($docStatus)
 			    {
-                    if($docStatus != "OUT")
+                if($docStatus == "IN")
                     {
-                        $errorMessage = "The document is not valid for In-Slip";
+                    $errorMessage = "The document is already within RACPC.";
+                    $isSlipGenTestPassed  = FALSE;
+                }
+                else if($docStatus == "C")
+                {
+                  $errorMessage = "The document is Closed.";
+                  $isSlipGenTestPassed  = FALSE;
+                }
+                else if($docStatus != "OUT")
+                {
+                  $errorMessage = "The document is not valid for In-Slip Generation.";
                         $isSlipGenTestPassed  = FALSE;
                     }
 			    }
@@ -226,7 +247,17 @@
                 $docStatus = GetDocumentStatusOfAccount($AccountNumber);
 			    if($docStatus)
 			    {
-                    if($docStatus != "IN")
+                if($docStatus == "OUT")
+                {
+                    $errorMessage = "The document is already OUT.";
+                    $isSlipGenTestPassed  = FALSE;
+                }
+                else if($docStatus == "C")
+                {
+                    $errorMessage = "The document is Closed.";
+                    $isSlipGenTestPassed  = FALSE;
+                }
+                else if($docStatus != "IN")
                     {
                         $errorMessage = "The document is not valid for Out-Slip";
                         $isSlipGenTestPassed  = FALSE;

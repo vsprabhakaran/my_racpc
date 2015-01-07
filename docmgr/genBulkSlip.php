@@ -48,6 +48,21 @@
             {
                 border: 0px;
             }
+            .AccountNumberListTable tr td p
+            {
+                font-size: 12px;
+                margin: .5em 0;
+            }
+            .AccountNumberListTable tr td
+            {
+                border-bottom-style:dashed;
+                border-bottom-width:1px;
+            }
+            .AccountNumberListTable
+            {
+                width:100%;
+            }
+
         </style>
         <script type="text/javascript" src="../jquery-latest.min.js"></script>
         <script type="text/javascript" src="../jquery.tablesorter.min.js"></script>
@@ -205,12 +220,42 @@
         $table.= '<tr>
                     <td >
                         <p class="header">
-                            Account Number
+                            Account Numbers
                         </p>
                     </td>
-                    <td colspan="2" style="max-width:70%">
-                        <p style="width:100%;word-wrap: break-word;white-space: normal;">
-                            '.str_replace(",",", ",$BulkSlipAccNumbers).'
+                    <td colspan="2" style="max-width:70%;text-align:center">
+                        <table border="0" class="AccountNumberListTable" >';
+                        $SerialNumber = 1;
+                        foreach (explode(',',$BulkSlipAccNumbers) as $AccNumber) {
+                            PrintAccountDetails($table, $SerialNumber,$AccNumber);
+                            $SerialNumber++;
+                        }
+        $table.=         '</table>
+                    </td>
+                </tr>';
+    }
+    function PrintAccountDetails(&$table,$SerialNumber,$AccNumber)
+    {
+
+        $table.= '<tr>
+                    <td style="width:3em;text-align: right;">
+                        <p>
+                            '.$SerialNumber.' )
+                        </p>
+                    </td>
+                    <td style = "width:11em">
+                        <p style="word-wrap: break-word;white-space: normal;">
+                            '.$AccNumber.'
+                        </p>
+                    </td>
+                    <td style = "width:6em;text-align: center;">
+                        <p style="word-wrap: break-word;white-space: normal;">
+                            '.getBranchCode($AccNumber).'
+                        </p>
+                    </td>
+                    <td style = "text-align: left;">
+                        <p style="word-wrap: break-word;white-space: normal;">
+                            '.GetAccountNameOfAccount($AccNumber).'
                         </p>
                     </td>
                 </tr>';
