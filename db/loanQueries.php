@@ -1,5 +1,5 @@
 <?php
-ini_set('display_errors','On');
+//ini_set('display_errors','On');
 //var_dump("in info page");
 error_reporting(E_ALL | E_STRICT);
 if(!isset($_SESSION)) 

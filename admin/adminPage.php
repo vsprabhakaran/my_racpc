@@ -13,7 +13,7 @@
 			{
 		?>
     <title>RACPC Admin</title>
-    <link rel="stylesheet" href="css/pure-min.css">
+    <link rel="stylesheet" href="../css/pure-min.css">
     <link rel="stylesheet" href="../menustyles.css">
     <script src="../jquery-latest.min.js" type="text/javascript"></script>
     <script src="../script.js"></script>
@@ -60,11 +60,12 @@
             }
         }
     </script>
+		
 </head>
 <body style="background-image:url('../img/greyzz.png'); margin: 0">
 
     <div>
-        <table border="0" style="width:100%;height:100%;border-width:0px;">
+        <table border="0" style="width:100%;height:100%;border-spacing:0px;">
             <tr>
                 <td colspan="3"> 
                     <div>
@@ -80,7 +81,7 @@
                        <li id="closeLoanTab"><a href='#' onClick="displayPanel('closeLoanTab')"><span>Loan Closure</span></a></li>
                        <li id="manageUserTab" ><a href='#' onClick="displayPanel('manageUserTab')"><span>Manage User</span></a></li>
                        <li id="printStickerTab" ><a href='#' onClick="displayPanel('printStickerTab')"><span>Print Sticker</span></a></li>
-											 <li id="firstPageTab" ><a href='#' onClick="displayPanel('firstPageTab')"><span>First Page</span></a></li>
+											 <li id="firstPageTab" ><a href='#' onClick="displayPanel('firstPageTab')"><span>Cover Page</span></a></li>
                        <li style="width: 20%; text-align:right; visibility: hidden;">&nbsp;</li>
                        <li style="text-align:center;float:right;"><a href='../logout.php' ><span>Logout</span></a></li>
                     </ul>
@@ -94,13 +95,16 @@
                 </td>
                 <td><br/></td>
             </tr>
-            <tr>
+            <!--tr>
                 <td colspan="3">
-                    <iframe frameBorder="0" scrolling="no" src='../footer.php' style="width: 100%;height: 2em; position:relative; bottom:0; background-color: #0f71ba;" marginheight="0" marginwidth="0" frameborder="0"/>
+
                 </td>
-            </tr>
+            </tr-->
         </table>
     </div>
+		<div>
+			<iframe frameBorder="0" scrolling="no" src='../footer.php' style="width: 100%;height: 2em; position:fixed; bottom:0; background-color: #0f71ba;vertical-align:bottom;" marginheight="0" marginwidth="0" frameborder="0"/>
+		</div>
 </body>
 </html>
 <?php

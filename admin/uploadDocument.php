@@ -30,7 +30,8 @@
                 OldDocNoChange: 1,
                 OldDocRackChange: 2,
                 OldDocFolioChange: 4,
-                OldDocDocumentChange: 8
+                OldDocDocumentChange: 8,
+                addFile: 16
             };
             function accountNumButtonClick() {
                 resetForm();
@@ -88,6 +89,7 @@
                 $('#actionTypeField').val("null");
                 document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
                 document.getElementById("viewDocDiv").style.display = "none";
+                document.getElementById("addDocDiv").style.display = "none";
                 document.getElementById("newDocDiv").style.display = "none";
                 $('.editAnchor').css({ "visibility": "hidden" });
                 $('.accountNumberBarcode').css("display", "none");
@@ -170,10 +172,12 @@
                         whichAction = ACTION_TYPE.OldDocNoChange; $('#actionTypeField').val("OldDocNoChange");
                         $('.editAnchor').css({ "visibility": "visible" });
                         document.getElementById("viewDocDiv").style.display = "block";
+                        document.getElementById("addDocDiv").style.display = "block";
                     }
                     else {
                         whichAction = ACTION_TYPE.OldDocDocumentChange; $('#actionTypeField').val("OldDocDocumentChange");
                         document.getElementById("newDocDiv").style.display = "block";
+                        document.getElementById("addDocDiv").style.display = "block";
                     }
                 }
                 folioNumber_var = doPOST_Request(dbURL, accountNumber, 'GetFolioNumberOfAccount');
@@ -330,6 +334,9 @@
                 }
 
             }
+            function  appendFile(){
+              whichAction = ACTION_TYPE.addFile; $('#actionTypeField').val("addFile");
+            }
             function generateFPFunc() {
                 var number = document.getElementById('accNumber').value;
                 //$("#genLink").prop("href", "firstPage/generate.php?accNo=" + number);
@@ -372,6 +379,10 @@
                             <div class="pure-control-group" id="viewDocDiv" style="display:none">
                                 <label for="fileURL">Document </label>
                                 <a id="viewDocumentURL" href="#" onClick="showDocument()">View Document</a>
+                            </div>
+                            <div class="pure-control-group" id="addDocDiv" style="display: none">
+                              <label for="addFile">Additional Files</label>
+                              <input id="addFile" type="file" name="addFile" onChange="appendFile()" />
                             </div>
                             <div class="pure-control-group">
                                 <label for="folio_no">Folio No</label>

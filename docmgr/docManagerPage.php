@@ -73,7 +73,7 @@
 
 
 <div>
-<table border="0" style="width:100%;height:100%;border-width:2px;">
+<table border="0" style="width:100%;height:100%;border-width:2px; border-spacing:0px">
 <tr>
 <td colspan="3">
 <iframe frameBorder="0" scrolling="no" src="../header.php" style="width: 100%;height: 90px;" marginheight="0" marginwidth="0" frameborder="0">
@@ -103,14 +103,14 @@
 <tr>
 <td ></td>
 <td style="width: 100%">
-<iframe id="contentFrame" frameBorder="0" src="docManagerPageOutSlip.php"  style="width: 100%;height: 800px;" marginheight="0" marginwidth="0" frameborder="0">
+<iframe id="contentFrame" frameBorder="0" src="docManagerPageOutSlip.php"  style="width: 100%;height: 800px;padding-bottom:2em;" marginheight="0" marginwidth="0" frameborder="0">
 </iframe></td>
 <td ></td>
 </tr>
-<tr><td colspan="3" >
-<iframe frameBorder="0" scrolling="no" src='../footer.php' style="width: 100%;height: 2em; position:relative; bottom:0; background-color: #0f71ba;" marginheight="0" marginwidth="0" frameborder="0"/>
-</td></tr>
 </table>
+</div>
+<div>
+  <iframe frameBorder="0" scrolling="no" src='../footer.php' style="width: 100%;height: 2em; position:fixed; bottom:0; background-color: #0f71ba;vertical-align:bottom;" marginheight="0" marginwidth="0" frameborder="0"/>
 </div>
 
 </body>

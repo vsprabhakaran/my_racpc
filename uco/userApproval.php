@@ -8,7 +8,7 @@ session_start();
 <link rel="stylesheet" href="css/loginstyles.css">
 </head>
 
-<body bgcolor="#F0F0F0">
+<body >
 
 <?php 
 

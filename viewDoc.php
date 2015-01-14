@@ -12,7 +12,7 @@
 <html>
     <head>
 	<link rel="stylesheet" href="css/pure-min.css">
-	<script type="text/javascript" src="/my_racpc/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="jquery-latest.min.js"></script>
     <script type="text/javascript">
         function getPDF() {
             var enteredAccNumber = document.getElementById('accNumber').value;

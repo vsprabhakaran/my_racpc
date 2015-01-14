@@ -53,7 +53,8 @@
 <?php
     if(!isset($_SESSION)) session_start();
     require("../db/loanQueries.php");
-    //include("../db/loanQueries.php");
+      require ('../pdfMerger/PDFMerger.php');
+      $pdf = new PDFMerger;
     $actionType = $_POST['actionTypeField'];
     $accountNo = $_POST['accNumber'];
     if(strcmp($actionType,"NewDocument") == 0)
@@ -91,7 +92,6 @@
         <p>New Document update successful.</p>
 		<button class="button-success pure-button" id="backButton1" name="backButton1" onclick="goBack()">Back</button>
 	</div>
-        
     <?php
             }
             else
@@ -127,9 +127,7 @@
 		<button class="button-error pure-button" id="backButton2" name="backButton2" onclick="goBack()">Back</button>
 	</div>
                 <?php
-                      
             }
-            
         }
         else if(strcmp($actionType,"OldDocRackChange") == 0)
         {
@@ -152,7 +150,6 @@
 		<button class="button-error pure-button" id="backButton2" name="backButton2" onclick="goBack()">Back</button>
 	</div>
                 <?php
-    
             }
         }
         else if(strcmp($actionType,"OldDocFolioChange") == 0)
@@ -219,10 +216,25 @@
                 <?php
             }
         }
+          else if(strcmp($actionType,"addFile") == 0)
+          {
+            $branchCode=getBranchCode($accountNo);
+            $oldFile="E:/uploads/".$branchCode."/".$accountNo.".pdf";
+            $newFile= "E:/uploads/".$branchCode.'/tmp'.basename( $_FILES['addFile']['name']);
+          //  $newFile="E:/uploads/".$branchCode."/".$accountNo.".pdf";
+            echo $oldFile.$newFile;
+            if(move_uploaded_file($_FILES['addFile']['tmp_name'], $newFile))
+            {
+            $pdf->addPDF("$oldFile", 'all')
+                ->addPDF("$newFile",'all')
+                ->merge('file',"$oldFile");
+              }
+              unlink($newFile);
+            }
     ?>
 </body>
 </html>
 
 <?php
 }
-?>
+  ?>
