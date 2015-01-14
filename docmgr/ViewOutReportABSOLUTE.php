@@ -1,11 +1,12 @@
 <html>
     <head>
         <title>OutSlip Report</title>
+
         <style>
  table a:link {
 	color: #666;
 	font-weight: bold;
-	text-decoration:none;
+	text-decoration: none;
 }
 table a:visited {
 	color: #999999;
@@ -111,8 +112,15 @@ table tr:hover td {
 	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
 }
 </style>
-    </head>
-<body>
+
+       <!--
+<link rel="stylesheet" href="style.css">  
+<link rel="stylesheet" href="reset.css">  
+<link rel="stylesheet" href="typography.css">  
+        -->
+
+</head>
+<body style="background-image:url('../img/greyzz.png');">
 <?php
 ini_set('display_errors','On');
 error_reporting(E_ALL | E_STRICT);
@@ -159,7 +167,7 @@ if (!$result) {
 $fields_num = mysqli_num_fields($result);
 echo "<br><br>";
 echo "<center>";
-echo "<table border='1' style='margin: 0px;'><tr>";
+echo "<table border='1'style='margin:0px;'><tr>";
 // printing table headers
 for($i=0; $i<$fields_num; $i++)
 {

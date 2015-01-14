@@ -48,7 +48,7 @@
                 case 'ViewOutReport':
                 {
                 //    $("#contentFrame").prop("scrolling","yes");
-                    contentIFrame.src = './ViewReport/ViewOutReport.php';
+                    contentIFrame.src = 'ViewOutReport.php';
                     break;
                 }
                 case 'BulkSlip':
@@ -62,12 +62,6 @@
                 {
                   $("#contentFrame").prop("scrolling","no");
                     contentIFrame.src = '../viewDoc.php';
-                    break;
-                }
-                case 'ViewInReport':
-                {
-			$("#contentFrame").prop("scrolling","no");
-                    contentIFrame.src = './ViewReport/ViewInReport.php';
                     break;
                 }
         
@@ -97,13 +91,10 @@
    <li id="printStickerTab"><a href='#' onclick="displayPanel('printStickerTab')"><span>Print Sticker</span></a></li>
    <!--
     <li id="ViewReport"><a href='#' onclick="displayPanel('ViewReport')"><span>View Report</span></a></li>
-   
-   <li id="ViewOutReport" ><a href='#' onclick="displayPanel('ViewOutReport')"><span>Out Slip Report</span></a></li>
     -->
+   <li id="ViewOutReport" ><a href='#' onclick="displayPanel('ViewOutReport')"><span>Out Slip Report</span></a></li>
    <li id="ViewDoc" ><a href='#' onclick="displayPanel('ViewDoc')"><span>View Document</span></a></li>
     <li id="BulkSlip"><a href='#' onclick="displayPanel('BulkSlip')"><span>Bulk Slip</span></a></li>
-   <li id="ViewInReport"><a href='#' onclick="displayPanel('ViewInReport')"><span>In-Report</span></a></li>
-   <li id="ViewOutReport"><a href='#' onclick="displayPanel('ViewOutReport')"><span>Out-Report</span></a></li>
    <li style=" text-align:right; visibility: hidden;" >&nbsp;</li>
    <li style="text-align:center;float:right;"><a href='../logout.php'><span>Logout</span></a></li>
 </ul>
