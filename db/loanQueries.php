@@ -161,7 +161,7 @@ function getRacpcNameofAccount($accountNumber)
 	$con = NULL;
     db_prelude($con);
 	$colname = "racpc_name"; 
-    $query=mysqli_query($con,"SELECT r.racpc_name AS '$colname' FROM `loan_account_mstr` l, branch_mstr b, racpc_mstr r where l.branch_code = b.branch_code and r.racpc_code = b.racpc_code and l.loan_acc_no = '$accountNumber'");
+    $query=mysqli_query($con,"SELECT r.racpc_name AS '$colname' FROM racpc_mstr as r where racpc_code=(select l.racpc_code FROM loan_account_mstr as l where  l.loan_acc_no ='$accountNumber')");
     $row=mysqli_fetch_array($query);
     mysqli_close($con);
 	return ($row[0]);
@@ -171,7 +171,7 @@ function getRacpcCodeofAccount($accountNumber)
 	$con = NULL;
     db_prelude($con);
 	$colname = "racpc_code"; 
-    $query=mysqli_query($con,"SELECT b.racpc_code AS '$colname' FROM `loan_account_mstr` l, branch_mstr b where l.branch_code = b.branch_code and l.loan_acc_no = '$accountNumber'");
+    $query=mysqli_query($con,"SELECT racpc_code AS '$colname' FROM loan_account_mstr  where  loan_acc_no ='$accountNumber'");
     $row=mysqli_fetch_array($query);
     mysqli_close($con);
 	return ($row[0]);

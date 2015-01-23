@@ -210,24 +210,29 @@ function validate_racpc_user($pfNumber,$login_pf)
     $con = NULL;
     db_prelude($con);  
     //$colname = "racpc_code";
-    $query=mysqli_query($con,"select b.racpc_code as racpc_code
+  /*  $query=mysqli_query($con,"select b.racpc_code as racpc_code
     from adms_user_mstr au, user_mstr u, branch_mstr b, user_mstr u1, branch_mstr b1
     where au.pf_index = '$login_pf'
     and au.pf_index = u.pf_index 
     and u.branch_code = b.branch_code
     and u1.pf_index = '$pfNumber'
     and u1.branch_code = b1.branch_code
-    and b.racpc_code = b1.racpc_code");
+    and b.racpc_code = b1.racpc_code");*/
+    $query=mysqli_query($con,"select branch_code from user_mstr where pf_index='$login_pf'
+                        and branch_code =(select racpc_code from branch_mstr
+                        where branch_code=(select branch_code from user_mstr
+                        where pf_index='$pfNumber')) ");
 
     $row = mysqli_fetch_array($query);
-    if($row['racpc_code'] != "")
+    //var_dump("branch code: ".$row['branch_code']);
+    if($row['branch_code'] != "")
     {
-        echo json_encode(TRUE);
+        echo json_encode(true);
         //echo json_encode($row['racpc_code']);
     }
     else
     {
-        echo json_encode(FALSE);
+        echo json_encode(false);
     }
     mysqli_close($con);
 }

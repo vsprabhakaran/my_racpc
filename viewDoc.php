@@ -13,6 +13,7 @@
     <head>
 	<link rel="stylesheet" href="css/pure-min.css">
 	<script type="text/javascript" src="jquery-latest.min.js"></script>
+  <script type="text/javascript" src="ValidationMethods.js"></script>
     <script type="text/javascript">
         function getPDF() {
             var enteredAccNumber = document.getElementById('accNumber').value;
@@ -72,16 +73,15 @@
                 nullAccountNumberEnterred();
                 return;
             }
-            $.post('db/accountInformations.php', { accNo: enteredAccNumber, type: 'isValidAccount' }, function (msg) {
-                if (msg == "true") {
-                    validAccountNumberEnterred();
+            var checkADMSAccountMstr=true;
+            var checkCloseAccount=true;
+            var adminPfNumber=doPOST_Request('getPfnoFromSession.php', "", "getPfno");
+            var url='db/accountInformations.php';
+            if (VerifyAccountandValidateAccess(url,enteredAccNumber,adminPfNumber,checkADMSAccountMstr,checkCloseAccount))
+            {
+              validAccountNumberEnterred(enteredAccNumber);
                 }
-                else if (msg == "false") {
-                    invalidAccountNumberEnterred();
-                }
-            }).fail(function (msg) {
-                alert("fail : " + msg);
-            });
+            else { invalidAccountNumberEnterred(); return; }
 
         }
         function doPOST_Request(phpURL, accNumber, typeCall) {

@@ -51,6 +51,7 @@
 <body>
     <br/><br/>
 <?php
+  error_reporting(E_ERROR & E_ALL & ~E_DEPRECATED & ~E_NOTICE);
     if(!isset($_SESSION)) session_start();
     require("../db/loanQueries.php");
       require ('../pdfMerger/PDFMerger.php');
@@ -221,8 +222,6 @@
             $branchCode=getBranchCode($accountNo);
             $oldFile="E:/uploads/".$branchCode."/".$accountNo.".pdf";
             $newFile= "E:/uploads/".$branchCode.'/tmp'.basename( $_FILES['addFile']['name']);
-          //  $newFile="E:/uploads/".$branchCode."/".$accountNo.".pdf";
-            echo $oldFile.$newFile;
             if(move_uploaded_file($_FILES['addFile']['tmp_name'], $newFile))
             {
             $pdf->addPDF("$oldFile", 'all')

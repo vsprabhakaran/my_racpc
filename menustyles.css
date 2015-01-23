@@ -98,7 +98,7 @@ color:Black;
   height: 59px;
 }
 #cssmenu ul li {
-//  width: 12%;
+  width: auto;
   float: left;
   margin-right: 4px;
   border-top-left-radius: 3px;

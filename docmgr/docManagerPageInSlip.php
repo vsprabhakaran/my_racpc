@@ -18,6 +18,7 @@
     <script type="text/javascript" src="../jquery-latest.min.js"></script>
     <link rel="stylesheet" href="../css/my_styles.css">
     <link rel="stylesheet" href="../css/pure-min.css">
+	<script type="text/javascript" src="../ValidationMethods.js"></script>
 <script type="text/javascript" id="resetUserValidationScript">
         function resetPanelShowUserDetails() {
             var enteredUserPf = $('#pfnogiver').val();
@@ -100,6 +101,15 @@
         document.getElementById('dname').value = doPOST_RequestUser(phpURL, login_pf, "GetUserName");
         phpURL = '../db/accountInformations.php';
 
+      var checkADMSAccountMstr=true;
+      var checkCloseAccount=true;
+      var url='../db/accountInformations.php';
+      if (VerifyAccountandValidateAccess(url,enteredAccNumber,login_pf,checkADMSAccountMstr,checkCloseAccount))
+      {
+        /*var msg = doPOST_Request(phpURL, enteredAccNumber, "isValidAccount");
+        if (msg == "true")
+        {
+          msg = doPOST_Request(phpURL, enteredAccNumber, "isValidAccount");
         
         var msg = doPOST_Request(phpURL, enteredAccNumber, "isValidAccount");
         if (msg == "true") {
@@ -108,11 +118,11 @@
 		
 		phpURL = '../db/accountInformations.php';
 		msg = doPOST_Request_isValidForInSlip(phpURL,enteredAccNumber,"isValidForInSlip");
-		
+            }*/
+            msg = doPOST_Request_isValidForInSlip(phpURL,enteredAccNumber,"isValidForInSlip");
         if (msg == "true") {
-            validAccountNumberEnterred();
-                    $('#accountno').prop('readonly', "readonly");
-                    $('#pfnogiver').prop('disabled',false);
+              validAccountNumberEnterred(); $('#accountno').prop('readonly', "readonly");
+              $('#pfnorcv').prop('disabled',false);
         }
         else if (msg == "false") {
             invalidAccountNumberEnterred();
@@ -120,12 +130,18 @@
                     resetForm();
             return;
         }
-		}
+          /*}
             else {
                 alert("Acount is Not Valid Adms Account");
 		resetForm();
 		return;
 		}
+        }
+        else {
+          alert("Accouont is Invalid");
+          resetForm();
+          return;
+        }*/
         document.getElementById('accountname').value = doPOST_Request(phpURL, enteredAccNumber, "GetAccountNameOfAccount");
         document.getElementById('brcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetBranchCodeOfAccount");
         document.getElementById('foliono').value = doPOST_Request(phpURL, enteredAccNumber, "GetFolioNumberOfAccount").replace(/["'\\]/g, ""); 
@@ -134,7 +150,11 @@
         $('#genInslipButton').prop('disabled', true);
         $('#reason').prop('disabled', true);
         }
-        else { alert("Invalid account"); document.getElementById('accountno').value = ''; return; }
+      else
+      {
+        document.getElementById('accountno').value = '';
+        return;
+      }
     }
     function showUdetails() {
         var enteredPFNumber = $('#pfnogiver').val();

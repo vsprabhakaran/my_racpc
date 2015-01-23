@@ -19,7 +19,7 @@
     <script type="text/javascript" src="../jquery-latest.min.js"></script>
     <link rel="stylesheet" href="../css/my_styles.css">
     <link rel="stylesheet" href="../css/pure-min.css">
-
+    <script type="text/javascript" src="../ValidationMethods.js"></script>
 
 <script>
 
@@ -60,14 +60,23 @@
         
         phpURL = '../db/accountInformations.php';
         
-        var msg = doPOST_Request(phpURL, enteredAccNumber, "isValidAccount");
-        if (msg == "true") {
+      var checkADMSAccountMstr=true;
+      var checkCloseAccount=true;
+      var url='../db/accountInformations.php';
+      if (VerifyAccountandValidateAccess(url,enteredAccNumber,login_pf,checkADMSAccountMstr,checkCloseAccount))
+      {
+        /*var msg = doPOST_Request(phpURL, enteredAccNumber, "isValidAccount");
+        if (msg == "true")
+        {
             msg = doPOST_Request(phpURL, enteredAccNumber, "isValidAccount");
 
-            if (msg == "true") {
+          if (msg == "true")
+          {
             msg = doPOST_Request_isValidAdmsAccount(phpURL, enteredAccNumber, login_pf, "isValidAdmsAccount"); 
-                if (msg == "true") {
+            if (msg == "true")
+            {
                 phpURL = '../db/accountInformations.php';
+            }*/
 		        msg = doPOST_Request_isValidForOutSlip(phpURL,enteredAccNumber,"isValidForOutSlip");
 		            if (msg == "true") {
                         validAccountNumberEnterred(); $('#accountno').prop('readonly', "readonly");
@@ -79,7 +88,7 @@
                     resetForm();
                     return;
                     }
-                }
+          /*}
 		            else {
                     alert("Acount is Not Valid Adms Account");
                     resetForm();
@@ -90,7 +99,7 @@
             alert("Accouont is Invalid");
 		    resetForm();
 		    return;
-		    }
+        }*/
         document.getElementById('accountname').value = doPOST_Request(phpURL, enteredAccNumber, "GetAccountNameOfAccount");
         document.getElementById('brcode').value = doPOST_Request(phpURL, enteredAccNumber, "GetBranchCodeOfAccount");
         document.getElementById('foliono').value = doPOST_Request(phpURL, enteredAccNumber, "GetFolioNumberOfAccount").replace(/["'\\]/g, "");
@@ -99,7 +108,11 @@
         $('#genOutslipButton').prop('disabled', true);
         $('#reason').prop('disabled', true);
          }
-        else { alert("Invalid Account"); document.getElementById('accountno').value = ''; return; }
+      else
+      {
+        document.getElementById('accountno').value = '';
+        return;
+      }
     }
     function showUdetails() {
         var enteredPFNumber = $('#pfnorcv').val();
@@ -361,7 +374,7 @@
                 document.getElementById("pfnorcv").readOnly = true;
             }
             else {
-                alert("Account does not belong to Receiver's RACPC");
+            alert("Mismatch in branch code of Account Number and returnee.");
                 document.getElementById('pfnorcv').value = '';
                 document.getElementById('nameofReciver').value = '';
                 $('#genOutslipButton').prop('disabled', true);

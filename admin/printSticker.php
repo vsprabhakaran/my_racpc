@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="css/styles.css">
         <link rel="stylesheet" href="../css/pure-min.css">
         <script type="text/javascript" src="../jquery-latest.min.js"></script>
+        <script type="text/javascript" src="../ValidationMethods.js"></script>
 		<script type="text/javascript" src="js/deployJava.js"></script>
 		<script type="text/javascript" src="sendCommand.js"></script>
         <script type="text/javascript">
@@ -34,18 +35,16 @@
                     nullAccountNumberEnterred();
                     return;
                 }
-                $.post('../db/accountInformations.php', { accNo: enteredAccNumber, type: 'isValidAccount' }, function (msg) {
-                    if (msg == "true") {
-                        validAccountNumberEnterred();
+                var checkADMSAccountMstr=false;
+                var checkCloseAccount=true;
+                var adminPfNumber=doPOST_Request('../getPfnoFromSession.php', "", "getPfno");
+                var url='../db/accountInformations.php';
+                if (VerifyAccountandValidateAccess(url,enteredAccNumber,adminPfNumber,checkADMSAccountMstr,checkCloseAccount))
+                {
+                  validAccountNumberEnterred(enteredAccNumber);
                     }
-                    else if (msg == "false") {
-                        invalidAccountNumberEnterred();
+                else { invalidAccountNumberEnterred(); return; }
                     }
-                }).fail(function (msg) {
-                    alert("fail : " + msg);
-                });
-            
-            }
 			function doPOST_Request(phpURL, accNumber, typeCall) {
 				var returnMsg = '';
 				$.ajax({

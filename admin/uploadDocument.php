@@ -18,6 +18,7 @@
         <script type="text/javascript" src="../jquery-barcode.js"></script>
 		<script type="text/javascript" src="js/deployJava.js"></script>
 		<script type="text/javascript" src="sendCommand.js"></script>
+    <script type="text/javascript" src="../ValidationMethods.js"></script>
         <script type="text/javascript">
             var dbURL = '../db/accountInformations.php';
             var docStatus_var = "0";
@@ -40,19 +41,22 @@
                     nullAccountNumberEnterred();
                     return;
                 }
-
-                if (isValidAccount(enteredAccNumber)) { validAccountNumberEnterred(enteredAccNumber); }
-                else { invalidAccountNumberEnterred(); return; }
+                var checkADMSAccountMstr=false;
+                var checkCloseAccount=true;
+                var adminPfNumber=doPOST_Request('../getPfnoFromSession.php', "", "getPfno");
+                var url='../db/accountInformations.php';
+                if (VerifyAccountandValidateAccess(url,enteredAccNumber,adminPfNumber,checkADMSAccountMstr,checkCloseAccount))
+                {
+                  validAccountNumberEnterred(enteredAccNumber);
+                }
+                else
+                { 
+                  invalidAccountNumberEnterred();
+                  return;
+                  }
             }
             function validAccountNumberEnterred(enteredAccNumber) {
                 //Resetting some elements before actions
-                $.ajax({
-                    type: 'POST',
-                    url: '../db/accountInformations.php',
-                    data: { accNo: enteredAccNumber, type: 'isLoanActive' },
-                    success: function (msg) {
-                        if (msg == "true" || (msg == "false" && !isLoanInADMS(enteredAccNumber))) {
-                            
                             document.getElementById("barcodeIFrame").setAttribute('src', "../barcodegit/test.php?text=" + document.getElementById("accNumber").value);
                             $('.accountNumberBarcode').css("display", "block");
                             document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
@@ -63,19 +67,6 @@
                             populateFields(enteredAccNumber);
                             showAccountDetailsIFrame();
                         }
-                        else {
-
-                            document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
-                    alert("You are trying to access a closed loan!");
-                        }
-                    },
-                    error: function (msg) { alert("fail : " + msg); },
-                    async: false
-                });
-
-
-
-            }
             function cleanFormValues() {
                 $('#folio_no').val("");
                 $('#rack_no').val("");

@@ -121,6 +121,16 @@ switch($request)
     ViewReport($_POST['login_pf_index']);
     break;
     }
+    case 'isUserAndLoanAccountBelongsToSameRacpc':
+    {
+      isUserAndLoanAccountBelongsToSameRacpc($_POST['accNo'],$_POST['pfIndex']);
+      break;
+    }
+    case 'isLoanClosed':
+    {
+      isLoanClosed($_POST['accNo']);
+      break;
+    }
 }
 }
 
@@ -181,8 +191,7 @@ function checkRacpcViewAccess($accountNumber,$pfno)
 	$con = NULL;
     db_prelude($con);  
 	$query=mysqli_query($con,"SELECT racpc_code
-										FROM loan_account_mstr AS l, branch_mstr AS b
-										WHERE l.branch_code = b.branch_code AND l.loan_acc_no ='$accountNumber'");
+  FROM loan_account_mstr  where  loan_acc_no ='$accountNumber'");
 	$racpcCodeofAcc=mysqli_fetch_array($query);
     $query=mysqli_query($con,"SELECT branch_code
 								FROM user_mstr
@@ -221,7 +230,21 @@ function isLoanActive($accountNumber)
 function validate_racpc_acc_user($pfno, $accountNumber){
     $con = NULL;
     db_prelude($con);  
-    $query=mysqli_query($con,"select b.racpc_code as racpc_code 
+  $query1=mysqli_query($con,"select racpc_code from loan_account_mstr where loan_acc_no='$accountNumber'");
+  $RacpcCodeofLoanAcc = mysqli_fetch_array($query1);
+  $query2=mysqli_query($con,"select racpc_code from branch_mstr where branch_code=(select branch_code from user_mstr where pf_index='$pfno')");
+  $RacpcCodeofRequester = mysqli_fetch_array($query2);
+  //var_dump("1st: ".$RacpcCodeofLoanAcc['racpc_code']."  2nd:".$RacpcCodeofRequester['racpc_code']);
+  if($RacpcCodeofLoanAcc['racpc_code'] == $RacpcCodeofRequester['racpc_code'])
+  {
+    echo json_encode(TRUE);
+  }
+  else
+  {
+    echo json_encode(FALSE);
+  }
+
+  /*$query=mysqli_query($con,"select b.racpc_code as racpc_code
     from adms_user_mstr au, adms_loan_account_mstr am,loan_account_mstr l,branch_mstr b,user_mstr u,racpc_mstr r
     where au.pf_index ='$pfno' 
     and au.pf_index = u.pf_index    
@@ -257,7 +280,7 @@ function validate_racpc_acc_user($pfno, $accountNumber){
     {
         echo json_encode(FALSE);
     }
-    }
+  }*/
      mysqli_close($con);
 }
 function isValidAccount($accountNumber)
@@ -294,7 +317,7 @@ function isLoanAccountInADMS($accountNumber)
 	mysqli_close($con);
 }
 // checking whether account belongs corresponding adms user 
-function isValidAdmsAccount($accountNumber,$login_pf_index)
+/*function isValidAdmsAccount($accountNumber,$login_pf_index)
 {
     $con = NULL;
     db_prelude($con);  
@@ -317,6 +340,27 @@ and b.racpc_code in
         echo json_encode(FALSE);
     }
      mysqli_close($con);   
+} */
+function isUserAndLoanAccountBelongsToSameRacpc($accountNumber,$pfIndex)
+{
+  $con = NULL;
+  db_prelude($con);
+  $colname = "racpc_code";
+  $query=mysqli_query($con,"SELECT racpc_code AS '$colname' FROM loan_account_mstr  where  loan_acc_no ='$accountNumber'");
+  $RacpcCodeofLoanAccount=mysqli_fetch_array($query)[$colname];
+  $query=mysqli_query($con,"SELECT b.racpc_code AS '$colname' FROM user_mstr u,branch_mstr b
+    where u.pf_index='$pfIndex' and u.branch_code=b.branch_code");
+  $RacpcCodeofUser=mysqli_fetch_array($query)[$colname];
+  //var_dump("RacpcCodeofLoanAccount : ".print_r($RacpcCodeofUser));
+  if($RacpcCodeofLoanAccount==$RacpcCodeofUser)
+  {
+    //var_dump("RacpcCodeofUser  : ".$RacpcCodeofUser." RacpcCodeofLoanAccount : ".$RacpcCodeofLoanAccount);
+    echo json_encode(TRUE);
+  }
+  else
+  {
+    echo json_encode(FALSE);
+  }
 }
 function GetAccountNameOfAccount($accountNumber)
 {
@@ -551,7 +595,22 @@ AND dl.slip_type =  'OUT'
 
      mysqli_close($con); 
 }
-
+function isLoanClosed($accountNumber)
+{
+  $con = NULL;
+  db_prelude($con);
+  $query=mysqli_query($con,"select loan_status from adms_loan_account_mstr where loan_acc_no = '$accountNumber'");
+  $row = mysqli_fetch_array($query);
+  mysqli_close($con);
+  if($row['loan_status'] == "C")
+  {
+    echo json_encode(TRUE);
+  }
+  else
+  {
+    echo json_encode(FALSE);
+  }
+}
 /*
 function OutActivityLogInsert($accountNumber,$borrower_pf,$login_pf,$s_type,$rson,$phno)
 {

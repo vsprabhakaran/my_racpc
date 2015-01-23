@@ -15,6 +15,7 @@
    <link rel="stylesheet" href="css/styles.css">
    <link rel="stylesheet" href="../css/pure-min.css">
    <script type="text/javascript" src="../jquery-latest.min.js"></script>
+   <script type="text/javascript" src="../ValidationMethods.js"></script>
 	<script type="text/javascript">
         function doPOST_Request(phpURL, accNumber, typeCall) {
             var returnMsg = '';
@@ -23,7 +24,9 @@
                 url: phpURL,
                 data: { accNo: accNumber, type: typeCall },
                 success: function (msg) {
-                    returnMsg = msg;
+                  if (msg != "") returnMsg = msg.replace(/["'\\]/g, "");
+                  else alert("Pf number not Found");
+                  if (msg == "false") returnMsg = "NA";
                 },
                 error: function (msg) { alert("fail : " + msg); },
                 async: false
@@ -38,16 +41,19 @@
                 nullAccountNumberEnterred();
                 return;
             }
-            $.post('../db/accountInformations.php', { accNo: enteredAccNumber, type: 'isValidAccount' }, function (msg) {
-                if (msg == "true") {
-                    validAccountNumberEnterred();
+            var checkADMSAccountMstr=true;
+            var checkCloseAccount=true;
+            var adminPfNumber=doPOST_Request('../getPfnoFromSession.php', "", "getPfno");
+            var url='../db/accountInformations.php';
+            if (VerifyAccountandValidateAccess(url,enteredAccNumber,adminPfNumber,checkADMSAccountMstr,checkCloseAccount))
+            {
+              validAccountNumberEnterred(enteredAccNumber);
                 }
-                else if (msg == "false") {
+            else
+            {
                     invalidAccountNumberEnterred();
+              return;
                 }
-            }).fail(function (msg) {
-                alert("fail : " + msg);
-            });
 
         }
 		function showAccountDetails() {
