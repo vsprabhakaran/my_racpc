@@ -74,7 +74,7 @@ switch($request)
 	case 'OutUpdateDocStatus':
     {
      OutUpdateDocStatus($_POST['accNo']);
-     break;  
+     break;
     }
     case 'InUpdateDocStatus':
     {
@@ -84,16 +84,16 @@ switch($request)
     case 'isValidAdmsAccount':
     {
     isValidAdmsAccount($_POST['accNo'],$_POST['login_pf_index']);
-	break;        
+	break;
     }
 	case 'checkBranchViewAccess':
 	{
-	checkBranchViewAccess($_POST['accNo'],$_POST['pfno']);	
+	checkBranchViewAccess($_POST['accNo'],$_POST['pfno']);
 	break;
 	}
 	case 'checkRacpcViewAccess':
 	{
-	checkRacpcViewAccess($_POST['accNo'],$_POST['pfno']);	
+	checkRacpcViewAccess($_POST['accNo'],$_POST['pfno']);
 	break;
 	}
 	case 'isLoanActive':
@@ -104,7 +104,7 @@ switch($request)
 	case 'validate_racpc_acc_user':
     {
     validate_racpc_acc_user($_POST['pfno'],$_POST['accNo']);
-    break;    
+    break;
     }
 	case 'isValidForOutSlip':
 	{
@@ -137,7 +137,7 @@ switch($request)
 function checkBranchViewAccess($accountNumber,$pfno)
 {
 	$con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $query=mysqli_query($con,"select l.branch_code from loan_account_mstr as l where l.loan_acc_no='$accountNumber' and  (l.branch_code= (select u.branch_code from user_mstr as u where pf_index='$pfno'))");
     $row = mysqli_fetch_array($query);
 	if($row['branch_code'] != "")
@@ -153,8 +153,8 @@ function checkBranchViewAccess($accountNumber,$pfno)
 function isValidForOutSlip($accountNumber)
 {
 	$con = NULL;
-    db_prelude($con);  
-    $query=mysqli_query($con,"select loan_acc_no from adms_loan_account_mstr where loan_acc_no = '$accountNumber' and 
+    db_prelude($con);
+    $query=mysqli_query($con,"select loan_acc_no from adms_loan_account_mstr where loan_acc_no = '$accountNumber' and
 	document_status NOT IN('OUT','A','C') and loan_status != 'C' ");
     $row = mysqli_fetch_array($query);
 	if($row['loan_acc_no'] != "")
@@ -171,8 +171,8 @@ function isValidForOutSlip($accountNumber)
 function isValidForInSlip($accountNumber)
 {
 	$con = NULL;
-    db_prelude($con);  
-    $query=mysqli_query($con,"select loan_acc_no from adms_loan_account_mstr where loan_acc_no = '$accountNumber' and 
+    db_prelude($con);
+    $query=mysqli_query($con,"select loan_acc_no from adms_loan_account_mstr where loan_acc_no = '$accountNumber' and
 	document_status NOT IN('IN','A','C') and loan_status != 'C' ");
     $row = mysqli_fetch_array($query);
 	if($row['loan_acc_no'] != "")
@@ -189,7 +189,7 @@ function isValidForInSlip($accountNumber)
 function checkRacpcViewAccess($accountNumber,$pfno)
 {
 	$con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
 	$query=mysqli_query($con,"SELECT racpc_code
   FROM loan_account_mstr  where  loan_acc_no ='$accountNumber'");
 	$racpcCodeofAcc=mysqli_fetch_array($query);
@@ -205,7 +205,7 @@ function checkRacpcViewAccess($accountNumber,$pfno)
     }
     else
     {
-		
+
         echo json_encode(FALSE);
     }
      mysqli_close($con);
@@ -213,7 +213,7 @@ function checkRacpcViewAccess($accountNumber,$pfno)
 function isLoanActive($accountNumber)
 {
 	$con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $query=mysqli_query($con,"select loan_status from adms_loan_account_mstr where loan_acc_no = '$accountNumber'");
     $row = mysqli_fetch_array($query);
     if($row['loan_status'] == "A")
@@ -229,7 +229,7 @@ function isLoanActive($accountNumber)
 //validate branch code and racpc of account number and the doc requester
 function validate_racpc_acc_user($pfno, $accountNumber){
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
   $query1=mysqli_query($con,"select racpc_code from loan_account_mstr where loan_acc_no='$accountNumber'");
   $RacpcCodeofLoanAcc = mysqli_fetch_array($query1);
   $query2=mysqli_query($con,"select racpc_code from branch_mstr where branch_code=(select branch_code from user_mstr where pf_index='$pfno')");
@@ -246,11 +246,11 @@ function validate_racpc_acc_user($pfno, $accountNumber){
 
   /*$query=mysqli_query($con,"select b.racpc_code as racpc_code
     from adms_user_mstr au, adms_loan_account_mstr am,loan_account_mstr l,branch_mstr b,user_mstr u,racpc_mstr r
-    where au.pf_index ='$pfno' 
-    and au.pf_index = u.pf_index    
+    where au.pf_index ='$pfno'
+    and au.pf_index = u.pf_index
     and u.branch_code = r.racpc_code
     and am.loan_acc_no = '$accountNumber'
-    and am.loan_acc_no = l.loan_acc_no 
+    and am.loan_acc_no = l.loan_acc_no
     and l.branch_code = b.branch_code
     and b.racpc_code = r.racpc_code");
     $row = mysqli_fetch_array($query);
@@ -264,8 +264,8 @@ function validate_racpc_acc_user($pfno, $accountNumber){
     $query=mysqli_query($con,"select b.racpc_code as racpc_code
     from user_mstr u, branch_mstr b, adms_loan_account_mstr am, loan_account_mstr l, branch_mstr b1
     where u.pf_index = '$pfno'
-    and am.loan_acc_no = '$accountNumber' 
-    and am.loan_acc_no = l.loan_acc_no 
+    and am.loan_acc_no = '$accountNumber'
+    and am.loan_acc_no = l.loan_acc_no
     and l.branch_code = b1.branch_code
     and u.branch_code = b.branch_code
     and b.branch_code = b1.branch_code
@@ -286,7 +286,7 @@ function validate_racpc_acc_user($pfno, $accountNumber){
 function isValidAccount($accountNumber)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $query=mysqli_query($con,"select loan_acc_no from loan_account_mstr where loan_acc_no = '$accountNumber'");
     $row = mysqli_fetch_array($query);
     if($row['loan_acc_no'] != "")
@@ -303,7 +303,7 @@ function isValidAccount($accountNumber)
 function isLoanAccountInADMS($accountNumber)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $query=mysqli_query($con,"select loan_acc_no from adms_loan_account_mstr where loan_acc_no = '$accountNumber'");
     $row = mysqli_fetch_array($query);
     if($row['loan_acc_no'] != "")
@@ -316,19 +316,19 @@ function isLoanAccountInADMS($accountNumber)
     }
 	mysqli_close($con);
 }
-// checking whether account belongs corresponding adms user 
+// checking whether account belongs corresponding adms user
 /*function isValidAdmsAccount($accountNumber,$login_pf_index)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $query=mysqli_query($con,"select l.loan_acc_no
 from loan_account_mstr l,branch_mstr b,racpc_mstr r,adms_loan_account_mstr am
-where l.loan_acc_no='$accountNumber' 
+where l.loan_acc_no='$accountNumber'
 and l.loan_acc_no = am.loan_acc_no
 and  l.branch_code =  b.branch_code
-and b.racpc_code = r.racpc_code 
+and b.racpc_code = r.racpc_code
 and b.racpc_code in
-( select b1.racpc_code from user_mstr u, branch_mstr b1 
+( select b1.racpc_code from user_mstr u, branch_mstr b1
   where u.pf_index = '$login_pf_index' and u.branch_code = b1.branch_code)");
     $row = mysqli_fetch_array($query);
     if($row['loan_acc_no'] != "")
@@ -339,7 +339,7 @@ and b.racpc_code in
     {
         echo json_encode(FALSE);
     }
-     mysqli_close($con);   
+     mysqli_close($con);
 } */
 function isUserAndLoanAccountBelongsToSameRacpc($accountNumber,$pfIndex)
 {
@@ -347,12 +347,12 @@ function isUserAndLoanAccountBelongsToSameRacpc($accountNumber,$pfIndex)
   db_prelude($con);
   $colname = "racpc_code";
   $query=mysqli_query($con,"SELECT racpc_code AS '$colname' FROM loan_account_mstr  where  loan_acc_no ='$accountNumber'");
-  $RacpcCodeofLoanAccount=mysqli_fetch_array($query)[$colname];
+  $RacpcCodeofLoanAccount=mysqli_fetch_array($query);
   $query=mysqli_query($con,"SELECT b.racpc_code AS '$colname' FROM user_mstr u,branch_mstr b
     where u.pf_index='$pfIndex' and u.branch_code=b.branch_code");
-  $RacpcCodeofUser=mysqli_fetch_array($query)[$colname];
+  $RacpcCodeofUser=mysqli_fetch_array($query);
   //var_dump("RacpcCodeofLoanAccount : ".print_r($RacpcCodeofUser));
-  if($RacpcCodeofLoanAccount==$RacpcCodeofUser)
+  if($RacpcCodeofLoanAccount[$colname]==$RacpcCodeofUser[$colname])
   {
     //var_dump("RacpcCodeofUser  : ".$RacpcCodeofUser." RacpcCodeofLoanAccount : ".$RacpcCodeofLoanAccount);
     echo json_encode(TRUE);
@@ -365,7 +365,7 @@ function isUserAndLoanAccountBelongsToSameRacpc($accountNumber,$pfIndex)
 function GetAccountNameOfAccount($accountNumber)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $colname = "name";
     $query=mysqli_query($con,"SELECT acc_holder_name AS '$colname' FROM loan_account_mstr WHERE loan_acc_no = '$accountNumber'");
     $row = mysqli_fetch_array($query);
@@ -382,8 +382,8 @@ function GetAccountNameOfAccount($accountNumber)
 function GetBranchCodeOfAccount($accountNumber)
 {
     $con = NULL;
-    db_prelude($con); 
-    $colname = "branch_code"; 
+    db_prelude($con);
+    $colname = "branch_code";
     $query=mysqli_query($con,"SELECT branch_code AS '$colname' FROM loan_account_mstr WHERE loan_acc_no = '$accountNumber'");
     $row = mysqli_fetch_array($query);
     if($row[$colname] != "")
@@ -401,7 +401,7 @@ function GetBranchCodeOfAccount($accountNumber)
 function GetBranchNameOfAccount($accountNumber)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $colname = "branch_name";
     $query=mysqli_query($con,"SELECT b.branch_name AS '$colname' FROM loan_account_mstr l, branch_mstr b WHERE b.branch_code=l.branch_code and loan_acc_no= '$accountNumber'");
     $row = mysqli_fetch_array($query);
@@ -418,7 +418,7 @@ function GetBranchNameOfAccount($accountNumber)
 function GetLoanProductOfAccount($accountNumber)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $colname = "loanprod_name";
     $query=mysqli_query($con,"SELECT product_name AS '$colname' FROM loan_account_mstr l, loan_product_mstr p WHERE p.product_code=l.product_code and loan_acc_no='$accountNumber'");
     $row = mysqli_fetch_array($query);
@@ -436,7 +436,7 @@ function GetLoanProductOfAccount($accountNumber)
 function GetLoanStatusOfAccount($accountNumber)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $colname = "loan_status";
     $query=mysqli_query($con,"SELECT loan_status AS '$colname' FROM adms_loan_account_mstr WHERE loan_acc_no ='$accountNumber'");
     $row = mysqli_fetch_array($query);
@@ -453,7 +453,7 @@ function GetLoanStatusOfAccount($accountNumber)
 function GetDocumentStatusOfAccount($accountNumber)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $colname = "doc_status";
     $query=mysqli_query($con,"SELECT document_status AS '$colname' FROM adms_loan_account_mstr WHERE loan_acc_no ='$accountNumber'");
     $row = mysqli_fetch_array($query);
@@ -470,7 +470,7 @@ function GetDocumentStatusOfAccount($accountNumber)
 function GetFolioNumberOfAccount($accountNumber)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $colname = "folio_num";
     $query=mysqli_query($con,"SELECT folio_no AS '$colname' FROM adms_loan_account_mstr WHERE loan_acc_no ='$accountNumber'");
     $row = mysqli_fetch_array($query);
@@ -487,7 +487,7 @@ function GetFolioNumberOfAccount($accountNumber)
 function GetRackNumberOfAccount($accountNumber)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $colname = "rack_num";
     $query=mysqli_query($con,"SELECT rack AS '$colname' FROM adms_loan_account_mstr WHERE loan_acc_no ='$accountNumber'");
     $row = mysqli_fetch_array($query);
@@ -504,7 +504,7 @@ function GetRackNumberOfAccount($accountNumber)
 function GetNoOfFilesForAccount($accountNumber)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $colname = "files";
     $query=mysqli_query($con,"SELECT no_of_files AS '$colname' FROM adms_loan_account_mstr WHERE loan_acc_no ='$accountNumber'");
     $row = mysqli_fetch_array($query);
@@ -521,14 +521,14 @@ function GetNoOfFilesForAccount($accountNumber)
 // for doc mgr
 function OutUpdateDocStatus($accountNumber)
 {
-   
+
     $con = NULL;
-    db_prelude($con);  
-   
-    
+    db_prelude($con);
+
+
     $query=mysqli_query($con,"UPDATE adms_loan_account_mstr set document_status='OUT' where loan_acc_no ='$accountNumber' ");
     $rowcount=mysqli_num_rows($query);
-   
+
     if ($rowcount > 0)
     {
        echo json_encode(TRUE);
@@ -543,12 +543,12 @@ function OutUpdateDocStatus($accountNumber)
 function InUpdateDocStatus($accountNumber)
 {
    $con = NULL;
-    db_prelude($con);  
-    
-    
+    db_prelude($con);
+
+
     $query=mysqli_query($con,"UPDATE adms_loan_account_mstr set document_status='IN' where loan_acc_no ='$accountNumber' ");
     $rowcount=mysqli_num_rows($query);
-    
+
     if ($rowcount > 0)
     {
        echo json_encode(TRUE);
@@ -556,13 +556,13 @@ function InUpdateDocStatus($accountNumber)
     else
     {
     echo json_encode(FALSE);
-    } 
-     mysqli_close($con); 
+    }
+     mysqli_close($con);
 }
 function ViewReport($login_pf_index)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $col1 = "time"; $col2 = "loan"; $col3 = "borrower";
     $query=mysqli_query($con,"SELECT max( dl.timestamp ) as '$col1', dl.loan_acc_no as '$col2', dl.borrower_pf_index as '$col3'
 FROM adms_loan_account_mstr am, loan_account_mstr l, document_activity_log dl
@@ -570,10 +570,10 @@ WHERE am.document_status =  'OUT'
 AND am.loan_status =  'A'
 AND am.loan_acc_no = l.loan_acc_no
 AND l.loan_acc_no = dl.loan_acc_no
-AND dl.slip_type =  'OUT' 
+AND dl.slip_type =  'OUT'
     AND dl.docmgr_pf_index = '$login_pf_index'
     group by 2 ");
-    
+
  while($row_data = mysqli_fetch_array($query))
     {
   $row_time = $row_data[$col1];
@@ -582,7 +582,7 @@ AND dl.slip_type =  'OUT'
   //echo $row_time;
   //echo $row_loan;
   //echo $row_borrower;
-  
+
   echo json_encode($row_loan);
   echo json_encode("s");
   echo json_encode($row_borrower);
@@ -593,7 +593,7 @@ AND dl.slip_type =  'OUT'
     }
 
 
-     mysqli_close($con); 
+     mysqli_close($con);
 }
 function isLoanClosed($accountNumber)
 {
@@ -615,7 +615,7 @@ function isLoanClosed($accountNumber)
 function OutActivityLogInsert($accountNumber,$borrower_pf,$login_pf,$s_type,$rson,$phno)
 {
    $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $query=mysqli_query($con,"INSERT INTO document_activity_log (loan_acc_no,borrower_pf_index,docmgr_pf_index,slip_type,reason,phone_no)
 	values ('$accountNumber','$borrower_pf','$login_pf','$s_type','$rson','$phno')");
     //$rowcount=mysqli_num_rows($query);
@@ -627,13 +627,13 @@ function OutActivityLogInsert($accountNumber,$borrower_pf,$login_pf,$s_type,$rso
     else
     {
     echo json_encode(FALSE);
-    }  
+    }
 
 }
 function getAccountDetails($accountNumber)
 {
     $con = NULL;
-    db_prelude($con);  
+    db_prelude($con);
     $query=mysqli_query($con,"select password_hash,role from user where pf_index = '$accountNumber'");
     $row = mysqli_fetch_array($query);
     $role = $row['role'];

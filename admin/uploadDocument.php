@@ -18,9 +18,10 @@
         <script type="text/javascript" src="../jquery-barcode.js"></script>
 		<script type="text/javascript" src="js/deployJava.js"></script>
 		<script type="text/javascript" src="sendCommand.js"></script>
-    <script type="text/javascript" src="../ValidationMethods.js"></script>
+	    <script type="text/javascript" src="../ValidationMethods.js"></script>
         <script type="text/javascript">
             var dbURL = '../db/accountInformations.php';
+            var currentAccountNumber = "";
             var docStatus_var = "0";
             var noOfDocs_var = -1;
             var folioNumber_var = "0";
@@ -37,6 +38,7 @@
             function accountNumButtonClick() {
                 resetForm();
                 var enteredAccNumber = document.getElementById('accNumber').value;
+                currentAccountNumber = enteredAccNumber;
                 if (enteredAccNumber == "") {
                     nullAccountNumberEnterred();
                     return;
@@ -50,23 +52,23 @@
                   validAccountNumberEnterred(enteredAccNumber);
                 }
                 else
-                { 
+                {
                   invalidAccountNumberEnterred();
                   return;
-                  }
+                }
             }
             function validAccountNumberEnterred(enteredAccNumber) {
                 //Resetting some elements before actions
-                            document.getElementById("barcodeIFrame").setAttribute('src', "../barcodegit/test.php?text=" + document.getElementById("accNumber").value);
-                            $('.accountNumberBarcode').css("display", "block");
-                            document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
-                            $('#formButton').prop('disabled', false);
-                            $('#generateFP').prop('disabled', false);
-                            document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
-                            //$("#accBarcode").barcode(enteredAccNumber, "code128",{barWidth:2, barHeight:30});
-                            populateFields(enteredAccNumber);
-                            showAccountDetailsIFrame();
-                        }
+                document.getElementById("barcodeIFrame").setAttribute('src', "../barcodegit/test.php?text=" + enteredAccNumber);
+                $('.accountNumberBarcode').css("display", "block");
+                document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
+                $('#formButton').prop('disabled', false);
+                $('#generateFP').prop('disabled', false);
+                document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
+                //$("#accBarcode").barcode(enteredAccNumber, "code128",{barWidth:2, barHeight:30});
+                populateFields(enteredAccNumber);
+                showAccountDetailsIFrame(enteredAccNumber);
+            }
             function cleanFormValues() {
                 $('#folio_no').val("");
                 $('#rack_no').val("");
@@ -85,8 +87,8 @@
                 $('.editAnchor').css({ "visibility": "hidden" });
                 $('.accountNumberBarcode').css("display", "none");
                 $('.rackNumberBarcode').css("display", "none");
-			$("#pdfFile").prop("src","");
-			$("#pdfFile").css({ "visibility": "hidden" });
+    			$("#pdfFile").prop("src","");
+    			$("#pdfFile").css({ "visibility": "hidden" });
                 whichAction = -1;
             }
             function invalidAccountNumberEnterred() {
@@ -102,8 +104,7 @@
                 var popup = window.open("../AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
                 $(popup).blur(function () { this.close(); });
             }
-            function showAccountDetailsIFrame() {
-                var enteredAccNumber = document.getElementById('accNumber').value;
+            function showAccountDetailsIFrame(enteredAccNumber) {
                 $("#pdfFile").prop("src", "../AccountDetailsWindow.php?accNo=" + enteredAccNumber);
                 $("#pdfFile").css({ "visibility": "visible" });
             }
@@ -126,12 +127,12 @@
             function populateFields(accountNumber) {
 
                 docStatus = doPOST_Request(dbURL, accountNumber, 'GetDocumentStatusOfAccount');
-                var enteredAccNumber = document.getElementById('accNumber').value;
+                //var enteredAccNumber = document.getElementById('accNumber').value;
                 var loanStatus;
                 $.ajax({
                     type: 'POST',
                     url: '../db/accountInformations.php',
-                    data: { accNo: enteredAccNumber, type: 'isLoanActive' },
+                    data: { accNo: accountNumber, type: 'isLoanActive' },
                     success: function (msg) {
                         if (msg == "true") {
                             loanStatus = 'A';
@@ -195,6 +196,8 @@
             function showDocument() {
                 //document.getElementById("pdfFile").setAttribute('src', "..\\uploads\\" + document.getElementById("accNumber").value + ".pdf");
                 var enteredAccNumber = document.getElementById('accNumber').value;
+                if(isAccountNumberTampered())
+                    return;
                 $.post('../db/accountInformations.php', { accNo: enteredAccNumber, type: 'GetBranchCodeOfAccount' }, function (msg) {
                     if (msg != "") {
                         var branchCode = msg.replace(/["']/g, "");
@@ -209,6 +212,8 @@
                 });
             }
             function FolioEditClick() {
+                if(isAccountNumberTampered())
+                    return;
                 if (whichAction == -1) alert("cannot modify FolioNumber");
                 if (whichAction == ACTION_TYPE.OldDocNoChange) {
                     $("#folio_no").prop('disabled', false);
@@ -222,6 +227,8 @@
                 else alert("invalid action!!!");
             }
             function RacKEditClick() {
+                if(isAccountNumberTampered())
+                    return;
                 if (whichAction == -1) alert("cannot modify RackNumber");
                 if (whichAction == ACTION_TYPE.OldDocNoChange) {
                     $("#rack_no").prop('disabled', false);
@@ -234,6 +241,13 @@
                     whichAction |= ACTION_TYPE.OldDocRackChange; $('#actionTypeField').val("OldDocRackChange,OldDocFolioChange");
                 }
                 else alert("invalid action!!!");
+            }
+            function  appendFile(){
+                if(validateAppendFile())
+                {
+                    whichAction = ACTION_TYPE.addFile;
+                    $('#actionTypeField').val("addFile");
+                }
             }
             function showRackBarcode() {
                 document.getElementById("rackIFrame").setAttribute('src', "../barcodegit/test.php?text=" + document.getElementById("rack_no").value);
@@ -256,6 +270,15 @@
                 var pattern = /^[a-z0-9\/]+$/i;
                 return pattern.test(folioNumber);
             }
+            function isAccountNumberTampered()
+            {
+                var enteredAccNumber = document.getElementById('accNumber').value;
+                if(currentAccountNumber != enteredAccNumber) {
+                    accountNumButtonClick();
+                    return true;
+                }
+                return false;
+            }
         </script>
     </head>
     <body style="background-image:url('../img/greyzz.png'); margin: 0">
@@ -270,13 +293,17 @@
                     }
                 });
                 $('#formid').bind('submit', function () {
+                    //Submit button should check whether the account number is not changed.
+                    if(isAccountNumberTampered())
+                        return false;
+
                     var isFormValid = true;
                     var alertMsg = "Please fill all the details to proceed."
                     if (whichAction == ACTION_TYPE.NewDocument) {
                         if (!$('#file').val()) isFormValid = false;
                         else if (!$('#folio_no').val()) isFormValid = false;
                         else if (!$('#rack_no').val()) isFormValid = false;
-            
+
                     }
                     else if (whichAction == ACTION_TYPE.OldDocDocumentChange) {
                         if (!$('#file').val()) isFormValid = false;
@@ -302,6 +329,10 @@
                         if (!$('#rack_no').val()) isFormValid = false;
                         alertMsg = "Please enter new Rack number."
                     }
+                    else if (whichAction == ACTION_TYPE.addFile) {
+                        if (!$('#addFile').val()) isFormValid = false;
+                        alertMsg = "Please choose the document to upload."
+                    }
                     else if (whichAction == ACTION_TYPE.OldDocNoChange) {
                         isFormValid = false;
                         alertMsg = "Nothing to do."
@@ -322,11 +353,41 @@
                     //Resetting the file element using wrap/unwrapping - refer stackoverflow.
                     $('#file').wrap('<form>').closest('form').get(0).reset();
                     $('#file').unwrap();
+                    return false;
                 }
-
+                return true;
             }
-            function  appendFile(){
-              whichAction = ACTION_TYPE.addFile; $('#actionTypeField').val("addFile");
+            function validateAppendFile() {
+                if(!(whichAction == ACTION_TYPE.OldDocNoChange || whichAction == ACTION_TYPE.addFile))
+                {
+                    alert("invalid action!!!.");
+                    resetFileControl('addFile');
+                    return false;
+                }
+                var enteredAccNumber = document.getElementById('accNumber').value;
+                var filePath = document.getElementById('addFile').value;
+                var fileName = filePath.replace(/^.*[\\\/]/, '');
+                if (!(fileName.indexOf(enteredAccNumber) > -1)) {
+                    alert("File name should contain account number as a part of it. Please choose correct document.");
+                    resetFileControl('addFile');
+                    return false;
+                }
+                else if(!stringEndsWith(fileName,".pdf"))
+                {
+                    alert("Please choose a PDF document.");
+                    resetFileControl('addFile');
+                    return false;
+                }
+                return true;
+            }
+            function stringEndsWith(str, suffix) {
+                return str.indexOf(suffix, str.length - suffix.length) !== -1;
+            }
+            function resetFileControl(fileID)
+            {
+                //Resetting the file element using wrap/unwrapping - refer stackoverflow.
+                $('#'+fileID).wrap('<form>').closest('form').get(0).reset();
+                $('#'+fileID).unwrap();
             }
             function generateFPFunc() {
                 var number = document.getElementById('accNumber').value;
@@ -343,7 +404,7 @@
                         <form id="formid" class="pure-form pure-form-aligned" action="uploadDocumentAction.php" method="post" enctype="multipart/form-data">
                             <div class="pure-control-group">
                                 <label for="accNumber">Account Number</label>
-            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onKeyDown="if (event.keyCode == 13) accountNumButtonClick()" onBlur="accountNumButtonClick()" />
+            <input type="text" id="accNumber" name="accNumber" autocomplete="off" onKeyDown="if (event.keyCode == 13) accountNumButtonClick()"  />
                                 <!--<span><button name="accButton" onclick="accountNumButtonClick()">Go</button></span> -->
                                 <a id="getAccountDetailsSpan" href="#" style="visibility: hidden" onClick="showAccountDetails()">View Details</a>
                             </div>
@@ -402,7 +463,7 @@
             <button class="pure-button pure-button-primary" id="formButton" type="submit" disabled="disabled" >Submit</button>
                                     &nbsp;
                                  <button class="pure-button pure-button-primary" id="generateFP" type="button" disabled="disabled" onClick="generateFPFunc()" >Generate</button>
-                                
+
                             </div>
                             <input type="hidden" name="actionTypeField" id="actionTypeField" value="null" />
                         </form>

@@ -47,11 +47,11 @@
                     contentIFrame.src = "printSticker.php";
                     break;
                 }
-								case 'firstPageTab':
-								{
-									contentIFrame.src="firstPageGetDetails.php";
-									break;
-								}
+				case 'firstPageTab':
+				{
+					contentIFrame.src="firstPageGetDetails.php";
+					break;
+				}
                 default:
                 {
                     contentIFrame.src = "uploadDocument.php";
@@ -81,7 +81,7 @@
                        <li id="closeLoanTab"><a href='#' onClick="displayPanel('closeLoanTab')"><span>Loan Closure</span></a></li>
                        <li id="manageUserTab" ><a href='#' onClick="displayPanel('manageUserTab')"><span>Manage User</span></a></li>
                        <li id="printStickerTab" ><a href='#' onClick="displayPanel('printStickerTab')"><span>Print Sticker</span></a></li>
-											 <li id="firstPageTab" ><a href='#' onClick="displayPanel('firstPageTab')"><span>Cover Page</span></a></li>
+					   <li id="firstPageTab" ><a href='#' onClick="displayPanel('firstPageTab')"><span>Cover Page</span></a></li>
                        <li style="width: 20%; text-align:right; visibility: hidden;">&nbsp;</li>
                        <li style="text-align:center;float:right;"><a href='../logout.php' ><span>Logout</span></a></li>
                     </ul>

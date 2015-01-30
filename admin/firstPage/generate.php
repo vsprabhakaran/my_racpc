@@ -11,7 +11,7 @@
 <!doctype html>
 <html lang=''>
 <head>
-   <title>Account Details</title>
+   <title>Cover Page</title>
     <script src="../../jquery-latest.min.js" type="text/javascript"></script>
         <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
     <link rel="stylesheet" href="../../css/pure-min.css">

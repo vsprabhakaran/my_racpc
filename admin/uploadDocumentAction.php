@@ -15,7 +15,7 @@
          <style type="text/css">
           p {
            font-family: 'Trebuchet MS';
-           font-size: large; 
+           font-size: large;
           }
             .button-success,
             .button-error,
@@ -51,11 +51,12 @@
 <body>
     <br/><br/>
 <?php
-  error_reporting(E_ERROR & E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+  //error_reporting(E_ERROR & E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+  error_reporting(0);
     if(!isset($_SESSION)) session_start();
     require("../db/loanQueries.php");
-      require ('../pdfMerger/PDFMerger.php');
-      $pdf = new PDFMerger;
+    require ('../pdfMerger/PDFMerger.php');
+    $pdf = new PDFMerger;
     $actionType = $_POST['actionTypeField'];
     $accountNo = $_POST['accNumber'];
     if(strcmp($actionType,"NewDocument") == 0)
@@ -75,7 +76,7 @@
 	}
     $target_dir = $target_dir.$branchCode.'/'.basename( $_FILES['file']['name']);
     $uploadOk=1;
-    
+
     //Uploading the file
     if ($isDocUpdateSuccess && !(move_uploaded_file($_FILES['file']['tmp_name'], $target_dir))) {
         $isDocUpdateSuccess = FALSE;
@@ -174,7 +175,7 @@
 		<button class="button-error pure-button" id="backButton2" name="backButton2" onclick="goBack()">Back</button>
 	</div>
                 <?php
-    
+
         }
         }
         else if(strcmp($actionType,"OldDocDocumentChange") == 0)
@@ -186,7 +187,7 @@
 			}
 			$target_dir = $target_dir.$branchCode.'/'.basename( $_FILES['file']['name']);
             $uploadOk=1;
-        
+
             $isDocUpdateSuccess = TRUE;
             //Uploading the file
             if ($isDocUpdateSuccess && !(move_uploaded_file($_FILES['file']['tmp_name'], $target_dir))) {
@@ -221,6 +222,7 @@
           {
             $branchCode=getBranchCode($accountNo);
             $oldFile="E:/uploads/".$branchCode."/".$accountNo.".pdf";
+            $oldFilesize=filesize($oldFile);
             $newFile= "E:/uploads/".$branchCode.'/tmp'.basename( $_FILES['addFile']['name']);
             if(move_uploaded_file($_FILES['addFile']['tmp_name'], $newFile))
             {
@@ -229,6 +231,25 @@
                 ->merge('file',"$oldFile");
               }
               unlink($newFile);
+              $newFileSize=filesize($oldFile);
+              if($newFileSize>$oldFilesize)
+              {
+                  ?>
+                  <div class="pure-controls">
+                      <p>Document append successful.</p>
+                      <button class="button-success pure-button" id="backButton1" name="backButton1" onclick="goBack()">Back</button>
+                  </div>
+                  <?php
+              }
+              else
+              {
+                  ?>
+                  <div class="pure-controls">
+                      <p>Document append failed!!!.</p>
+                      <button class="button-error pure-button" id="backButton2" name="backButton2" onclick="goBack()">Back</button>
+                  </div>
+                  <?php
+              }
             }
     ?>
 </body>

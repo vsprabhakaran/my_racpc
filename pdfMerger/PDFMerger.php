@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 /**
  *  PDFMerger created by Jarrod Nettles December 2009
  *  jarrod@squarecrow.com

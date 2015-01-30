@@ -17,14 +17,25 @@
     <script type="text/javascript">
         function getPDF() {
             var enteredAccNumber = document.getElementById('accNumber').value;
+            if(isAccountNumberTampered())
+                return false;
             if (checkFileAccess(enteredAccNumber)) {
                 document.getElementById("pdfFile").setAttribute('src', "docBuffer.php?accNo=" + enteredAccNumber);
                 $('#pdfFile').show();
             }
             else {
                 invalidAccountNumberEnterred();
-                throwError("You dont have access to view this file!");
+                alert("You dont have access to view this file!");
             }
+        }
+        function isAccountNumberTampered()  //return value true means the account number is tampered.
+        {
+            var enteredAccNumber = document.getElementById('accNumber').value;
+            if(currentAccNumber != enteredAccNumber) {
+                accountNumButtonClick();
+                return true;
+            }
+            return false;
         }
         function checkFileAccess(enteredAccNumber) {
             var pfno = doPOST_RequestExt('getPfnoFromSession.php', "", '', 'getPfno');
@@ -65,10 +76,11 @@
             });
             return returnMsg;
         }
-
+        var currentAccNumber = "";
         function accountNumButtonClick() {
             resetForm();
             var enteredAccNumber = document.getElementById('accNumber').value;
+            currentAccNumber = enteredAccNumber;
             if (enteredAccNumber == "") {
                 nullAccountNumberEnterred();
                 return;
@@ -80,7 +92,7 @@
             if (VerifyAccountandValidateAccess(url,enteredAccNumber,adminPfNumber,checkADMSAccountMstr,checkCloseAccount))
             {
               validAccountNumberEnterred(enteredAccNumber);
-                }
+            }
             else { invalidAccountNumberEnterred(); return; }
 
         }
@@ -103,19 +115,13 @@
             var enteredAccNumber = document.getElementById('accNumber').value;
             if (!checkFileAccess(enteredAccNumber)) {
                 invalidAccountNumberEnterred();
-                throwError("You dont have access to view this file!");
+                alert("You dont have access to view this file!");
                 return;
             }
-            var loanStatus = doPOST_Request('db/accountInformations.php', enteredAccNumber, 'isLoanActive');
-            if (loanStatus == 'true') {
-                document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
-                document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
-                $('#viewButton').prop('disabled', false);
-            }
-            else {
-                document.getElementById('accNumber').style.backgroundColor = "#FFC1C1";
-                throwError("Loan is not active.");
-            }
+            document.getElementById('getAccountDetailsSpan').style.visibility = "visible";
+            document.getElementById('accNumber').style.backgroundColor = "#CCFFCC";
+            $('#viewButton').prop('disabled', false);
+
         }
         function resetForm() {
             document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
@@ -134,10 +140,7 @@
             var popup = window.open("AccountDetailsWindow.php?accNo=" + enteredAccNumber, "Details", "resizable=1,scrollbars=1,height=325,width=280,left = " + (document.documentElement.clientWidth - 300) + ",top = " + (225));
             $(popup).blur(function () { this.close(); });
         }
-        function throwError(errorMessage) {
-            $(".error").css('visibility', 'visible');
-            $("#Error").text(errorMessage);
-        }
+
         </script>
     </head>
 <body style="background-image:url('img/greyzz.png')">
@@ -145,13 +148,13 @@
         $(document).ready(function () {
 			resetForm();
             $('#formid').bind("keyup keypress", function(e) {
-              var code = e.keyCode || e.which; 
-              if (code  == 13) {               
+              var code = e.keyCode || e.which;
+              if (code  == 13) {
                 e.preventDefault();
                 return false;
               }
             });
-			
+
         });
     </script>
 <!--object data="myfile.pdf" type="application/pdf" width="100%" height="100%"-->
@@ -161,13 +164,9 @@
 	<form id="formid" class="pure-form pure-form-aligned">
 	<div class="pure-control-group">
             <label for="accNumber" >Account Number</label>
-            <input type="text" id="accNumber" name="accNumber"  autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" onblur="accountNumButtonClick()" />
-			<a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onclick="showAccountDetails()">View Details</a> 
+            <input type="text" id="accNumber" name="accNumber"  autocomplete="off" onkeydown="if (event.keyCode == 13) accountNumButtonClick()" />
+			<a id="getAccountDetailsSpan" href="#"  style="visibility: hidden" onclick="showAccountDetails()">View Details</a>
 			<br/>
-			<div class="pure-control-group error">
-				<label for="Error" style="color: #ff6a00">Error :</label>
-				<span id="Error"  class="createUser" style="color: #ff6a00"></span>
-			</div>
     </div>
 	</form>
 	<button id="viewButton" class="pure-button pure-button-primary" onclick="getPDF()" style="margin-left:180px" disabled="disabled">View</button>
@@ -175,6 +174,6 @@
 		<iframe  id="pdfFile" height="85%" width="100%" style="display: none"> </iframe>
 </body>
 </html>
-<?php 
+<?php
 }
 ?>
