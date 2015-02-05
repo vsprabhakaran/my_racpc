@@ -20,13 +20,23 @@
             if(isAccountNumberTampered())
                 return false;
             if (checkFileAccess(enteredAccNumber)) {
-                document.getElementById("pdfFile").setAttribute('src', "docBuffer.php?accNo=" + enteredAccNumber);
+                document.getElementById("pdfFile").setAttribute('src', "docBuffer.php?accNo=" + enteredAccNumber+"&type=view");
                 $('#pdfFile').show();
             }
             else {
                 invalidAccountNumberEnterred();
                 alert("You dont have access to view this file!");
             }
+        }
+        function dldPDF(){
+          var enteredAccNumber = document.getElementById('accNumber').value;
+          if (checkFileAccess(enteredAccNumber)) {
+            document.getElementById("pdfFile").setAttribute('src', "docBuffer.php?accNo=" + enteredAccNumber+"&type=download");
+          }
+          else {
+            invalidAccountNumberEnterred();
+            throwError("You dont have access to view this file!");
+          }
         }
         function isAccountNumberTampered()  //return value true means the account number is tampered.
         {
@@ -127,6 +137,7 @@
             document.getElementById('getAccountDetailsSpan').style.visibility = "hidden";
             $('#pdfFile').hide();
             $('#viewButton').prop('disabled', true);
+            $('#dldButton').prop('disabled', true);
             $(".error").css('visibility', 'hidden');
         }
         function invalidAccountNumberEnterred() {
@@ -170,6 +181,7 @@
     </div>
 	</form>
 	<button id="viewButton" class="pure-button pure-button-primary" onclick="getPDF()" style="margin-left:180px" disabled="disabled">View</button>
+  <button id="dldButton" class="pure-button pure-button-primary" onclick="dldPDF()"  disabled="disabled">Download</button>
 			<br><br>
 		<iframe  id="pdfFile" height="85%" width="100%" style="display: none"> </iframe>
 </body>

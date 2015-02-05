@@ -128,7 +128,7 @@
                 $.post('../db/accountInformations.php', { accNo: enteredAccNumber, type: 'GetBranchCodeOfAccount' }, function (msg) {
                     if (msg != "") {
                         var branchCode = msg.replace(/["']/g, "");
-                        document.getElementById("pdfFile").setAttribute('src', "../docBuffer.php?accNo=" + enteredAccNumber);
+                        document.getElementById("pdfFile").setAttribute('src', "../docBuffer.php?accNo=" + enteredAccNumber+"&type=view");
                         document.getElementById("pdfFile").style.visibility = "visible";
                     }
                     else if (msg == "false") {

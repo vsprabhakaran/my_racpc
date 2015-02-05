@@ -133,10 +133,12 @@ function isUserRacpcUser($pfNumber) //This return true when user belongs to a ra
     $con = NULL;
     db_prelude($con); 
     $colname = "racpccode"; 
-    $query=mysqli_query($con,"select b.racpc_code as '$colname' from  branch_mstr b, user_mstr u
-    where b.branch_code = b.racpc_code 
-    and b.branch_code = u.branch_code
-    and u.pf_index = '$pfNumber'");
+    //old query $query=mysqli_query($con,"select b.racpc_code as '$colname' from  branch_mstr b, user_mstr u
+    // where b.branch_code = b.racpc_code
+    // and b.branch_code = u.branch_code
+    // and u.pf_index = '$pfNumber'");
+    $query=mysqli_query($con,"SELECT racpc_code as '$colname' from racpc_mstr
+                                where racpc_code=(select branch_code from user_mstr  where pf_index='$pfNumber')");
     $row = mysqli_fetch_array($query);
     mysqli_close($con);
     if($row[$colname] != "")
@@ -224,18 +226,20 @@ function GetUserBranchCode($pfNumber)
      mysqli_close($con);
      return $returnValue;
 }
-
+//********Since GetUserRacpcName/number are used to get the corresponding name/number of a racpc user,
+// these functions are changed to work only with a racpc user pfID. DONT PASS A NON RACPC USER ID TO THESE FUNCTIONS ********
 function GetUserRacpcCode($pfNumber)
 {
     $con = NULL;
     db_prelude($con);  
     $colname = "racpc_code";
 
-    $query=mysqli_query($con,"select b.racpc_code as '$colname' from racpc_mstr r, branch_mstr b, user_mstr u
-    where r.racpc_code = b.racpc_code 
-    and b.branch_code = u.branch_code
-    and u.pf_index = '$pfNumber'");
-
+    // $query=mysqli_query($con,"select b.racpc_code as '$colname' from racpc_mstr r, branch_mstr b, user_mstr u
+    // where r.racpc_code = b.racpc_code
+    // and b.branch_code = u.branch_code
+    // and u.pf_index = '$pfNumber'");
+    $query=mysqli_query($con,"SELECT racpc_code as '$colname' from racpc_mstr where racpc_code=
+    (select branch_code  from user_mstr where pf_index='$pfNumber')");
     $row = mysqli_fetch_array($query);
     if($row[$colname] != "")
     {
@@ -254,10 +258,12 @@ function GetUserRacpcName($pfNumber)
     db_prelude($con);  
     $colname = "racpc_name";
 
-    $query=mysqli_query($con,"select racpc_name as '$colname' from racpc_mstr r, branch_mstr b, user_mstr u
-    where r.racpc_code = b.racpc_code 
-    and b.branch_code = u.branch_code
-    and u.pf_index = '$pfNumber'");
+    // $query=mysqli_query($con,"select racpc_name as '$colname' from racpc_mstr r, branch_mstr b, user_mstr u
+    // where r.racpc_code = b.racpc_code
+    // and b.branch_code = u.branch_code
+    // and u.pf_index = '$pfNumber'");
+    $query=mysqli_query($con,"SELECT racpc_name as '$colname' from racpc_mstr where racpc_code=
+    (select branch_code  from user_mstr where pf_index='$pfNumber')");
     $row = mysqli_fetch_array($query);
     if($row[$colname] != "")
     {

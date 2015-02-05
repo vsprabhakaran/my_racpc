@@ -89,9 +89,9 @@
 <td style="width: 35%;"> <center><img height=80 width=300 src="img/title.png" /></center></td>
 <td style="width: 40%;text-align: right;border-width: 2px;border-color: #000;font-family: 'Trebuchet MS';">
 <div class="contaier">
-    <div id="name"></div>
+    <div id="name" style="margin-right:5%;"></div>
     <div id="changePass" ><img class="shadow" src="img/changepassword.png" alt="change the password" style="height: 50px;" onClick="window.open('changePwd.php','Details','resizable=1,scrollbars=yes,height=300,width=500')"/></div>
-    <div id="desig"></div>
+    <div id="desig" style="margin-right:5%;"></div>
 
 </div>
 </td>

@@ -85,7 +85,7 @@ padding:1em 0ex 0ex 0em;
 
 
 <tr>
-<td colspan="2" > 
+<td colspan="2" >
 <center>
 <div>
 
@@ -93,7 +93,7 @@ padding:1em 0ex 0ex 0em;
   <tr >
     <td colspan="3" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small;font-weight: 600">
     <center>
-        <h3>OUTSLIP FORM</h3> 
+        <h3>OUTSLIP FORM</h3>
         <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif;font-size:small;font-weight: 300"></div>
         <p id="date">
 		<?php
@@ -117,48 +117,48 @@ padding:1em 0ex 0ex 0em;
       var msg = d.toLocaleString();
       document.getElementById("date").innerHTML = msg; */
     </script>
-        
+
    <tr>
     <td style="width:10%"><center><h5>ACCOUNT NUMBER</h5></center></td>
     <td><center>
-    <?php echo $_POST["accountno"]; 
+    <?php echo $_POST["accountno"];
     ?> <br>
-    </center></td> 
+    </center></td>
 <td>
 <div>
 <!-- added variable check for hidding print button and reducing the size of barcode for slip generation -->
-<iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em; " 
-    marginheight="0" marginwidth="0" frameborder="0" src="../barcodegit/test.php?text= <?php echo $_POST['accountno'] ?> & check=1" />
+<iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em; "
+    marginheight="0" marginwidth="0" frameborder="0" src="../barcodegit/test.php?text=<?php echo $_POST['accountno'] ?> & check=1" />
 </iframe>
 <br><br>
-</div>    
+</div>
 </td>
    </tr>
    <tr>
     <td><center><h5>ACCOUNT HOLDER NAME</h5></center></td>
-    <td><center><?php echo $_POST["accountname"]; ?><br></center></td> 
+    <td><center><?php echo $_POST["accountname"]; ?><br></center></td>
     <td></td>
     </tr>
     <tr>
     <td><center><h5>PRODUCT DESCRIPTION</h5></center></td>
-    <td><center><?php echo $_POST["productcode"]; ?><br></center></td> 
+    <td><center><?php echo $_POST["productcode"]; ?><br></center></td>
     <td></td>
    </tr>
 <!--
    <tr>
     <td><center><h5>BRANCH CODE</h5></center></td>
-    <td><center><?php echo $_POST["brcode"]; ?><br></center></td> 
+    <td><center><?php echo $_POST["brcode"]; ?><br></center></td>
     <td></td>
    </tr>
--->   
+-->
    <tr>
     <td><center><h5>BRANCH NAME</h5></center></td>
-    <td><center><?php echo $_POST["brname"]; ?><br></center></td> 
+    <td><center><?php echo $_POST["brname"]; ?><br></center></td>
     <td></td>
    </tr>
     <tr>
     <td><center><h5>FOLIO NUMBER</h5></center></td>
-    <td><center><?php echo $_POST["foliono"]; ?><br></center></td> 
+    <td><center><?php echo $_POST["foliono"]; ?><br></center></td>
     <td></td>
    </tr>
    <tr>
@@ -168,31 +168,31 @@ padding:1em 0ex 0ex 0em;
         <?php echo $_POST["pfnorcv"]; ?><br><br>
         <?php echo $_POST["nameofReciver"]; ?><br>
         </center>
-		</td> 
+		</td>
     <td></td>
    </tr>
-     
-    
+
+
     <tr>
     <td><center><h5>DOCUMENT MANAGER DETAILS</h5></center></td>
     <td>
         <center>
                <?php echo $_POST["did"]; ?><br><br>
-               <?php echo $_POST["dname"]; ?><br><br> 
+               <?php echo $_POST["dname"]; ?><br><br>
         </center>
-		</td>  
+		</td>
     <td></td>
     </tr>
 
 
    <tr>
     <td><center><h5>REASON</h5></center></td>
-    <td style="word-wrap: break-word; "><p style="text-align: justify"><center><?php echo $_POST["reason"]; ?></center></p></td> 
+    <td style="word-wrap: break-word; "><p style="text-align: justify"><center><?php echo $_POST["reason"]; ?></center></p></td>
     <td></td>
    </tr>
 </table>
 
-</div> 
+</div>
 </center>
 </td>
 </tr>
@@ -201,9 +201,9 @@ padding:1em 0ex 0ex 0em;
 </center>
 </div>
 
-<br/> 
+<br/>
 <table style="width:100%">
- 
+
 <tr>
 <th>DOCUMENT MANAGER SIGNATURE</th>
 <th>RECEIVER'S SIGNATURE</th>
@@ -220,9 +220,9 @@ padding:1em 0ex 0ex 0em;
 <td colspan="2">
 <center>
 <div class="pure-controls">
-<input class="pure-button pure-button-primary" id="printbutton" type="button" 
-    value="PRINT OUT SLIP" id="printOutslip" onclick="this.style.visibility='hidden';printFunction()"  />  
-</div> 
+<input class="pure-button pure-button-primary" id="printbutton" type="button"
+    value="PRINT OUT SLIP" id="printOutslip" onclick="this.style.visibility='hidden';printFunction()"  />
+</div>
 </center>
 </td>
 </tr>
@@ -230,7 +230,7 @@ padding:1em 0ex 0ex 0em;
 <tr>
 <br>
 </tr>
-    
+
 
 
 

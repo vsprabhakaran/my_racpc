@@ -51,6 +51,7 @@
 		{
       
 	$accountNumber = $_GET["accNo"];
+    $type=$_GET["type"];
     $pf_index = $_SESSION["pfno"];
     $ipaddress = get_ip_address();
   
@@ -93,7 +94,14 @@
 			// $contents = file_get_contents($filePath);
             header('Content-Type: application/pdf');
             header('Content-Length: ' . filesize($filePath));
+            if($type=="view")
+            {
             header('Content-Disposition: inline; filename="' . $filename . '"');
+            }
+            else if($type=="download")
+            {
+              header('Content-Disposition: attachment; filename="' . $filename . '"');
+            }
             header('Content-Transfer-Encoding: binary');
             header('Accept-Ranges: bytes'); 
            // echo $contents;

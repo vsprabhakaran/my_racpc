@@ -1,14 +1,14 @@
 <!--
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<!DOCTYPE html xmlns="http://www.w3.org/1999/xhtml"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html xmlns="http://www.w3.org/1999/xhtml">
 -->
 <html>
-<head> 
-<title>ADMS In REPORT</title> 
+<head>
+<title>ADMS In REPORT</title>
 <link rel="stylesheet" type="text/css" href="reset.css" />
 <link rel="stylesheet" type="text/css" href="typography.css" />
 <link rel="stylesheet" type="text/css" href="style.css" />
-</head> 
+</head>
 <body style="background-image:url('../../img/greyzz.png');">
 <?php
 
@@ -25,30 +25,30 @@ if( $_SESSION["role"] != "RACPC_DM")
      }
 	 else
 	 {
-function columnSortArrows($field,$text,$currentfield=null,$currentsort=null){	
+function columnSortArrows($field,$text,$currentfield=null,$currentsort=null){
 	//defaults all field links to SORT ASC
 	//if field link is current ORDERBY then make arrow and opposite current SORT
-	
+
 	$sortquery = "sort=ASC";
 	$orderquery = "orderby=".$field;
 	if($currentsort == "ASC"){
 		$sortquery = "sort=DESC";
 		$sortarrow = '<img src="arrow_up.png" />';
 	}
-	
+
 	if($currentsort == "DESC"){
 		$sortquery = "sort=ASC";
 		$sortarrow = '<img src="arrow_down.png" />';
 	}
-	
+
 	if($currentfield == $field){
 		$orderquery = "orderby=".$field;
-	}else{	
+	}else{
 		$sortarrow = null;
 	}
-	
-	return '<a href="?'.$orderquery.'&'.$sortquery.'">'.$text.'</a> '. $sortarrow;	
-	
+
+	return '<a href="?'.$orderquery.'&'.$sortquery.'">'.$text.'</a> '. $sortarrow;
+
 }
 function db_prelude(&$con)
 {
@@ -79,30 +79,36 @@ $Pagination = new Pagination();
 //CONNECT
 mysql_connect($config['host'], $config['user'], $config['pass']);
 mysql_select_db($config['database']);
-    
+
     // fetch racpc name
     $con = NULL;
-    db_prelude($con);  
-    $colname = "racpc_code";
+    db_prelude($con);
+    $colname = "branch_code";
 
-    $query=mysqli_query($con,"select b.racpc_code from branch_mstr b, user_mstr u, adms_user_mstr au
-	where au.pf_index='$pfno'
-	and au.pf_index = u.pf_index
-	and u.branch_code = b.branch_code");
+  // old query  $query=mysqli_query($con,"select b.racpc_code from branch_mstr b, user_mstr u, adms_user_mstr au
+	// where au.pf_index='$pfno'
+	// and au.pf_index = u.pf_index
+	// and u.branch_code = b.branch_code");
+    $query = mysqli_query($con,"SELECT branch_code from user_mstr where pf_index='$pfno'");
     $row = mysqli_fetch_array($query);
     $racpc = $row[$colname];
 
     $colname = "racpc_name";
     $query=mysqli_query($con,"select racpc_name from racpc_mstr	where racpc_code = $racpc");
     $row = mysqli_fetch_array($query);
-    $racpc_name = $row[$colname]; 
+    $racpc_name = $row[$colname];
 
+    echo "<br>";
 //get total rows
-$totalrows = mysql_fetch_array(mysql_query("SELECT count(*) as total FROM adms_loan_account_mstr am, loan_account_mstr l, branch_mstr b
-where am.loan_status='A' and am.document_status='IN' 
-and am.loan_acc_no = l.loan_acc_no 
-and l.branch_code = b.branch_code
-and b.racpc_code = $racpc "));
+// old query  $totalrows = mysql_fetch_array(mysql_query("SELECT count(*) as total FROM adms_loan_account_mstr am, loan_account_mstr l, branch_mstr b
+// where am.loan_status='A' and am.document_status='IN'
+// and am.loan_acc_no = l.loan_acc_no
+// and l.branch_code = b.branch_code
+// and b.racpc_code = $racpc "));
+
+$totalrows = mysql_fetch_array(mysql_query("SELECT am.loan_acc_no from adms_loan_account_mstr am, loan_account_mstr l
+where am.loan_status='A' and am.document_status='IN' and am.loan_acc_no = l.loan_acc_no and
+l.racpc_code = $racpc"));
 
     //$sql = "SELECT * from `".$config['table']."`";
     //$result = mysql_query($sql) or die(mysql_error());
@@ -127,56 +133,68 @@ if($config['showprevnext'] == true){
 }else{$prev_link=null;$next_link=null;}
 
 // total number of loans in the RACPC
-    $sql = "select a.loan_acc_no from  adms_loan_account_mstr a, loan_account_mstr l, 
-    branch_mstr b, racpc_mstr r,user_mstr u
-    where u.pf_index = $pfno 
-    and u.branch_code = r.racpc_code
-    and b.racpc_code = r.racpc_code
-    and l.branch_code = b.branch_code
-    and a.loan_acc_no = l.loan_acc_no ";
+    // $sql = "select a.loan_acc_no from  adms_loan_account_mstr a, loan_account_mstr l,
+    // branch_mstr b, racpc_mstr r,user_mstr u
+    // where u.pf_index = $pfno
+    // and u.branch_code = r.racpc_code
+    // and b.racpc_code = r.racpc_code
+    // and l.branch_code = b.branch_code
+    // and a.loan_acc_no = l.loan_acc_no ";
+  //  no. of IN slips
+  $sql = "SELECT am.loan_acc_no from adms_loan_account_mstr am, loan_account_mstr l
+  where am.loan_status='A' and am.document_status='IN' and am.loan_acc_no = l.loan_acc_no and
+  l.racpc_code = $racpc ";
 
     $result = mysql_query($sql) or die(mysql_error());
     $num_rows1 = mysql_num_rows($result);
 
 
 // total number of loans which have their documents inside the RACPC
-    $sql = "select a.loan_acc_no from  adms_loan_account_mstr a, loan_account_mstr l, 
-    branch_mstr b, racpc_mstr r,user_mstr u
-    where u.pf_index = $pfno 
-    and u.branch_code = r.racpc_code
-    and b.racpc_code = r.racpc_code
-    and l.branch_code = b.branch_code
-    and a.loan_acc_no = l.loan_acc_no 
-    and a.document_status = 'IN' 
-    and a.loan_status ='A'";
-
+    // $sql = "select a.loan_acc_no from  adms_loan_account_mstr a, loan_account_mstr l,
+    // branch_mstr b, racpc_mstr r,user_mstr u
+    // where u.pf_index = $pfno
+    // and u.branch_code = r.racpc_code
+    // and b.racpc_code = r.racpc_code
+    // and l.branch_code = b.branch_code
+    // and a.loan_acc_no = l.loan_acc_no
+    // and a.document_status = 'IN'
+    // and a.loan_status ='A'";
+    $sql = "SELECT am.loan_acc_no from adms_loan_account_mstr am, loan_account_mstr l
+    where am.loan_status='A' and am.document_status='IN' and am.loan_acc_no = l.loan_acc_no and
+    l.racpc_code = $racpc ";
     $result = mysql_query($sql) or die(mysql_error());
     $num_rows2 = mysql_num_rows($result);
-   
+
 //IF ORDERBY NOT SET, SET DEFAULT
 if(!isset($_GET['orderby']) OR trim($_GET['orderby']) == ""){
 	//GET FIRST FIELD IN TABLE TO BE DEFAULT SORT
 	//$sql = "SELECT * FROM `".$config['table']."` LIMIT 1";
-$sql= "SELECT a.loan_acc_no AS loan_acc_no, l.acc_holder_name AS  'acc_holder_name', 
-l.branch_code AS  'branch_code', a.folio_no AS  'folio_no', a.rack AS rack
-FROM adms_loan_account_mstr a, loan_account_mstr l, branch_mstr b
-WHERE a.loan_status =  'A'
-AND a.document_status =  'IN'
-AND a.loan_acc_no = l.loan_acc_no
-AND l.branch_code = b.branch_code
-AND b.racpc_code =$racpc
-LIMIT 1"; 
+  // pld query $sql = "SELECT l.loan_acc_no as loan_acc_no , l.acc_holder_name , max(dl.timestamp) as 'Out Timestamp',
+  // dl.borrower_pf_index as 'Receiver PF Index', u.emp_name as 'Receiver Name'
+  // FROM adms_loan_account_mstr am, loan_account_mstr l, document_activity_log dl, user_mstr u,branch_mstr b
+  // WHERE am.document_status = 'IN'
+  // AND am.loan_status = 'A'
+  // AND am.loan_acc_no = l.loan_acc_no
+  // AND l.loan_acc_no = dl.loan_acc_no
+  // AND dl.slip_type = 'IN'
+  // AND dl.borrower_pf_index = u.pf_index
+  // AND l.racpc_code = $racpc
+  // GROUP BY loan_acc_no order by 1 asc";
+
+  $sql="SELECT dl.loan_acc_no  as loan_acc_no, l.acc_holder_name , max(dl.timestamp) as 'IN slip Timestamp',
+  dl.borrower_pf_index as 'Returnee PF Index', u.emp_name as 'Returnee Name' FROM loan_account_mstr l, document_activity_log dl, user_mstr u
+  where dl.loan_acc_no=l.loan_acc_no and dl.slip_type = 'IN' and l.racpc_code='$racpc' and u.pf_index=dl.borrower_pf_index";
 /*
     $sql = "select  a.loan_acc_no, a.document_status, a.folio_no, a.rack
-    from adms_loan_account_mstr a, loan_account_mstr l, 
+    from adms_loan_account_mstr a, loan_account_mstr l,
     branch_mstr b, racpc_mstr r,user_mstr u
-    where u.pf_index = $pfno 
+    where u.pf_index = $pfno
     and u.branch_code = r.racpc_code
     and b.racpc_code = r.racpc_code
     and l.branch_code = b.branch_code
     and a.loan_acc_no = l.loan_acc_no
     LIMIT 1";
-*/    
+*/
 	$result = mysql_query($sql) or die(mysql_error());
 	$array = mysql_fetch_assoc($result);
 	//first field
@@ -184,82 +202,134 @@ LIMIT 1";
 	foreach($array as $key=>$value){
 		if($i > 0){break;}else{
 		$orderby=$key;}
-		$i++;		
+		$i++;
 	}
 	//default sort
 	$sort="ASC";
 }else{
 	$orderby=mysql_real_escape_string($_GET['orderby']);
-    }	
+    }
 
 //IF SORT NOT SET OR VALID, SET DEFAULT
 if(!isset($_GET['sort']) OR ($_GET['sort'] != "ASC" AND $_GET['sort'] != "DESC")){
 	//default sort
 		$sort="ASC";
-	}else{	
+	}else{
 		$sort=mysql_real_escape_string($_GET['sort']);
-        
+
 }
 
 // below query is modified |||| removed user_mstr u |||| removed u.pf_index = $pfno and u.branch_code = r.racpc_code
 /*
- "SELECT a.loan_acc_no as loan_acc_no, l.acc_holder_name as 'acc_holder_name', l.branch_code as 'branch_code', 
+ "SELECT a.loan_acc_no as loan_acc_no, l.acc_holder_name as 'acc_holder_name', l.branch_code as 'branch_code',
 a.folio_no as 'folio_no', a.rack as rack
-FROM adms_loan_account_mstr a, loan_account_mstr l, 
+FROM adms_loan_account_mstr a, loan_account_mstr l,
 branch_mstr b, racpc_mstr r,user_mstr u
-where u.pf_index = $pfno 
+where u.pf_index = $pfno
 and u.branch_code = r.racpc_code
 and b.racpc_code = r.racpc_code
 and l.branch_code = b.branch_code
 and a.loan_acc_no = l.loan_acc_no
 and a.loan_status = 'A'
 and a.document_status= 'IN'
-ORDER BY cast(a.$orderby as unsigned) $sort 
-LIMIT $startrow,$limit";   
+ORDER BY cast(a.$orderby as unsigned) $sort
+LIMIT $startrow,$limit";
  */
 
 //GET DATA
 // sort adms_loan_account_mstr data
-if($orderby=='loan_acc_no'||$orderby=='folio_no'||$orderby=='rack')
+// if($orderby=='loan_acc_no'||$orderby=='folio_no'||$orderby=='rack')
+// {
+//
+// $sql= "SELECT a.loan_acc_no AS loan_acc_no, l.acc_holder_name AS  'acc_holder_name',
+// l.branch_code AS  'branch_code', a.folio_no AS  'folio_no', a.rack AS rack
+// FROM adms_loan_account_mstr a, loan_account_mstr l, branch_mstr b
+// WHERE a.loan_status =  'A'
+// AND a.document_status =  'IN'
+// AND a.loan_acc_no = l.loan_acc_no
+// AND l.branch_code = b.branch_code
+// AND b.racpc_code =$racpc
+// ORDER BY cast(a.$orderby as unsigned) $sort
+// LIMIT $startrow,$limit";
+// }
+// // sort loan_account_mstr data
+// else if($orderby=='branch_code')
+// {
+// $sql= "SELECT a.loan_acc_no AS loan_acc_no, l.acc_holder_name AS  'acc_holder_name',
+// l.branch_code AS  'branch_code', a.folio_no AS  'folio_no', a.rack AS rack
+// FROM adms_loan_account_mstr a, loan_account_mstr l, branch_mstr b
+// WHERE a.loan_status =  'A'
+// AND a.document_status =  'IN'
+// AND a.loan_acc_no = l.loan_acc_no
+// AND l.branch_code = b.branch_code
+// AND b.racpc_code =$racpc
+// ORDER BY cast(l.$orderby as unsigned) $sort
+// LIMIT $startrow,$limit";
+// }
+// else
+// {
+// $sql= "SELECT a.loan_acc_no AS loan_acc_no, l.acc_holder_name AS  'acc_holder_name',
+// l.branch_code AS  'branch_code', a.folio_no AS  'folio_no', a.rack AS rack
+// FROM adms_loan_account_mstr a, loan_account_mstr l, branch_mstr b
+// WHERE a.loan_status =  'A'
+// AND a.document_status =  'IN'
+// AND a.loan_acc_no = l.loan_acc_no
+// AND l.branch_code = b.branch_code
+// AND b.racpc_code =$racpc
+// ORDER BY cast(l.$orderby as char) $sort
+// LIMIT $startrow,$limit";
+// }
+
+
+
+if($orderby=='loan_acc_no')
 {
-   
-$sql= "SELECT a.loan_acc_no AS loan_acc_no, l.acc_holder_name AS  'acc_holder_name', 
-l.branch_code AS  'branch_code', a.folio_no AS  'folio_no', a.rack AS rack
-FROM adms_loan_account_mstr a, loan_account_mstr l, branch_mstr b
-WHERE a.loan_status =  'A'
-AND a.document_status =  'IN'
-AND a.loan_acc_no = l.loan_acc_no
-AND l.branch_code = b.branch_code
-AND b.racpc_code =$racpc
-ORDER BY cast(a.$orderby as unsigned) $sort 
-LIMIT $startrow,$limit";   
+  $sql = "SELECT dl.loan_acc_no  as loan_acc_no, l.acc_holder_name , max(dl.timestamp) as 'In Slip Timestamp',
+  dl.borrower_pf_index as 'Returnee PF Index', u.emp_name as 'Returnee Name' FROM loan_account_mstr l, document_activity_log dl, user_mstr u
+  where dl.loan_acc_no=l.loan_acc_no and dl.slip_type = 'IN' and l.racpc_code='$racpc' and u.pf_index=dl.borrower_pf_index
+      group by 1
+      ORDER BY cast(l.$orderby as unsigned) $sort
+      LIMIT $startrow,$limit";
 }
-// sort loan_account_mstr data
-else if($orderby=='branch_code')
+else if ($orderby=='acc_holder_name')
 {
-$sql= "SELECT a.loan_acc_no AS loan_acc_no, l.acc_holder_name AS  'acc_holder_name', 
-l.branch_code AS  'branch_code', a.folio_no AS  'folio_no', a.rack AS rack
-FROM adms_loan_account_mstr a, loan_account_mstr l, branch_mstr b
-WHERE a.loan_status =  'A'
-AND a.document_status =  'IN'
-AND a.loan_acc_no = l.loan_acc_no
-AND l.branch_code = b.branch_code
-AND b.racpc_code =$racpc
-ORDER BY cast(l.$orderby as unsigned) $sort 
-LIMIT $startrow,$limit"; 
+
+$sql = "SELECT dl.loan_acc_no  as loan_acc_no, l.acc_holder_name , max(dl.timestamp) as 'In Slip Timestamp',
+dl.borrower_pf_index as 'Returnee PF Index', u.emp_name as 'Returnee Name' FROM loan_account_mstr l, document_activity_log dl, user_mstr u
+where dl.loan_acc_no=l.loan_acc_no and dl.slip_type = 'IN' and l.racpc_code='$racpc' and u.pf_index=dl.borrower_pf_index
+    group by 1
+    ORDER BY cast(l.acc_holder_name as char) $sort
+LIMIT $startrow,$limit";
+}
+else if ($orderby=='timestamp')
+{
+
+$sql = "SELECT dl.loan_acc_no  as loan_acc_no, l.acc_holder_name , max(dl.timestamp) as 'In Slip Timestamp',
+dl.borrower_pf_index as 'Returnee PF Index', u.emp_name as 'Returnee Name' FROM loan_account_mstr l, document_activity_log dl, user_mstr u
+where dl.loan_acc_no=l.loan_acc_no and dl.slip_type = 'IN' and l.racpc_code='$racpc' and u.pf_index=dl.borrower_pf_index
+    group by 1
+    ORDER BY cast(dl.timestamp as unsigned) $sort
+    LIMIT $startrow,$limit";
+}
+else if ($orderby=='borrower_pf_index')
+{
+    echo $orderby; echo $sort;
+$sql = "SELECT dl.loan_acc_no  as loan_acc_no, l.acc_holder_name , max(dl.timestamp) as 'In Slip Timestamp',
+dl.borrower_pf_index as 'Returnee PF Index', u.emp_name as 'Returnee Name' FROM loan_account_mstr l, document_activity_log dl, user_mstr u
+where dl.loan_acc_no=l.loan_acc_no and dl.slip_type = 'IN' and l.racpc_code='$racpc' and u.pf_index=dl.borrower_pf_index
+    group by 1
+ORDER BY dl.borrower_pf_index $sort
+LIMIT $startrow,$limit";
 }
 else
 {
-$sql= "SELECT a.loan_acc_no AS loan_acc_no, l.acc_holder_name AS  'acc_holder_name', 
-l.branch_code AS  'branch_code', a.folio_no AS  'folio_no', a.rack AS rack
-FROM adms_loan_account_mstr a, loan_account_mstr l, branch_mstr b
-WHERE a.loan_status =  'A'
-AND a.document_status =  'IN'
-AND a.loan_acc_no = l.loan_acc_no
-AND l.branch_code = b.branch_code
-AND b.racpc_code =$racpc
-ORDER BY cast(l.$orderby as char) $sort 
-LIMIT $startrow,$limit";    
+
+$sql = "SELECT dl.loan_acc_no  as loan_acc_no, l.acc_holder_name , max(dl.timestamp) as 'In Slip Timestamp',
+dl.borrower_pf_index as 'Returnee PF Index', u.emp_name as 'Returnee Name' FROM loan_account_mstr l, document_activity_log dl, user_mstr u
+where dl.loan_acc_no=l.loan_acc_no and dl.slip_type = 'IN' and l.racpc_code='$racpc' and u.pf_index=dl.borrower_pf_index
+    group by 1
+ORDER BY cast(u.emp_name as char) $sort
+LIMIT $startrow,$limit";
 }
 
 $result = mysql_query($sql) or die(mysql_error());
@@ -272,7 +342,7 @@ foreach ($array as $key=>$value) {
 	$field = str_replace("_"," ",$key);
 	$field = ucwords($field);
 	}
-	
+
 	$field = columnSortArrows($key,$field,$orderby,$sort);
 	echo "<th>" . $field . "</th>\n";
 }
@@ -288,18 +358,18 @@ $tr_class = "class='odd'";
 while($row = mysql_fetch_assoc($result)){
 
 	echo "<tr ".$tr_class.">\n";
-	foreach ($row as $field=>$value) {	
+	foreach ($row as $field=>$value) {
 		echo "<td>" . $value . "</td>\n";
 	}
 	echo "</tr>\n";
-	
+
 	//switch row style
 	if($tr_class == "class='odd'"){
 		$tr_class = "class='even'";
 	}else{
 		$tr_class = "class='odd'";
 	}
-	
+
 }
 
 //END TABLE
@@ -317,10 +387,10 @@ echo "</div>\n";
 /*FUNCTIONS*/
 
 
-     }            
+     }
 ?>
 <br/>
-<div id="tot1"><p style="color: #33089e; font-size: small" >* Total number of documents: <?php echo $num_rows1?> </p></div>
-<div id="tot2"><p style="color: #33089e; font-size: small" >* Total number of documents inside <?php echo $racpc_name ?>: <?php echo $num_rows2?> </p></div>
+<!--div id="tot1"><p style="color: #33089e; font-size: small" >* Total number of documents: <?php //echo $num_rows1?> </p></div>
+<div id="tot2"><p style="color: #33089e; font-size: small" >* Total number of documents inside <?php //echo $racpc_name ?>: <?php echo $num_rows2?> </p></div-->
 </body>
 </html>

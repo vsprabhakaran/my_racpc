@@ -80,12 +80,13 @@ mysql_select_db($config['database']);
 // query to fetch racpc code of login user
     $con = NULL;
     db_prelude($con);  
-    $colname = "racpc_code";
+    $colname = "branch_code";
 
-    $query=mysqli_query($con,"select b.racpc_code from branch_mstr b, user_mstr u, adms_user_mstr au
-	where au.pf_index='$pfno'
-	and au.pf_index = u.pf_index
-	and u.branch_code = b.branch_code");
+  //old query  $query=mysqli_query($con,"select b.racpc_code from branch_mstr b, user_mstr u, adms_user_mstr au
+	//where au.pf_index='$pfno'
+	//and au.pf_index = u.pf_index
+	//and u.branch_code = b.branch_code");
+    $query = mysqli_query($con,"SELECT branch_code from user_mstr where pf_index='$pfno'");
     $row = mysqli_fetch_array($query);
     $racpc = $row[$colname];
      
@@ -95,9 +96,13 @@ mysql_select_db($config['database']);
     $racpc_name = $row[$colname]; 
     
 echo "<br>";
-$sql = "SELECT am.loan_acc_no from adms_loan_account_mstr am, loan_account_mstr l, branch_mstr b
-where am.loan_status='A' and am.document_status='OUT' and am.loan_acc_no = l.loan_acc_no and l.branch_code = b.branch_code and 
-b.racpc_code = $racpc ";
+// old query $sql = "SELECT am.loan_acc_no from adms_loan_account_mstr am, loan_account_mstr l, branch_mstr b
+// where am.loan_status='A' and am.document_status='OUT' and am.loan_acc_no = l.loan_acc_no and l.branch_code = b.branch_code and
+// b.racpc_code = $racpc ";
+
+$sql = "SELECT am.loan_acc_no from adms_loan_account_mstr am, loan_account_mstr l
+where am.loan_status='A' and am.document_status='OUT' and am.loan_acc_no = l.loan_acc_no and
+l.racpc_code = $racpc ";
 $result = mysql_query($sql) or die(mysql_error());
 $total = mysql_num_rows($result);
 //echo $total; 
@@ -117,9 +122,9 @@ $totalrows = mysql_fetch_array(mysql_query("SELECT count(dl.loan_acc_no) as tota
     AND b.racpc_code = b1.racpc_code 
     AND b1.racpc_code = $racpc"));
 */
-$totalrows = mysql_fetch_array(mysql_query("SELECT COUNT(*) as total from adms_loan_account_mstr am, loan_account_mstr l, branch_mstr b
-where am.loan_status='A' and am.document_status='OUT' and am.loan_acc_no = l.loan_acc_no and l.branch_code = b.branch_code and 
-b.racpc_code = $racpc"));
+$totalrows = mysql_fetch_array(mysql_query("SELECT am.loan_acc_no from adms_loan_account_mstr am, loan_account_mstr l
+where am.loan_status='A' and am.document_status='OUT' and am.loan_acc_no = l.loan_acc_no and
+l.racpc_code = $racpc"));
 
 //limit per page, what is current page, define first record for page
 $limit = $config['perpage'];
@@ -159,6 +164,19 @@ $sql = "SELECT l.loan_acc_no as loan_acc_no , l.acc_holder_name , max(dl.timesta
 if(!isset($_GET['orderby']) OR trim($_GET['orderby']) == ""){
 	//GET FIRST FIELD IN TABLE TO BE DEFAULT SORT
 	//$sql = "SELECT * FROM `".$config['table']."` LIMIT 1";
+    // old query $sql = "SELECT l.loan_acc_no as loan_acc_no , l.acc_holder_name , max(dl.timestamp) as 'Out Timestamp',
+    // dl.borrower_pf_index as 'Receiver PF Index', u.emp_name as 'Receiver Name'
+    // FROM adms_loan_account_mstr am, loan_account_mstr l, document_activity_log dl, user_mstr u,branch_mstr b
+    // WHERE am.document_status = 'OUT'
+    // AND am.loan_status = 'A'
+    // AND am.loan_acc_no = l.loan_acc_no
+    // AND l.loan_acc_no = dl.loan_acc_no
+    // AND l.branch_code = b.branch_code
+    // AND dl.slip_type = 'OUT'
+    // AND dl.borrower_pf_index = u.pf_index
+    // AND b.racpc_code = $racpc
+    // GROUP BY loan_acc_no order by 1 asc";
+
     $sql = "SELECT l.loan_acc_no as loan_acc_no , l.acc_holder_name , max(dl.timestamp) as 'Out Timestamp',
     dl.borrower_pf_index as 'Receiver PF Index', u.emp_name as 'Receiver Name'
     FROM adms_loan_account_mstr am, loan_account_mstr l, document_activity_log dl, user_mstr u,branch_mstr b
@@ -166,13 +184,11 @@ if(!isset($_GET['orderby']) OR trim($_GET['orderby']) == ""){
     AND am.loan_status = 'A'
     AND am.loan_acc_no = l.loan_acc_no
     AND l.loan_acc_no = dl.loan_acc_no
-    AND l.branch_code = b.branch_code
     AND dl.slip_type = 'OUT'
     AND dl.borrower_pf_index = u.pf_index
-    AND b.racpc_code = $racpc
+    AND l.racpc_code = $racpc
     GROUP BY loan_acc_no order by 1 asc";
 
-    
 	$result = mysql_query($sql) or die(mysql_error());
 	$array = mysql_fetch_assoc($result);
 	//first field
@@ -202,6 +218,20 @@ if(!isset($_GET['sort']) OR ($_GET['sort'] != "ASC" AND $_GET['sort'] != "DESC")
 // sort adms_loan_account_mstr data
 if($orderby=='loan_acc_no')
 {
+// old query $sql = "SELECT l.loan_acc_no  ,l.acc_holder_name ,
+//     max(dl.timestamp) as 'Out Timestamp' , dl.borrower_pf_index 'Receiver PF Index', u.emp_name as 'Receiver Name'
+//     FROM adms_loan_account_mstr am, loan_account_mstr l, document_activity_log dl, user_mstr u,branch_mstr b
+//     WHERE am.document_status = 'OUT'
+//     AND am.loan_status = 'A'
+//     AND am.loan_acc_no = l.loan_acc_no
+//     AND l.loan_acc_no = dl.loan_acc_no
+//     AND l.branch_code = b.branch_code
+//     AND dl.slip_type = 'OUT'
+//     AND dl.borrower_pf_index = u.pf_index
+//     AND b.racpc_code = $racpc
+//     group by 1
+//     ORDER BY cast(l.$orderby as unsigned) $sort
+//     LIMIT $startrow,$limit";
 $sql = "SELECT l.loan_acc_no  ,l.acc_holder_name , 
     max(dl.timestamp) as 'Out Timestamp' , dl.borrower_pf_index 'Receiver PF Index', u.emp_name as 'Receiver Name'
     FROM adms_loan_account_mstr am, loan_account_mstr l, document_activity_log dl, user_mstr u,branch_mstr b 
@@ -209,10 +239,9 @@ $sql = "SELECT l.loan_acc_no  ,l.acc_holder_name ,
     AND am.loan_status = 'A'
     AND am.loan_acc_no = l.loan_acc_no
     AND l.loan_acc_no = dl.loan_acc_no
-    AND l.branch_code = b.branch_code
     AND dl.slip_type = 'OUT'
     AND dl.borrower_pf_index = u.pf_index
-    AND b.racpc_code = $racpc
+      AND l.racpc_code = $racpc
     group by 1
     ORDER BY cast(l.$orderby as unsigned) $sort 
     LIMIT $startrow,$limit";   
@@ -227,10 +256,9 @@ $sql = "SELECT dl.loan_acc_no  , l.acc_holder_name ,
     AND am.loan_status = 'A'
     AND am.loan_acc_no = l.loan_acc_no
     AND l.loan_acc_no = dl.loan_acc_no
-    AND l.branch_code = b.branch_code
     AND dl.slip_type = 'OUT'
     AND dl.borrower_pf_index = u.pf_index
-    AND b.racpc_code = $racpc
+    AND l.racpc_code = $racpc
     group by 1
     ORDER BY cast(l.acc_holder_name as char) $sort 
     LIMIT $startrow,$limit";   
@@ -245,10 +273,9 @@ $sql = "SELECT dl.loan_acc_no , l.acc_holder_name ,
     AND am.loan_status = 'A'
     AND am.loan_acc_no = l.loan_acc_no
     AND l.loan_acc_no = dl.loan_acc_no
-    AND l.branch_code = b.branch_code
     AND dl.slip_type = 'OUT'
     AND dl.borrower_pf_index = u.pf_index
-    AND b.racpc_code = $racpc
+    AND l.racpc_code = $racpc
     group by 1
     ORDER BY cast(dl.timestamp as unsigned) $sort 
     LIMIT $startrow,$limit";   
@@ -263,10 +290,9 @@ $sql = "SELECT dl.loan_acc_no  , l.acc_holder_name ,
     AND am.loan_status = 'A'
     AND am.loan_acc_no = l.loan_acc_no
     AND l.loan_acc_no = dl.loan_acc_no
-    AND l.branch_code = b.branch_code
     AND dl.slip_type = 'OUT'
     AND dl.borrower_pf_index = u.pf_index
-    AND b.racpc_code = $racpc
+    AND l.racpc_code = $racpc
     group by 1
 ORDER BY dl.borrower_pf_index $sort 
 LIMIT $startrow,$limit";   
@@ -282,10 +308,9 @@ $sql = "SELECT dl.loan_acc_no  ,l.acc_holder_name ,
     AND am.loan_status = 'A'
     AND am.loan_acc_no = l.loan_acc_no
     AND l.loan_acc_no = dl.loan_acc_no
-    AND l.branch_code = b.branch_code
     AND dl.slip_type = 'OUT'
     AND dl.borrower_pf_index = u.pf_index
-    AND b.racpc_code = $racpc
+    AND l.racpc_code = $racpc
     group by 1
 ORDER BY cast(u.emp_name as char) $sort 
 LIMIT $startrow,$limit";    

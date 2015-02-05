@@ -51,12 +51,14 @@
                 throwError(thisObj, "Invalid PF Number Enterred.");
                 return;
         }
-            var userRacpcNumber = doPOST_Request(dbURL, pfNumber, 'GetUserRacpcName');
+            //var userRacpcNumber = doPOST_Request(dbURL, pfNumber, 'GetUserRacpcName');
             var adminPFNumber = doPOST_Request('../getPfnoFromSession.php', "", "getPfno");
 
             //validation 2:
-            var adminRacpcNumber = doPOST_Request(dbURL, adminPFNumber, 'GetUserRacpcName');
-            if (adminRacpcNumber != userRacpcNumber) {
+            //var adminRacpcNumber = doPOST_Request(dbURL, adminPFNumber, 'GetUserRacpcName');
+            var isAdminandUserBelongToSameRacpc= doPOST_RequestExt(dbURL,pfNumber, adminPFNumber, 'validate_racpc_user');
+            //if (adminRacpcNumber != userRacpcNumber) {
+            if(!isAdminandUserBelongToSameRacpc){
                 invalidPFNumberEnterred(thisObj);
                 throwError(thisObj, " Admin cannot modify users belong to different RACPC.");
                 return;
@@ -150,6 +152,22 @@
                 async: false
             });
             return returnMsg;
+        }
+        function doPOST_RequestExt(dbURL,pfNumber,adminPfNumber, typeCall) {
+          var returnMsg = '';
+          $.ajax({
+            type: 'POST',
+            url: dbURL,
+            data: { pfno: pfNumber,login_pfno: adminPfNumber, type: typeCall },
+            success: function (msg) {
+              if (msg == "true") returnMsg = true;
+              else
+                returnMsg=false;
+            },
+            error: function (msg) { alert("fail : " + msg); },
+            async: false
+          });
+          return returnMsg;
         }
         function ShowUserDetails(thisObj) {
             var className = $(thisObj).attr('class');

@@ -17,7 +17,7 @@
     <script type="text/javascript" src="../jquery-latest.min.js"></script>
      <link rel="stylesheet" href="../css/my_styles.css">
     <link rel="stylesheet" href="../css/pure-min.css">
- 
+
 
 <script>
     function printFunction() {
@@ -86,7 +86,7 @@ padding:1em 0ex 0ex 0em;
 
 
 <tr>
-<td colspan="2"> 
+<td colspan="2">
 <center>
 <div>
 
@@ -95,7 +95,7 @@ padding:1em 0ex 0ex 0em;
     <td colspan="3" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small;font-weight: 600">
     <center>
         <h3>INSLIP FORM </h3>
-        <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small; font-weight: 300"></div>      
+        <div id="myResults" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small; font-weight: 300"></div>
         <!--
         <div id="docmgrname" style="font-family: Arial, Helvetica, Sans-Serif; font-size:small; font-weight: 300"></div>
         -->
@@ -124,13 +124,13 @@ padding:1em 0ex 0ex 0em;
     </script>
    <tr>
     <td><center><h5>ACCOUNT NUMBER</h5></center></td>
-    <td><center><?php echo $_POST["accountno"]; ?><br></center></td> 
-    
+    <td><center><?php echo $_POST["accountno"]; ?><br></center></td>
+
     <td>
     <div>
 	<!-- added variable check for hidding print button and reducing the size of barcode for slip generation -->
-    <iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em;" 
-	marginheight="0" marginwidth="0" frameborder="0" src="../barcodegit/test.php?text= <?php echo $_POST['accountno'] ?> & check=1" />
+    <iframe id="barcodeIFrame" frameBorder="0" scrolling="no" style="height:4em;width:15em;"
+	marginheight="0" marginwidth="0" frameborder="0" src="../barcodegit/test.php?text=<?php echo $_POST['accountno']?> & check=1" />
     </iframe>
     <br> <br>
     </div>
@@ -138,65 +138,65 @@ padding:1em 0ex 0ex 0em;
    </tr>
    <tr>
     <td><center><h5>ACCOUNT HOLDER NAME</h5></center></td>
-    <td><center><?php echo $_POST["accountname"]; ?><br></center></td> 
+    <td><center><?php echo $_POST["accountname"]; ?><br></center></td>
     <td></td>
    </tr>
    <tr>
     <td><center><h5>PRODUCT DESCRIPTION</h5></center></td>
-    <td><center><?php echo $_POST["productcode"]; ?><br></center></td> 
+    <td><center><?php echo $_POST["productcode"]; ?><br></center></td>
     <td></td>
    </tr>
 <!--
    <tr>
     <td><center><h5>BRANCH CODE</h5></center></td>
-    <td><center><?php echo $_POST["brcode"]; ?><br></center></td> 
+    <td><center><?php echo $_POST["brcode"]; ?><br></center></td>
     <td></td>
    </tr>
 -->
    <tr>
     <td><center><h5>BRANCH NAME</h5></center></td>
-    <td><center><?php echo $_POST["brname"]; ?><br></center></td> 
+    <td><center><?php echo $_POST["brname"]; ?><br></center></td>
     <td></td>
    </tr>
     <tr>
     <td><center><h5>FOLIO NUMBER</h5></center></td>
-    <td><center><?php echo $_POST["foliono"]; ?><br></center></td> 
+    <td><center><?php echo $_POST["foliono"]; ?><br></center></td>
     <td></td>
    </tr>
    <tr>
     <td><center><h5>RETURNEE DETAILS</h5></center></td>
     <td>
         <center>
-        <?php echo $_POST["pfnogiver"]; ?><br><br> 
+        <?php echo $_POST["pfnogiver"]; ?><br><br>
         <?php echo $_POST["nameofGiver"]; ?> <br>
-        </center></td> 
+        </center></td>
     <td></td>
    </tr>
-    
+
  <tr>
     <td><center><h5>DOCUMENT MANAGER DETAILS</h5></center></td>
     <td>
         <center>
                <?php echo $_POST["did"]; ?><br><br>
-               <?php echo $_POST["dname"]; ?><br><br> 
+               <?php echo $_POST["dname"]; ?><br><br>
         </center>
-		</td>  
+		</td>
     <td></td>
     </tr>
-           
+
    <tr>
     <td><center><h5>COMMENTS</h5></center></td>
     <td style="word-wrap: break-word; text-justify: distribute">
        <p style="text-align: justify"><center><?php echo $_POST["reason"]; ?> </center></p>
-    </td> 
+    </td>
     <td></td>
    </tr>
-   
+
 
 </table>
 <br/>
 
-</div> 
+</div>
 </center>
 </td>
 </tr>
@@ -222,17 +222,17 @@ padding:1em 0ex 0ex 0em;
 <td colspan="2">
 <div class="pure-controls">
 <center>
-<input class="pure-button pure-button-primary" id="printbutton" type="button" 
-    value="PRINT IN SLIP" id="printInslip" onclick="this.style.visibility='hidden';printFunction()"  />  
+<input class="pure-button pure-button-primary" id="printbutton" type="button"
+    value="PRINT IN SLIP" id="printInslip" onclick="this.style.visibility='hidden';printFunction()"  />
 </center>
-</div> 
+</div>
 </td>
 </tr>
-  
+
 <tr>
 <br>
 </tr>
-    
+
 
 </table>
 

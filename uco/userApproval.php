@@ -8,7 +8,7 @@ session_start();
 <link rel="stylesheet" href="css/loginstyles.css">
 </head>
 
-<body >
+<body style="background-image:url('../img/greyzz.png'); margin: 0">
 
 <?php 
 

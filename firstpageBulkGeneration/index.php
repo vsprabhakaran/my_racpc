@@ -5,27 +5,26 @@ require 'barcode.php';
 error_reporting(0);
 require 'excel_reader2.php';
 require('html2fpdf.php');
-$data = new Spreadsheet_Excel_Reader("Already_Scanned.xls");
+$data = new Spreadsheet_Excel_Reader("scan.xls");
 $cols=array("ACCOUNT NUMBER","NAME","PRODUCT NAME", "BRANCH CODE","BRANCH NAME");
 for($i=0;$i<count($data->sheets);$i++) // Loop to get all sheets in a file.
 {
     if(count($data->sheets[$i][cells])>0) // checking sheet not empty
     {
 
-        for($j=7;$j<=count($data->sheets[$i][cells])-26;$j++) // loop used to get each row of the sheet
+        for($j=2;$j<=count($data->sheets[$i][cells]);$j++) // loop used to get each row of the sheet
         {
 			$html="<div ><center><table border='0'>";
-			$html.="<tr><td colspan=\"3\" height=\"150\" ><img src='img\\5.png' /></td></tr>";
-
-			$html.="<tr><td>";
+			$html.="<tr><td width=\"30\"></td><td ><cetner><img src='img\\6.png' height=49 width=270 /></center></td>";
+			$html.="<td width=\"20\"></td><td><center>";
         gen($data->sheets[0][cells][$j][1]);
 			$html.="<img src='barcode\\".$data->sheets[$i][cells][$j][1].".png'/>";
-			$html.="</td><td></td><td ></td></tr>";
-            $html.="<tr><td colspan=\"3\" height=\"150\"> <center><h3><b>RACPC Ayyappanthangal (17938)<b></h3></center><br/></td></tr>";
+			$html.="</center></td></tr>";
+            $html.="<tr><td width=\"20\"></td><td colspan=\"4\" height=\"150\"> <center><h3><b>RACPC ANNA NAGAR (15440)<b></h3></center><br/></td></tr>";
             for($k=1;$k<=count($data->sheets[$i][cells][$j]);$k++) // This loop is created to get data in a table format.
             {
-				$html.="<tr>";
-				$html.="<td height=\"50\" width=\"350\"><center>";
+				$html.="<tr><td width=\"20\"></td>";
+				$html.="<td height=\"50\" ><center>";
 				//$html.="<td style=\"text-align:right;\">";
                 $html.=$cols[$k-1];
 				//$html.="<br/>";
@@ -39,16 +38,22 @@ for($i=0;$i<count($data->sheets);$i++) // Loop to get all sheets in a file.
                 $html.="</td>";
 				$html.="</tr>";
             }
-			$html.="<tr><td><center>STORAGE</center></td><td width=\"50\">:</td><td><img src='img\\123.png'/></td></tr>";
-			$html.="<tr><td><center>DOCUMENTS</center></td><td width=\"50\">:</td><td><img src='img\\123.png'/></td></tr>";
-			$html.="<tr><td><center><center></td><td width=\"50\"></td><td><img src='img\\123.png'/></td></tr>";
+			$html.="<tr><td width=\"20\"></td><td><center>STORAGE</center></td><td width=\"20\">:</td><td><img src='img\\dottedBox.png'/></td></tr>";
+			$html.="<tr><td width=\"20\"></td><td><center>DOCUMENTS</center></td><td width=\"20\">:</td><td><img src='img\\dottedBox.png'/></td></tr>";
+			$html.="<tr><td width=\"20\"></td><td><center><center></td><td width=\"20\"></td><td><img src='img\\dottedBox.png'/></td></tr>";
             $html.="</table></center></div>";
 
 			$pdf=new HTML2FPDF();
 			$pdf->AddPage();
 			$pdf->WriteHTML($html);
 
-			$pdf->Output("pdfs\\".$data->sheets[$i][cells][$j][1].".pdf");
+      $branchCode=$data->sheets[0][cells][$j][4];
+      $target_dir = "pdfs/";
+      if(! is_dir("pdfs/$branchCode"))
+      {
+        mkdir("pdfs/$branchCode",0777);
+      }
+			$pdf->Output("pdfs/".$branchCode."/".$data->sheets[$i][cells][$j][1].".pdf");
 
         }
 		echo $html;

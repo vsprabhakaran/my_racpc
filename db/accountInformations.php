@@ -230,12 +230,13 @@ function isLoanActive($accountNumber)
 function validate_racpc_acc_user($pfno, $accountNumber){
     $con = NULL;
     db_prelude($con);
-  $query1=mysqli_query($con,"select racpc_code from loan_account_mstr where loan_acc_no='$accountNumber'");
-  $RacpcCodeofLoanAcc = mysqli_fetch_array($query1);
-  $query2=mysqli_query($con,"select racpc_code from branch_mstr where branch_code=(select branch_code from user_mstr where pf_index='$pfno')");
-  $RacpcCodeofRequester = mysqli_fetch_array($query2);
+  $query1=mysqli_query($con,"select racpc_code,branch_code from loan_account_mstr where loan_acc_no='$accountNumber'");
+  $CodeofLoanAcc = mysqli_fetch_array($query1);
+  //old query $query2=mysqli_query($con,"select racpc_code from branch_mstr where branch_code=(select branch_code from user_mstr where pf_index='$pfno')");
+  $query2=mysqli_query($con,"select branch_code from user_mstr where pf_index='$pfno'");
+  $CodeofRequester = mysqli_fetch_array($query2);
   //var_dump("1st: ".$RacpcCodeofLoanAcc['racpc_code']."  2nd:".$RacpcCodeofRequester['racpc_code']);
-  if($RacpcCodeofLoanAcc['racpc_code'] == $RacpcCodeofRequester['racpc_code'])
+  if($CodeofLoanAcc['racpc_code'] == $CodeofRequester['branch_code'] || $CodeofLoanAcc['branch_code'] == $CodeofRequester['branch_code'])
   {
     echo json_encode(TRUE);
   }
@@ -346,13 +347,14 @@ function isUserAndLoanAccountBelongsToSameRacpc($accountNumber,$pfIndex)
   $con = NULL;
   db_prelude($con);
   $colname = "racpc_code";
-  $query=mysqli_query($con,"SELECT racpc_code AS '$colname' FROM loan_account_mstr  where  loan_acc_no ='$accountNumber'");
-  $RacpcCodeofLoanAccount=mysqli_fetch_array($query);
-  $query=mysqli_query($con,"SELECT b.racpc_code AS '$colname' FROM user_mstr u,branch_mstr b
-    where u.pf_index='$pfIndex' and u.branch_code=b.branch_code");
-  $RacpcCodeofUser=mysqli_fetch_array($query);
+  $query=mysqli_query($con,"SELECT racpc_code,branch_code FROM loan_account_mstr  where  loan_acc_no ='$accountNumber'");
+  $CodeofLoanAccount=mysqli_fetch_array($query);
+  //old query $query=mysqli_query($con,"SELECT b.racpc_code AS '$colname' FROM user_mstr u,branch_mstr b
+  //   where u.pf_index='$pfIndex' and u.branch_code=b.branch_code");
+  $query2=mysqli_query($con,"SELECT branch_code  from user_mstr where pf_index='$pfIndex'");
+  $BranchCodeofUser=mysqli_fetch_array($query2);
   //var_dump("RacpcCodeofLoanAccount : ".print_r($RacpcCodeofUser));
-  if($RacpcCodeofLoanAccount[$colname]==$RacpcCodeofUser[$colname])
+  if($CodeofLoanAccount['racpc_code']==$BranchCodeofUser['branch_code'] || $CodeofLoanAccount['branch_code']==$BranchCodeofUser['branch_code'])
   {
     //var_dump("RacpcCodeofUser  : ".$RacpcCodeofUser." RacpcCodeofLoanAccount : ".$RacpcCodeofLoanAccount);
     echo json_encode(TRUE);

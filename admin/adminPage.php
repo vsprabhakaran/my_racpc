@@ -91,7 +91,7 @@
             <tr >
                 <td><br/></td>
                 <td> 
-                    <iframe id="contentFrame" frameBorder="0" scrolling="no" src="uploadDocument.php" style="width: 100%;height: 550px;" marginheight="0" marginwidth="0" frameborder="0"></iframe> 
+                    <iframe id="contentFrame" frameBorder="0" scrolling="no" src="uploadDocument.php" style="width: 100%;height: 550px;margin-bottom:2em;" marginheight="0" marginwidth="0" frameborder="0"></iframe> 
                 </td>
                 <td><br/></td>
             </tr>

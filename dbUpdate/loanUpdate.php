@@ -2,10 +2,11 @@
 <body>
 <?php
   require 'excel_reader2.php';
-  $data = new Spreadsheet_Excel_Reader("branch_mstr.xls");
-  $cols=array("branch_code","branch_name","network","zone","region","address");
+  $data = new Spreadsheet_Excel_Reader("loan_mstr.xls");
+  $cols=array("loan_acc_no","branch_code","acc_holder_name","racpc_code","product_name");
   $NoofInserts=0;
   $NoofUpdates=0;
+  $NoofMigrations=0;
   if(count($data->sheets) != 1)
   {
     die("The number of sheets is too much or none at all!!!");
@@ -29,12 +30,12 @@
   for($crow=2;$crow<=$data->rowcount();$crow++)
   {
     set_time_limit (10);
-    $currentBranchCode = $data->val($crow,1);
-    if(doesBranchCodeExists($currentBranchCode))
+    $currentAccNo = $data->val($crow,1);
+    if(doesAccNoExists($currentAccNo))
     {
-      echo $currentBranchCode." exists";
-      echo " value : ".$data->val($crow,2);
-      if(UpdateExistingBranchCode($currentBranchCode,$data->val($crow,2),$data->val($crow,3),$data->val($crow,4),$data->val($crow,5),$data->val($crow,6)))
+      echo $currentAccNo." exists";
+      echo " value : ".$data->val($crow,3);
+      if(UpdateExistingAccNo($currentAccNo,$data->val($crow,2),$data->val($crow,3),$data->val($crow,4),$data->val($crow,5)))
       {
         $NoofUpdates++;
         echo ". Update Success<br/>";
@@ -46,8 +47,8 @@
     }
     else
     {
-      echo $currentBranchCode." does not exists";
-      if(InsertNewBranchCode($currentBranchCode,$data->val($crow,2),$data->val($crow,3),$data->val($crow,4),$data->val($crow,5),$data->val($crow,6)))
+      echo $currentAccNo." does not exists";
+      if(InsertNewAccNo($currentAccNo,$data->val($crow,2),$data->val($crow,3),$data->val($crow,4),$data->val($crow,5)))
       {
         $NoofInserts++;
         echo ". Insert Success<br/>";
@@ -58,17 +59,18 @@
       }
     }
   }
-  echo "No. of Updates =".$NoofUpdates." and No.of Inserts=".$NoofInserts;
-  function doesBranchCodeExists($BranchCode)
+  echo "No. of Updates =".$NoofUpdates.", No.of Inserts=".$NoofInserts." and No. of Migrations=".$NoofMigrations;
+  function doesAccNoExists($AccNo)
   {
     $con = NULL;
     db_prelude($con);
-    $colname = "branch_code";
-    $query=$con->query("SELECT branch_code as  '$colname' FROM branch_mstr WHERE branch_code = '$BranchCode'");
-    //$row=mysqli_fetch_array($query);
-    $affectedRows = $con->affected_rows;
+    $colname = "loan_acc_no";
+    $query=mysqli_query($con,"SELECT count(*) as total FROM loan_account_mstr WHERE loan_acc_no = '$AccNo'");
+    $row=mysqli_fetch_assoc($query);
+    //echo "Result".$row['total'];
+    //$affectedRows = $con->affected_rows;
     mysqli_close($con);
-    if($affectedRows > 0)
+    if($row['total'] > 0)
     {
       return TRUE;
     }
@@ -77,7 +79,7 @@
       return FALSE;
     }
   }
-  function UpdateExistingBranchCode($BranchCode,$BranchName,$Network,$Zone,$Region,$Address)
+  function UpdateExistingAccNo($AccNo,$BranchCode,$Name,$racpcCode,$productName)
   {
     $con = NULL;
     db_prelude($con);
@@ -85,8 +87,18 @@
     // $dbRacpcCode=mysqli_fetch_array($row);
     // if($dbRacpcCode[0]!=$Racpc_code)
     //     echo $BranchCode."s RACPC code is changing from ".$dbRacpcCode[0]." to ".$Racpc_code;
-    $dbQuery =  "update branch_mstr set branch_name = '$BranchName', network='$Network', zone='$Zone', region='$Region', address='$Address' where branch_code = '$BranchCode'";
-
+    $query= mysqli_query($con,"SELECT branch_code, racpc_code from loan_account_mstr where loan_acc_no='$AccNo'");
+    $row=mysqli_fetch_array($query);
+    if($row['branch_code']!=$BranchCode)
+    {
+      echo $AccNo." branch code changed from ".$row['branch_code']." to ".$BranchCode;
+    }
+    else if($row['racpc_code']!=$racpcCode)
+    {
+      $GLOBALS['NoofMigrations']++;
+      echo $AccNo." racpc code changed from ".$row['racpc_code']." to ".$racpcCode;
+    }
+    $dbQuery =  "update loan_account_mstr set branch_code='$BranchCode', acc_holder_name = '$Name', racpc_code='$racpcCode', product_name='$productName' where loan_acc_no = '$AccNo'";
     $query=$con->query($dbQuery);
     getLastUpdateQueryStats($con,$affectedRows,$matchedRows);
     mysqli_close($con);
@@ -100,11 +112,12 @@
     }
   }
 
-  function InsertNewBranchCode($BranchCode,$BranchName,$Network,$Zone,$Region,$Address)
+  function InsertNewAccNo($AccNo,$BranchCode,$Name,$racpcCode,$productName)
   {
     $con = NULL;
     db_prelude($con);
-    $dbQuery =  "insert into branch_mstr(branch_code,branch_name,network,zone,region,address) values('$BranchCode','$BranchName','$Network','$Zone','$Region','$Address')";
+    $dbQuery =  "insert into loan_account_mstr(loan_acc_no,branch_code,acc_holder_name,racpc_code,product_name)
+    values('$AccNo','$BranchCode','$Name','$racpcCode','$productName')";
     $query=$con->query($dbQuery);
     $affectedRows = $con->affected_rows;
 

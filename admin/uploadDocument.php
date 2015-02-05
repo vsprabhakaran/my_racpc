@@ -16,8 +16,8 @@
         <link rel="stylesheet" href="../css/pure-min.css">
         <script type="text/javascript" src="../jquery-latest.min.js"></script>
         <script type="text/javascript" src="../jquery-barcode.js"></script>
-		<script type="text/javascript" src="js/deployJava.js"></script>
-		<script type="text/javascript" src="sendCommand.js"></script>
+		<!--script type="text/javascript" src="js/deployJava.js"></script>
+		<script type="text/javascript" src="sendCommand.js"></script-->
 	    <script type="text/javascript" src="../ValidationMethods.js"></script>
         <script type="text/javascript">
             var dbURL = '../db/accountInformations.php';
@@ -201,7 +201,7 @@
                 $.post('../db/accountInformations.php', { accNo: enteredAccNumber, type: 'GetBranchCodeOfAccount' }, function (msg) {
                     if (msg != "") {
                         var branchCode = msg.replace(/["']/g, "");
-                        document.getElementById("pdfFile").setAttribute('src', "../docBuffer.php?accNo=" + enteredAccNumber);
+                        document.getElementById("pdfFile").setAttribute('src', "../docBuffer.php?accNo=" + enteredAccNumber+"&type=view");
                         document.getElementById("pdfFile").style.visibility = "visible";
                     }
                     else if (msg == "false") {

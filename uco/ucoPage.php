@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang=''>
 <head>
-   <title>Admin</title>
+   <title>UCO</title>
    <link rel="stylesheet" href="../menustyles.css">
    <script src="../jquery-latest.min.js" type="text/javascript"></script>
    <script src="../script.js"></script>
 
 
 </head>
-<body style="background-image:url('../img/greyzz.png');">
+<body style="background-image:url('../img/greyzz.png'); margin: 0">
 
 <div>
 <table border="0" style="width:100%;height:100%;border-width:2px;">
@@ -23,7 +23,7 @@
     <ul>
       <li class='active' ><a href='#'><span>Approve User</span></a></li>
       <li style="width: 73%; text-align:right; visibility: hidden;">&nbsp;</li>
-      <li style="text-align:center;  float:right;"><a href='../../logout.php'><span>Logout</span></a></li>
+      <li style="text-align:center;  float:right;"><a href='../logout.php'><span>Logout</span></a></li>
     </ul>
   </div>
 </td>
@@ -31,7 +31,7 @@
 
 <tr>
 <td>
-<iframe frameBorder="0" src="userApproval.php" style="width:100%;height:400px;"></iframe>
+<iframe frameBorder="0" src="userApproval.php" style="width:100%;height:500px;"></iframe>
 </td>
 </tr>
 </table>

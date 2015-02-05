@@ -195,7 +195,7 @@ function SlipGenerationTest($slipType, $OusiderPFNumber, $DocMgrPFNumber, $Accou
     }
     else if(!isValidUser($OusiderPFNumber))
     {
-        $errorMessage = "Invalid Receiver/Returnee PF Index";
+			$errorMessage = "Invalid Receiver/Returnee";
     }
     //When a user is adms user, then he should have access to all the documents of that racpc except other than branch view user.
     else if(!isUserRacpcUser($OusiderPFNumber) && (getBranchCode($AccountNumber) != GetUserBranchCode($OusiderPFNumber)))

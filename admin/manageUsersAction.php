@@ -50,7 +50,7 @@
         $accountCreated = FALSE;
         if(isValidUser($pfNumber) && !isValidADMSUser($pfNumber))
         {
-            if(strcmp(GetUserBranchCode($pfNumber),GetUserRacpcCode($pfNumber)) == 0)
+            if(isUserRacpcUser($pfNumber))
                 $accountCreated = InsertNewRacpcViewUser($pfNumber);
             else
                 $accountCreated = InsertNewBranchViewUser($pfNumber);

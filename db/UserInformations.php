@@ -132,9 +132,25 @@ switch($request)
        updateNewPassword($_POST['pwd']);
        break;
    }
+   case 'getNewUserDetails':
+   {
+       getNewUserDetails();
+       break;
+   }
     
 }
-
+function getNewUserDetails()
+{
+  $con=NULL;
+  db_prelude($con);
+  $query=mysqli_query($con,"SELECT adms.pf_index,user.emp_name  from adms_user_mstr as adms, user_mstr as  user
+                              where adms.pf_index= user.pf_index and adms.status_flag='C'");
+  while($query_row=mysqli_fetch_assoc($query))
+  {
+    $users[]=$query_row;
+  }
+  echo json_encode($users);
+}
 function db_prelude(&$con)
 {
     $con = new mysqli("localhost", "root", "", "racpc_automation_db");
@@ -218,11 +234,20 @@ function validate_racpc_user($pfNumber,$login_pf)
     and u1.pf_index = '$pfNumber'
     and u1.branch_code = b1.branch_code
     and b.racpc_code = b1.racpc_code");*/
-    $query=mysqli_query($con,"select branch_code from user_mstr where pf_index='$login_pf'
+
+
+    /*old query $query=mysqli_query($con,"select branch_code from user_mstr where pf_index='$login_pf'
                         and branch_code =(select racpc_code from branch_mstr
                         where branch_code=(select branch_code from user_mstr
-                        where pf_index='$pfNumber')) ");
+                        where pf_index='$pfNumber')) ");*/
 
+//the query below checks whether the  logged in user and the requesting branch user belongs to same racpc or the logged in user and the requesting racpc user have same branch code
+    $query=mysqli_query($con,"SELECT branch_code from user_mstr
+                              where pf_index='$login_pf' and (branch_code IN
+                                (select distinct racpc_code from loan_account_mstr
+                                 where branch_code=
+                                    (select branch_code from user_mstr where pf_index='$pfNumber') ) ||
+                                        (branch_code IN (select branch_code from user_mstr   where pf_index='$pfNumber')))");
     $row = mysqli_fetch_array($query);
     //var_dump("branch code: ".$row['branch_code']);
     if($row['branch_code'] != "")
@@ -310,17 +335,21 @@ function GetUserBranchCode($pfNumber)
      mysqli_close($con);
 }
 
+//********Since GetUserRacpcName/number are used to get the corresponding name/number of a racpc user,
+// these functions are changed to work only with a racpc user pfID. DONT PASS A NON RACPC USER ID TO THESE FUNCTIONS ********
 function GetUserRacpcName($pfNumber)
 {
     $con = NULL;
     db_prelude($con);  
     $colname = "racpc_name";
 
-    $query=mysqli_query($con,"select racpc_name as '$colname' from racpc_mstr r, branch_mstr b, user_mstr u
-    where r.racpc_code = b.racpc_code 
-    and b.branch_code = u.branch_code
-    and u.pf_index = '$pfNumber'");
+    // $query=mysqli_query($con,"select racpc_name as '$colname' from racpc_mstr r, branch_mstr b, user_mstr u
+    // where r.racpc_code = b.racpc_code
+    // and b.branch_code = u.branch_code
+    // and u.pf_index = '$pfNumber'");
 
+    $query=mysqli_query($con,"SELECT racpc_name as '$colname' from racpc_mstr where racpc_code=
+                                (select branch_code  from user_mstr where pf_index='$pfNumber')");
     $row = mysqli_fetch_array($query);
     if($row[$colname] != "")
     {
@@ -339,11 +368,12 @@ function GetUserRacpcCode($pfNumber)
     db_prelude($con);  
     $colname = "racpc_code";
 
-    $query=mysqli_query($con,"select b.racpc_code as '$colname' from racpc_mstr r, branch_mstr b, user_mstr u
-    where r.racpc_code = b.racpc_code 
-    and b.branch_code = u.branch_code
-    and u.pf_index = '$pfNumber'");
-
+    // $query=mysqli_query($con,"select b.racpc_code as '$colname' from racpc_mstr r, branch_mstr b, user_mstr u
+    // where r.racpc_code = b.racpc_code
+    // and b.branch_code = u.branch_code
+    // and u.pf_index = '$pfNumber'");
+    $query=mysqli_query($con,"SELECT racpc_code as '$colname' from racpc_mstr where racpc_code=
+    (select branch_code  from user_mstr where pf_index='$pfNumber')");
     $row = mysqli_fetch_array($query);
     if($row[$colname] != "")
     {
